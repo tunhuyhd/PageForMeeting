@@ -1,0 +1,54 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="vi" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+		
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+		
+		<!-- Lucide Icons -->
+		<script is:inline src="https://unpkg.com/lucide@latest"></script>
+	</head>
+	<body class="font-sans bg-ivory text-gray-800 antialiased selection:bg-gold-500 selection:text-white">
+		<slot />
+		
+		<!-- Initialize Icons -->
+		<script is:inline>
+			lucide.createIcons();
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	.hero-bg {
+		background-color: #0B1B3D;
+		background-image: linear-gradient(rgba(11, 27, 61, 0.7), rgba(11, 27, 61, 0.8)), url('https://images.unsplash.com/photo-1549298240-0d8e60513026?q=80&w=2000&auto=format&fit=crop');
+		background-size: cover;
+		background-position: center;
+	}
+	
+	.gold-gradient-text {
+		background: linear-gradient(to right, #FCD34D, #D4AF37);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.countdown-box {
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(212, 175, 55, 0.3);
+		backdrop-filter: blur(8px);
+	}
+</style>

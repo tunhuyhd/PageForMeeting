@@ -1,0 +1,125 @@
+---
+---
+<section class="hero-bg min-h-screen flex items-center pt-20 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 flex flex-col lg:flex-row items-center justify-between gap-12">
+        
+        <!-- Left Column: Event Info -->
+        <div class="flex-1 text-center lg:text-left z-10">
+            <div class="mb-6 flex justify-center lg:justify-start">
+                <div class="inline-flex items-center gap-4">
+                    <div class="w-16 border-t border-gold-500"></div>
+                    <span class="text-gold-400 font-serif tracking-widest uppercase">1996 - 2026</span>
+                    <div class="w-16 border-t border-gold-500"></div>
+                </div>
+            </div>
+            
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-4 leading-tight">
+                30 NĂM HỘI NGỘ <span class="gold-gradient-text">96Q</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-300 font-serif italic mb-8">
+                Kết nối - Ký ức - Tiếp nối - Hành trình
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 text-gray-300 mb-10 font-medium">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="map-pin" class="text-gold-400 w-5 h-5"></i>
+                    <span>Đồ Sơn - Hải Phòng</span>
+                </div>
+                <div class="hidden sm:block w-1.5 h-1.5 rounded-full bg-gold-500"></div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="text-gold-400 w-5 h-5"></i>
+                    <span>15 - 16.08.2026</span>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <button class="w-full sm:w-auto bg-gold-500 hover:bg-gold-400 text-navy-900 font-semibold py-3 px-8 rounded flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+                    <i data-lucide="user-check" class="w-5 h-5"></i>
+                    XÁC NHẬN THAM DỰ
+                </button>
+                <button class="w-full sm:w-auto border border-gold-500 text-gold-400 hover:bg-gold-500/10 font-semibold py-3 px-8 rounded flex items-center justify-center gap-2 transition-all">
+                    <i data-lucide="calendar-days" class="w-5 h-5"></i>
+                    XEM CHƯƠNG TRÌNH
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Column: Countdown -->
+        <div class="flex-1 w-full max-w-lg z-10 lg:pl-10">
+            <div class="text-center mb-6">
+                <h3 class="text-gold-400 font-serif text-2xl tracking-wide">ĐẾM NGƯỢC ĐẾN NGÀY HỘI NGỘ</h3>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-3 mb-8">
+                <div class="countdown-box rounded-lg p-4 flex flex-col items-center justify-center">
+                    <span id="days" class="text-4xl font-serif text-white font-bold mb-1">00</span>
+                    <span class="text-xs text-gold-400 uppercase tracking-widest">Ngày</span>
+                </div>
+                <div class="countdown-box rounded-lg p-4 flex flex-col items-center justify-center">
+                    <span id="hours" class="text-4xl font-serif text-white font-bold mb-1">00</span>
+                    <span class="text-xs text-gold-400 uppercase tracking-widest">Giờ</span>
+                </div>
+                <div class="countdown-box rounded-lg p-4 flex flex-col items-center justify-center">
+                    <span id="minutes" class="text-4xl font-serif text-white font-bold mb-1">00</span>
+                    <span class="text-xs text-gold-400 uppercase tracking-widest">Phút</span>
+                </div>
+                <div class="countdown-box rounded-lg p-4 flex flex-col items-center justify-center">
+                    <span id="seconds" class="text-4xl font-serif text-white font-bold mb-1">00</span>
+                    <span class="text-xs text-gold-400 uppercase tracking-widest">Giây</span>
+                </div>
+            </div>
+            
+            <div class="text-center relative">
+                <i data-lucide="quote" class="absolute -top-3 left-4 text-gold-500/20 w-8 h-8 rotate-180"></i>
+                <p class="text-gray-300 italic font-serif leading-relaxed px-8">
+                    Ba mươi năm - một chặng đường dài,<br>Nhưng tình bạn vẫn luôn vẹn nguyên. <span class="text-gold-500">♥</span>
+                </p>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Bottom wave or gradient fade -->
+    <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-ivory to-transparent z-10"></div>
+</section>
+
+<script>
+    // Countdown Timer Logic
+    // Set event date to Aug 15, 2026
+    const eventDate = new Date("Aug 15, 2026 11:00:00").getTime();
+
+    const updateCountdown = () => {
+        const now = new Date().getTime();
+        const distance = eventDate - now;
+
+        const elDays = document.getElementById("days");
+        const elHours = document.getElementById("hours");
+        const elMinutes = document.getElementById("minutes");
+        const elSeconds = document.getElementById("seconds");
+
+        if (!elDays) return; // Prevent errors if elements don't exist
+
+        if (distance < 0) {
+            elDays.innerText = "00";
+            elHours.innerText = "00";
+            elMinutes.innerText = "00";
+            elSeconds.innerText = "00";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        elDays.innerText = days.toString().padStart(2, '0');
+        elHours.innerText = hours.toString().padStart(2, '0');
+        elMinutes.innerText = minutes.toString().padStart(2, '0');
+        elSeconds.innerText = seconds.toString().padStart(2, '0');
+    };
+
+    // Update every second
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>
