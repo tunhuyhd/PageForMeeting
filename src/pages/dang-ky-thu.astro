@@ -147,11 +147,35 @@ import Footer from '../components/Footer.astro';
 	<Footer />
 </Layout>
 
-<script is:inline>
-	// Config Google Apps Script URL (Dán URL sau khi deploy Google Apps Script)
-	const GOOGLE_SCRIPT_URL = "";
+<!-- Firebase App & Firestore SDKs -->
+<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-	// Danh sách 6 bàn ban đầu
+<script is:inline>
+	// 1. Cấu hình Firebase (Dán thông tin cấu hình từ Firebase Console vào đây)
+	const firebaseConfig = {
+		apiKey: "YOUR_API_KEY",
+		authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+		projectId: "YOUR_PROJECT_ID",
+		storageBucket: "YOUR_PROJECT_ID.appspot.com",
+		messagingSenderId: "YOUR_SENDER_ID",
+		appId: "YOUR_APP_ID"
+	};
+
+	// Kiểm tra xem đã dán config thật chưa
+	const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+	let db = null;
+
+	if (isFirebaseConfigured) {
+		try {
+			firebase.initializeApp(firebaseConfig);
+			db = firebase.firestore();
+		} catch (e) {
+			console.error("Firebase Init Error:", e);
+		}
+	}
+
+	// 6 Bàn cố định
 	let tables = [
 		{ id: 1, name: "Bàn Nặn tượng", total: 10, occupied: 0, females: 0 },
 		{ id: 2, name: "Bàn Vật lý kiến trúc", total: 10, occupied: 0, females: 0 },
@@ -181,14 +205,44 @@ import Footer from '../components/Footer.astro';
 		}
 	};
 
-	// Render tình trạng bàn
+	// Tải dữ liệu thực tế từ Firebase Firestore
+	async function loadTablesFromFirebase() {
+		if (!db) {
+			renderTables();
+			return;
+		}
+
+		try {
+			// Lắng nghe dữ liệu real-time từ collection 'boc_tham'
+			db.collection("boc_tham").onSnapshot(snapshot => {
+				// Reset lại số lượng
+				tables.forEach(t => { t.occupied = 0; t.females = 0; });
+
+				snapshot.forEach(doc => {
+					const data = doc.data();
+					const targetTable = tables.find(t => t.name === data.tableName);
+					if (targetTable) {
+						targetTable.occupied += 1;
+						if (data.isFemale) targetTable.females += 1;
+					}
+				});
+
+				renderTables();
+			});
+		} catch (err) {
+			console.error("Lỗi khi tải dữ liệu Firebase:", err);
+			renderTables();
+		}
+	}
+
+	// Render tình trạng 6 bàn
 	function renderTables() {
 		const container = document.getElementById('tables-list');
 		if (!container) return;
 		
 		container.innerHTML = tables.map(t => {
 			const remaining = t.total - t.occupied;
-			const percent = (t.occupied / t.total) * 100;
+			const percent = Math.min(100, (t.occupied / t.total) * 100);
 			return `
 				<div class="bg-gray-50 p-3.5 rounded-lg border border-gray-200">
 					<div class="flex justify-between items-center mb-1.5">
@@ -205,7 +259,7 @@ import Footer from '../components/Footer.astro';
 		}).join('');
 	}
 
-	// Xử lý Form Đăng ký ở ghép
+	// Xử lý Form Đăng ký ở ghép (Lưu vào Collection 'o_ghep')
 	window.handleFormOGhep = async function(e) {
 		e.preventDefault();
 		const name = document.getElementById('oghep-name').value.trim();
@@ -218,18 +272,20 @@ import Footer from '../components/Footer.astro';
 		btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Đang gửi...';
 
 		try {
-			if (GOOGLE_SCRIPT_URL) {
-				await fetch(GOOGLE_SCRIPT_URL, {
-					method: 'POST',
-					mode: 'no-cors',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ action: 'oghep', name, class: className, roommate, note })
+			if (db) {
+				await db.collection("o_ghep").add({
+					name: name,
+					className: className,
+					roommate: roommate,
+					note: note,
+					createdAt: firebase.firestore.FieldValue.serverTimestamp()
 				});
 			}
+
 			alert(`Đăng ký ở ghép thành công!\n\nNgười đăng ký: ${name} (${className})\nỞ ghép cùng: ${roommate}`);
 			document.getElementById('form-o-ghep').reset();
 		} catch (err) {
-			alert('Có lỗi xảy ra, vui lòng thử lại!');
+			alert('Có lỗi xảy ra khi kết nối Firebase: ' + err.message);
 		} finally {
 			btn.disabled = false;
 			btn.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Gửi Đăng Ký Ở Ghép';
@@ -237,7 +293,7 @@ import Footer from '../components/Footer.astro';
 		}
 	};
 
-	// Xử lý Bốc thăm Bàn
+	// Xử lý Bốc thăm Bàn (Lưu vào Collection 'boc_tham')
 	window.handleBocTham = async function(e) {
 		e.preventDefault();
 		const name = document.getElementById('boctham-name').value.trim();
@@ -247,6 +303,22 @@ import Footer from '../components/Footer.astro';
 		const btn = document.getElementById('btn-spin');
 		const resultBox = document.getElementById('result-box');
 		const resultTableName = document.getElementById('result-table-name');
+
+		// Kiểm tra nếu đã có Firebase, kiểm tra xem tên người này đã bốc chưa
+		if (db) {
+			const existing = await db.collection("boc_tham")
+				.where("name", "==", name)
+				.where("className", "==", className)
+				.get();
+
+			if (!existing.empty) {
+				const prevData = existing.docs[0].data();
+				alert(`Bạn (${name} - ${className}) đã bốc thăm trước đó rồi!\nBàn của bạn là: ${prevData.tableName}`);
+				resultTableName.innerText = prevData.tableName;
+				resultBox.classList.remove('hidden');
+				return;
+			}
+		}
 
 		// Lọc các bàn còn chỗ
 		let availableTables = tables.filter(t => t.occupied < t.total);
@@ -270,29 +342,29 @@ import Footer from '../components/Footer.astro';
 
 		// Mô phỏng quay số random 1.8 giây
 		setTimeout(async () => {
-			// Chọn ngẫu nhiên 1 bàn
 			const selectedTable = availableTables[Math.floor(Math.random() * availableTables.length)];
 
-			// Cập nhật state local
-			selectedTable.occupied += 1;
-			if (isFemale) selectedTable.females += 1;
-
-			// Gửi dữ liệu lên Google Sheet nếu có
-			if (GOOGLE_SCRIPT_URL) {
+			if (db) {
 				try {
-					await fetch(GOOGLE_SCRIPT_URL, {
-						method: 'POST',
-						mode: 'no-cors',
-						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify({ action: 'boctham', name, class: className, isFemale, table: selectedTable.name })
+					await db.collection("boc_tham").add({
+						name: name,
+						className: className,
+						isFemale: isFemale,
+						tableName: selectedTable.name,
+						createdAt: firebase.firestore.FieldValue.serverTimestamp()
 					});
-				} catch (err) {}
+				} catch (err) {
+					console.error("Lỗi khi lưu bốc thăm:", err);
+				}
+			} else {
+				// Nếu chưa cấu hình Firebase, update local
+				selectedTable.occupied += 1;
+				if (isFemale) selectedTable.females += 1;
+				renderTables();
 			}
 
-			// Hiển thị kết quả
 			resultTableName.innerText = selectedTable.name;
 			resultBox.classList.remove('hidden');
-			renderTables();
 
 			btn.disabled = false;
 			btn.innerHTML = '<i data-lucide="dice-5" class="w-5 h-5"></i> BỐC THĂM BÀN NGỮU NHIÊN';
@@ -302,6 +374,6 @@ import Footer from '../components/Footer.astro';
 
 	// Khởi tạo ban đầu
 	document.addEventListener('DOMContentLoaded', () => {
-		renderTables();
+		loadTablesFromFirebase();
 	});
 </script>
