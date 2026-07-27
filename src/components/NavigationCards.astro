@@ -12,13 +12,13 @@
                 <p class="text-xs text-gray-500">Chi tiết sự kiện</p>
             </a>
             <!-- Card 3 -->
-            <a href="#pickleball" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group cursor-pointer">
+            <div onclick="document.getElementById('pickleball-modal').classList.remove('hidden'); document.getElementById('pickleball-modal').classList.add('flex')" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group cursor-pointer">
                 <div class="w-12 h-12 rounded-full bg-blue-50 text-navy-900 flex items-center justify-center mb-3 group-hover:bg-navy-900 group-hover:text-gold-400 transition-colors">
                     <i data-lucide="medal" class="w-6 h-6"></i>
                 </div>
                 <h4 class="font-bold text-gray-800 text-sm mb-1 uppercase">GIẢI PICKLEBALL</h4>
                 <p class="text-xs text-gray-500">Thông tin & đăng ký</p>
-            </a>
+            </div>
             <!-- Card 4 -->
             <a href="#album" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group cursor-pointer">
                 <div class="w-12 h-12 rounded-full bg-blue-50 text-navy-900 flex items-center justify-center mb-3 group-hover:bg-navy-900 group-hover:text-gold-400 transition-colors">
@@ -38,3 +38,23 @@
         </div>
     </div>
 </section>
+
+<!-- Pickleball Modal -->
+<div id="pickleball-modal" class="fixed inset-0 z-[100] bg-black/50 hidden items-center justify-center backdrop-blur-sm">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl relative">
+        <button onclick="document.getElementById('pickleball-modal').classList.add('hidden'); document.getElementById('pickleball-modal').classList.remove('flex')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <h3 class="text-2xl font-bold text-navy-900 mb-6 text-center">GIẢI PICKLEBALL</h3>
+        <div class="flex flex-col gap-4">
+            <a href="#" onclick="alert('Đang cập nhật điều lệ giải!'); document.getElementById('pickleball-modal').classList.add('hidden'); document.getElementById('pickleball-modal').classList.remove('flex');" class="flex items-center justify-center gap-3 bg-navy-900 text-white p-4 rounded-xl hover:bg-gold-500 transition-colors font-medium">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                Điều lệ giải
+            </a>
+            <a href="#san-pickleball" onclick="document.getElementById('pickleball-modal').classList.add('hidden'); document.getElementById('pickleball-modal').classList.remove('flex')" class="flex items-center justify-center gap-3 bg-gray-100 text-navy-900 p-4 rounded-xl hover:bg-gray-200 transition-colors font-medium">
+                <i data-lucide="map-pin" class="w-5 h-5"></i>
+                Địa điểm thi đấu
+            </a>
+        </div>
+    </div>
+</div>
