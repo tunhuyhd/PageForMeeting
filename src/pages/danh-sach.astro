@@ -8,121 +8,118 @@ import Footer from '../components/Footer.astro';
 	<Header />
 	
 	<main class="pt-24 pb-20 bg-ivory min-h-screen">
-		<div class="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">
+		<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 			
-			<!-- Header Mobile First -->
-			<div class="text-center mb-6 pt-2">
-				<span class="inline-flex items-center gap-1.5 bg-gold-100 text-gold-800 text-[11px] px-3 py-1 rounded-full uppercase tracking-wider font-bold border border-gold-300 shadow-sm">
-					<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-					Cập Nhật Real-Time
-				</span>
-				<h1 class="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-navy-900 mt-2 uppercase tracking-tight">
+			<!-- Header Title -->
+			<div class="text-center mb-5">
+				
+				<h1 class="text-2xl sm:text-3xl font-serif font-bold text-navy-900 mt-2 uppercase tracking-tight">
 					KẾT QUẢ BỐC THĂM & Ở GHÉP
 				</h1>
-				<p class="text-xs sm:text-sm text-gray-500 mt-1">Hội ngộ 30 năm Kỷ niệm 96Q1 & 96Q2</p>
+				<p class="text-xs text-gray-500 mt-1">Hội ngộ 30 năm Kỷ niệm 96Q1 & 96Q2</p>
 			</div>
 
-			<!-- Mobile Segmented Tab Control (Dạng tab chuyển mượt cho mobile) -->
-			<div class="sticky top-20 z-40 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl border border-gray-200/80 shadow-lg mb-6 flex gap-1">
-				<button id="tab-btn-ban-an" onclick="switchViewTab('ban-an')" class="flex-1 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 bg-navy-900 text-gold-400 shadow-md">
-					<i data-lucide="layout-grid" class="w-4 h-4"></i>
+			<!-- Mobile Segmented Tab Control (Đối xứng 50-50) -->
+			<div class="bg-white p-1 rounded-2xl border border-gray-200 shadow-sm mb-5 flex">
+				<button id="tab-btn-ban-an" onclick="switchViewTab('ban-an')" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 bg-navy-900 text-gold-400 shadow-sm">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
 					<span>Sơ Đồ 6 Bàn Ăn</span>
 				</button>
-				<button id="tab-btn-o-ghep" onclick="switchViewTab('o-ghep')" class="flex-1 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm text-gray-600 hover:text-navy-900 transition-all flex items-center justify-center gap-2">
-					<i data-lucide="users" class="w-4 h-4"></i>
+				<button id="tab-btn-o-ghep" onclick="switchViewTab('o-ghep')" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm text-gray-600 hover:text-navy-900 transition-all flex items-center justify-center gap-2">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
 					<span>Đăng Ký Ở Ghép</span>
 				</button>
 			</div>
 
 			<!-- TAB 1: SƠ ĐỒ 6 BÀN ĂN GALA DINNER -->
-			<div id="view-content-ban-an" class="space-y-5 animate-fade-in">
-				<!-- Quick Stats Counter bar -->
-				<div class="grid grid-cols-3 gap-2.5 sm:gap-4">
-					<div class="bg-white p-3 sm:p-4 rounded-xl border border-gray-200 shadow-sm text-center">
-						<span class="block text-[11px] text-gray-500 uppercase font-semibold">Đã Xếp Bàn</span>
-						<span id="stat-total-seated" class="text-lg sm:text-2xl font-bold text-navy-900">0/60</span>
+			<div id="view-content-ban-an" class="space-y-4">
+				<!-- Quick Stats Bar (Hàng ngang 3 ô đối xứng) -->
+				<div class="grid grid-cols-3 gap-2 text-center">
+					<div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-2xs">
+						<span class="block text-[10px] text-gray-500 uppercase font-semibold">Đã Xếp Bàn</span>
+						<span id="stat-total-seated" class="text-base sm:text-xl font-bold text-navy-900">0/60</span>
 					</div>
-					<div class="bg-white p-3 sm:p-4 rounded-xl border border-gray-200 shadow-sm text-center">
-						<span class="block text-[11px] text-gray-500 uppercase font-semibold">Ghế Trống</span>
-						<span id="stat-total-remaining" class="text-lg sm:text-2xl font-bold text-green-600">60</span>
+					<div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-2xs">
+						<span class="block text-[10px] text-gray-500 uppercase font-semibold">Ghế Trống</span>
+						<span id="stat-total-remaining" class="text-base sm:text-xl font-bold text-green-600">60</span>
 					</div>
-					<div class="bg-white p-3 sm:p-4 rounded-xl border border-gray-200 shadow-sm text-center">
-						<span class="block text-[11px] text-gray-500 uppercase font-semibold">Thành Viên Nữ</span>
-						<span id="stat-total-female" class="text-lg sm:text-2xl font-bold text-pink-600">0</span>
+					<div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-2xs">
+						<span class="block text-[10px] text-gray-500 uppercase font-semibold">Thành Viên Nữ</span>
+						<span id="stat-total-female" class="text-base sm:text-xl font-bold text-pink-600">0</span>
 					</div>
 				</div>
 
-				<!-- Mobile Filter Bar & Search -->
-				<div class="bg-white p-3 sm:p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
-					<div class="relative">
-						<i data-lucide="search" class="w-4 h-4 absolute left-3 top-3.5 text-gray-400"></i>
-						<input type="text" id="search-ban-an" oninput="filterBanAn()" placeholder="Tìm tên thành viên..." class="w-full pl-9 pr-8 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-navy-900 transition-all">
-						<button id="clear-search-ban-an" onclick="clearSearch('search-ban-an', filterBanAn)" class="hidden absolute right-3 top-3 text-gray-400 hover:text-gray-600">
-							<i data-lucide="x-circle" class="w-4 h-4"></i>
+				<!-- Search Box & Filter Pills -->
+				<div class="bg-white p-3 rounded-xl border border-gray-200 shadow-2xs space-y-2.5">
+					<div class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus-within:bg-white focus-within:ring-2 focus-within:ring-navy-900 transition-all">
+						<svg class="w-4 h-4 text-gray-400 shrink-0 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+						<input type="text" id="search-ban-an" oninput="filterBanAn()" placeholder="Tìm tên thành viên..." class="w-full text-xs sm:text-sm bg-transparent outline-none text-navy-900 placeholder-gray-400">
+						<button id="clear-search-ban-an" onclick="clearSearch('search-ban-an', filterBanAn)" class="hidden text-gray-400 hover:text-gray-600 ml-1">
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
 						</button>
 					</div>
 
-					<!-- Filter Pills -->
-					<div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
-						<span class="text-gray-400 font-medium mr-1 whitespace-nowrap">Lọc theo:</span>
-						<button onclick="setClassFilterBanAn('ALL')" id="filter-banan-all" class="filter-pill-banan active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-xs">Tất cả</button>
-						<button onclick="setClassFilterBanAn('96Q1')" id="filter-banan-q1" class="filter-pill-banan px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q1</button>
-						<button onclick="setClassFilterBanAn('96Q2')" id="filter-banan-q2" class="filter-pill-banan px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q2</button>
-						<button onclick="setClassFilterBanAn('FEMALE')" id="filter-banan-female" class="filter-pill-banan px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-pink-50 text-pink-700 hover:bg-pink-100 border border-pink-200">Nữ</button>
+					<!-- Filter Pills đối xứng -->
+					<div class="flex items-center gap-1.5 overflow-x-auto text-xs no-scrollbar pt-0.5">
+						<span class="text-gray-400 font-medium text-[11px] shrink-0">Lọc:</span>
+						<button onclick="setClassFilterBanAn('ALL')" id="filter-banan-all" class="filter-pill-banan active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs">Tất cả</button>
+						<button onclick="setClassFilterBanAn('96Q1')" id="filter-banan-q1" class="filter-pill-banan px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q1</button>
+						<button onclick="setClassFilterBanAn('96Q2')" id="filter-banan-q2" class="filter-pill-banan px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q2</button>
+						<button onclick="setClassFilterBanAn('FEMALE')" id="filter-banan-female" class="filter-pill-banan px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-pink-50 text-pink-700 border border-pink-200 hover:bg-pink-100">Nữ</button>
 					</div>
 				</div>
 
-				<!-- Quick Table Switcher Bar (Tối ưu vuốt ngang trên Mobile) -->
-				<div class="flex gap-2 overflow-x-auto pb-2 pt-1 no-scrollbar">
-					<button onclick="scrollToTable('table-1')" class="px-3.5 py-2 rounded-xl bg-white border border-gray-200 shadow-2xs text-xs font-bold text-navy-900 whitespace-nowrap shrink-0 active:scale-95 transition-all">1. Nặn Tượng</button>
-					<button onclick="scrollToTable('table-2')" class="px-3.5 py-2 rounded-xl bg-white border border-gray-200 shadow-2xs text-xs font-bold text-navy-900 whitespace-nowrap shrink-0 active:scale-95 transition-all">2. Vật Lý KT</button>
-					<button onclick="scrollToTable('table-3')" class="px-3.5 py-2 rounded-xl bg-white border border-gray-200 shadow-2xs text-xs font-bold text-navy-900 whitespace-nowrap shrink-0 active:scale-95 transition-all">3. Hình Học HH</button>
-					<button onclick="scrollToTable('table-4')" class="px-3.5 py-2 rounded-xl bg-white border border-gray-200 shadow-2xs text-xs font-bold text-navy-900 whitespace-nowrap shrink-0 active:scale-95 transition-all">4. Mực Nho</button>
-					<button onclick="scrollToTable('table-5')" class="px-3.5 py-2 rounded-xl bg-white border border-gray-200 shadow-2xs text-xs font-bold text-navy-900 whitespace-nowrap shrink-0 active:scale-95 transition-all">5. ĐA Quán Hoa</button>
-					<button onclick="scrollToTable('table-6')" class="px-3.5 py-2 rounded-xl bg-white border border-gray-200 shadow-2xs text-xs font-bold text-navy-900 whitespace-nowrap shrink-0 active:scale-95 transition-all">6. Sức Bền VL</button>
+				<!-- Thanh chuyển nhanh bàn (Cuộn ngang) -->
+				<div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
+					<button onclick="scrollToTable('table-1')" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 shadow-2xs font-semibold text-navy-900 shrink-0">1. Nặn Tượng</button>
+					<button onclick="scrollToTable('table-2')" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 shadow-2xs font-semibold text-navy-900 shrink-0">2. Vật Lý KT</button>
+					<button onclick="scrollToTable('table-3')" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 shadow-2xs font-semibold text-navy-900 shrink-0">3. Hình Học HH</button>
+					<button onclick="scrollToTable('table-4')" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 shadow-2xs font-semibold text-navy-900 shrink-0">4. Mực Nho</button>
+					<button onclick="scrollToTable('table-5')" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 shadow-2xs font-semibold text-navy-900 shrink-0">5. ĐA Quán Hoa</button>
+					<button onclick="scrollToTable('table-6')" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 shadow-2xs font-semibold text-navy-900 shrink-0">6. Sức Bền VL</button>
 				</div>
 
-				<!-- Container 6 Bàn -->
-				<div id="grid-6-tables" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+				<!-- Grid 6 Bàn (1 cột trên mobile, 2 cột trên tablet/desktop) -->
+				<div id="grid-6-tables" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<!-- JS Render 6 Bàn -->
 				</div>
 			</div>
 
 			<!-- TAB 2: DANH SÁCH ĐĂNG KÝ Ở GHÉP -->
-			<div id="view-content-o-ghep" class="hidden space-y-5 animate-fade-in">
-				<!-- Quick Stats Banner -->
-				<div class="bg-gradient-to-r from-navy-900 to-navy-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
+			<div id="view-content-o-ghep" class="hidden space-y-4">
+				<!-- Header Card Banner -->
+				<div class="bg-navy-900 text-white p-4 rounded-xl shadow-sm flex justify-between items-center">
 					<div>
-						<h3 class="font-serif font-bold text-base text-gold-400">ĐĂNG KÝ Ở GHÉP PHÒNG</h3>
-						<p class="text-xs text-gray-300">Đêm nghỉ 15/08 tại khu du lịch</p>
+						<h3 class="font-serif font-bold text-sm sm:text-base text-gold-400 uppercase">ĐĂNG KÝ Ở GHÉP PHÒNG</h3>
+						<p class="text-[11px] text-gray-300">Đêm nghỉ 15/08 tại khu du lịch</p>
 					</div>
-					<div class="text-right">
-						<span id="stat-total-oghep" class="text-xl sm:text-2xl font-bold text-gold-400">0</span>
+					<div class="text-right shrink-0">
+						<span id="stat-total-oghep" class="text-lg sm:text-xl font-bold text-gold-400">0</span>
 						<span class="block text-[10px] text-gray-300 uppercase">Lượt Đăng Ký</span>
 					</div>
 				</div>
 
 				<!-- Search & Filter -->
-				<div class="bg-white p-3 sm:p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
-					<div class="relative">
-						<i data-lucide="search" class="w-4 h-4 absolute left-3 top-3.5 text-gray-400"></i>
-						<input type="text" id="search-o-ghep" oninput="filterOGhep()" placeholder="Tìm tên người đăng ký hoặc người ở ghép..." class="w-full pl-9 pr-8 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-navy-900 transition-all">
-						<button id="clear-search-oghep" onclick="clearSearch('search-o-ghep', filterOGhep)" class="hidden absolute right-3 top-3 text-gray-400 hover:text-gray-600">
-							<i data-lucide="x-circle" class="w-4 h-4"></i>
+				<div class="bg-white p-3 rounded-xl border border-gray-200 shadow-2xs space-y-2.5">
+					<div class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus-within:bg-white focus-within:ring-2 focus-within:ring-navy-900 transition-all">
+						<svg class="w-4 h-4 text-gray-400 shrink-0 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+						<input type="text" id="search-o-ghep" oninput="filterOGhep()" placeholder="Tìm người đăng ký hoặc người ở ghép..." class="w-full text-xs sm:text-sm bg-transparent outline-none text-navy-900 placeholder-gray-400">
+						<button id="clear-search-oghep" onclick="clearSearch('search-o-ghep', filterOGhep)" class="hidden text-gray-400 hover:text-gray-600 ml-1">
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
 						</button>
 					</div>
 
-					<div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
-						<span class="text-gray-400 font-medium mr-1 whitespace-nowrap">Lọc lớp:</span>
-						<button onclick="setClassFilterOGhep('ALL')" id="filter-oghep-all" class="filter-pill-oghep active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-xs">Tất cả</button>
-						<button onclick="setClassFilterOGhep('96Q1')" id="filter-oghep-q1" class="filter-pill-oghep px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q1</button>
-						<button onclick="setClassFilterOGhep('96Q2')" id="filter-oghep-q2" class="filter-pill-oghep px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q2</button>
+					<div class="flex items-center gap-1.5 overflow-x-auto text-xs no-scrollbar pt-0.5">
+						<span class="text-gray-400 font-medium text-[11px] shrink-0">Lọc lớp:</span>
+						<button onclick="setClassFilterOGhep('ALL')" id="filter-oghep-all" class="filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs">Tất cả</button>
+						<button onclick="setClassFilterOGhep('96Q1')" id="filter-oghep-q1" class="filter-pill-oghep px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q1</button>
+						<button onclick="setClassFilterOGhep('96Q2')" id="filter-oghep-q2" class="filter-pill-oghep px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q2</button>
 					</div>
 				</div>
 
-				<!-- Mobile Optimized Card List View (Thiết kế dạng Thẻ dành riêng cho Mobile) -->
+				<!-- Container Thẻ Ở Ghép -->
 				<div id="cards-container-o-ghep" class="space-y-3">
-					<!-- JS Render Cards Ở Ghép ở đây -->
+					<!-- JS Render Thẻ Ở Ghép -->
 				</div>
 			</div>
 
@@ -132,7 +129,7 @@ import Footer from '../components/Footer.astro';
 	<Footer />
 </Layout>
 
-<!-- Custom CSS cho scrollbar & hiệu ứng -->
+<!-- Custom CSS cho scrollbar & đối xứng UI -->
 <style>
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
@@ -140,13 +137,6 @@ import Footer from '../components/Footer.astro';
 	.no-scrollbar {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
-	}
-	@keyframes fadeIn {
-		from { opacity: 0; transform: translateY(6px); }
-		to { opacity: 1; transform: translateY(0); }
-	}
-	.animate-fade-in {
-		animation: fadeIn 0.25s ease-out forwards;
 	}
 </style>
 
@@ -193,13 +183,13 @@ import Footer from '../components/Footer.astro';
 		if (tabName === 'ban-an') {
 			vBanAn.classList.remove('hidden');
 			vOGhep.classList.add('hidden');
-			btnBanAn.className = 'flex-1 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 bg-navy-900 text-gold-400 shadow-md';
-			btnOGhep.className = 'flex-1 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm text-gray-600 hover:text-navy-900 transition-all flex items-center justify-center gap-2';
+			btnBanAn.className = 'flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 bg-navy-900 text-gold-400 shadow-sm';
+			btnOGhep.className = 'flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm text-gray-600 hover:text-navy-900 transition-all flex items-center justify-center gap-2';
 		} else {
 			vBanAn.classList.add('hidden');
 			vOGhep.classList.remove('hidden');
-			btnOGhep.className = 'flex-1 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 bg-navy-900 text-gold-400 shadow-md';
-			btnBanAn.className = 'flex-1 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm text-gray-600 hover:text-navy-900 transition-all flex items-center justify-center gap-2';
+			btnOGhep.className = 'flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 bg-navy-900 text-gold-400 shadow-sm';
+			btnBanAn.className = 'flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm text-gray-600 hover:text-navy-900 transition-all flex items-center justify-center gap-2';
 		}
 	};
 
@@ -207,7 +197,7 @@ import Footer from '../components/Footer.astro';
 	window.scrollToTable = function(tableId) {
 		const el = document.getElementById(tableId);
 		if (el) {
-			const offset = 140; // trừ thanh header sticky
+			const offset = 140;
 			const bodyRect = document.body.getBoundingClientRect().top;
 			const elementRect = el.getBoundingClientRect().top;
 			const elementPosition = elementRect - bodyRect;
@@ -243,23 +233,23 @@ import Footer from '../components/Footer.astro';
 	window.setClassFilterBanAn = function(filter) {
 		currentFilterBanAn = filter;
 		document.querySelectorAll('.filter-pill-banan').forEach(el => {
-			el.className = 'filter-pill-banan px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200';
+			el.className = 'filter-pill-banan px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200';
 		});
-		if (filter === 'ALL') document.getElementById('filter-banan-all').className = 'filter-pill-banan active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-xs';
-		if (filter === '96Q1') document.getElementById('filter-banan-q1').className = 'filter-pill-banan active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-xs';
-		if (filter === '96Q2') document.getElementById('filter-banan-q2').className = 'filter-pill-banan active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-xs';
-		if (filter === 'FEMALE') document.getElementById('filter-banan-female').className = 'filter-pill-banan active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-pink-600 text-white shadow-xs';
+		if (filter === 'ALL') document.getElementById('filter-banan-all').className = 'filter-pill-banan active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
+		if (filter === '96Q1') document.getElementById('filter-banan-q1').className = 'filter-pill-banan active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
+		if (filter === '96Q2') document.getElementById('filter-banan-q2').className = 'filter-pill-banan active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
+		if (filter === 'FEMALE') document.getElementById('filter-banan-female').className = 'filter-pill-banan active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-pink-600 text-white shadow-2xs';
 		render6Tables();
 	};
 
 	window.setClassFilterOGhep = function(filter) {
 		currentFilterOGhep = filter;
 		document.querySelectorAll('.filter-pill-oghep').forEach(el => {
-			el.className = 'filter-pill-oghep px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200';
+			el.className = 'filter-pill-oghep px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200';
 		});
-		if (filter === 'ALL') document.getElementById('filter-oghep-all').className = 'filter-pill-oghep active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-xs';
-		if (filter === '96Q1') document.getElementById('filter-oghep-q1').className = 'filter-pill-oghep active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-xs';
-		if (filter === '96Q2') document.getElementById('filter-oghep-q2').className = 'filter-pill-oghep active-pill px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-xs';
+		if (filter === 'ALL') document.getElementById('filter-oghep-all').className = 'filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
+		if (filter === '96Q1') document.getElementById('filter-oghep-q1').className = 'filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
+		if (filter === '96Q2') document.getElementById('filter-oghep-q2').className = 'filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
 		renderOGhepCards();
 	};
 
@@ -268,7 +258,7 @@ import Footer from '../components/Footer.astro';
 		renderFn();
 	};
 
-	// Render 6 Bàn ăn (Tối ưu Mobile UI)
+	// Render 6 Bàn ăn (Tối ưu chuẩn UX Mobile, đối xứng, không vỡ layout)
 	function render6Tables() {
 		const container = document.getElementById('grid-6-tables');
 		const searchInput = document.getElementById('search-ban-an');
@@ -294,7 +284,6 @@ import Footer from '../components/Footer.astro';
 			const isFull = count >= 10;
 			const percent = Math.min(100, (count / 10) * 100);
 
-			// Filter theo search & filter pills
 			const filteredMembers = members.filter(m => {
 				const matchSearch = !searchKeyword || 
 					(m.name && m.name.toLowerCase().includes(searchKeyword)) || 
@@ -309,29 +298,28 @@ import Footer from '../components/Footer.astro';
 			});
 
 			return `
-				<div id="table-${tIdx + 1}" class="bg-white rounded-2xl border ${isFull ? 'border-amber-300 ring-2 ring-amber-200/50' : 'border-gray-200'} shadow-sm overflow-hidden flex flex-col transition-all hover:shadow-md">
-					<!-- Header Bàn Mobile -->
-					<div class="bg-navy-900 text-white p-4">
-						<div class="flex justify-between items-start mb-2">
-							<div>
-								<span class="text-[10px] text-gold-400 font-bold uppercase tracking-wider block">Bàn số ${tIdx + 1}</span>
-								<h3 class="font-bold text-base text-white font-serif">${tName}</h3>
+				<div id="table-${tIdx + 1}" class="bg-white rounded-xl border border-gray-200 shadow-2xs overflow-hidden flex flex-col">
+					<!-- Header Bàn (Đối xứng, gọn gàng) -->
+					<div class="bg-navy-900 text-white px-3.5 py-3">
+						<div class="flex items-center justify-between gap-2 mb-2">
+							<div class="min-w-0 flex-1">
+								<span class="text-[10px] text-gold-400 font-bold uppercase tracking-wider block leading-tight">Bàn #${tIdx + 1}</span>
+								<h3 class="font-bold text-sm text-white font-serif truncate">${tName}</h3>
 							</div>
-							<span class="text-xs px-2.5 py-1 rounded-full font-bold shadow-2xs ${isFull ? 'bg-amber-500 text-white' : 'bg-gold-500 text-navy-900'}">
+							<span class="text-[11px] px-2.5 py-0.5 rounded-full font-bold shrink-0 ${isFull ? 'bg-amber-500 text-white' : 'bg-gold-500 text-navy-900'}">
 								${count}/10 người
 							</span>
 						</div>
 						<!-- Progress Bar -->
 						<div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
-							<div class="bg-gold-400 h-1.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+							<div class="bg-gold-400 h-1.5 rounded-full transition-all duration-300" style="width: ${percent}%"></div>
 						</div>
 					</div>
 
-					<!-- List người ở bàn Mobile -->
-					<div class="p-3 sm:p-4 flex-1 space-y-2">
+					<!-- List người ở bàn -->
+					<div class="p-3 flex-1 space-y-1.5">
 						${filteredMembers.length === 0 ? `
-							<div class="text-center py-6 px-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-								<i data-lucide="user-minus" class="w-6 h-6 text-gray-300 mx-auto mb-1"></i>
+							<div class="text-center py-5 px-3 bg-gray-50 rounded-lg border border-dashed border-gray-200">
 								<p class="text-xs text-gray-400 italic">
 									${searchKeyword || currentFilterBanAn !== 'ALL' ? 'Không khớp bộ lọc' : 'Chưa có ai bốc vào bàn này'}
 								</p>
@@ -339,20 +327,16 @@ import Footer from '../components/Footer.astro';
 						` : filteredMembers.map((m, idx) => {
 							const initial = (m.name || 'U').charAt(0).toUpperCase();
 							return `
-								<div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 border border-gray-100 hover:bg-gold-50/40 transition-colors">
-									<div class="flex items-center gap-2.5">
-										<!-- Circle Avatar -->
-										<div class="w-8 h-8 rounded-full ${m.isFemale ? 'bg-pink-100 text-pink-700' : 'bg-navy-900 text-gold-400'} font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+								<div class="flex items-center justify-between p-2 rounded-lg bg-gray-50 border border-gray-100">
+									<div class="flex items-center gap-2 min-w-0 flex-1 pr-2">
+										<div class="w-7 h-7 rounded-full ${m.isFemale ? 'bg-pink-100 text-pink-700' : 'bg-navy-900 text-gold-400'} font-bold text-xs flex items-center justify-center shrink-0">
 											${initial}
 										</div>
-										<div>
-											<span class="font-bold text-sm text-navy-900 block leading-snug">${m.name || '---'}</span>
-											<span class="text-[11px] text-gray-400">Vị trí #${idx + 1}</span>
-										</div>
+										<span class="font-bold text-xs sm:text-sm text-navy-900 truncate">${m.name || '---'}</span>
 									</div>
-									<div class="flex items-center gap-1.5">
-										${m.isFemale ? '<span class="bg-pink-100 text-pink-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Nữ</span>' : ''}
-										<span class="bg-navy-900/5 text-navy-900 border border-navy-900/10 text-[10px] px-2 py-0.5 rounded-full font-bold">${m.className || ''}</span>
+									<div class="flex items-center gap-1 shrink-0">
+										${m.isFemale ? '<span class="bg-pink-100 text-pink-700 text-[10px] px-1.5 py-0.5 rounded font-bold">Nữ</span>' : ''}
+										<span class="bg-gray-200 text-gray-700 text-[10px] px-1.5 py-0.5 rounded font-bold">${m.className || ''}</span>
 									</div>
 								</div>
 							`;
@@ -361,11 +345,9 @@ import Footer from '../components/Footer.astro';
 				</div>
 			`;
 		}).join('');
-
-		if (window.lucide) window.lucide.createIcons();
 	}
 
-	// Render Thẻ Ở Ghép Mobile First
+	// Render Thẻ Ở Ghép (Chuẩn UX Mobile, đối xứng)
 	function renderOGhepCards() {
 		const container = document.getElementById('cards-container-o-ghep');
 		const searchInput = document.getElementById('search-o-ghep');
@@ -394,19 +376,17 @@ import Footer from '../components/Footer.astro';
 
 		if (filtered.length === 0) {
 			container.innerHTML = `
-				<div class="bg-white rounded-2xl p-8 text-center border border-gray-200 shadow-sm">
-					<i data-lucide="users" class="w-10 h-10 text-gray-300 mx-auto mb-2"></i>
-					<p class="text-sm text-gray-500 font-medium">
+				<div class="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-2xs">
+					<p class="text-xs text-gray-500 font-medium">
 						${searchKeyword || currentFilterOGhep !== 'ALL' ? 'Không tìm thấy kết quả phù hợp' : 'Chưa có lượt đăng ký ở ghép nào'}
 					</p>
 				</div>
 			`;
-			if (window.lucide) window.lucide.createIcons();
 			return;
 		}
 
 		container.innerHTML = filtered.map((item, index) => {
-			let dateStr = '---';
+			let dateStr = '';
 			if (item.createdAt && item.createdAt.toDate) {
 				const d = item.createdAt.toDate();
 				dateStr = `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')} - ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
@@ -415,49 +395,39 @@ import Footer from '../components/Footer.astro';
 			const initial = (item.name || 'U').charAt(0).toUpperCase();
 
 			return `
-				<div class="bg-white rounded-2xl p-4 border border-gray-200/90 shadow-sm hover:shadow-md transition-all space-y-3">
-					<!-- Top Bar Card -->
-					<div class="flex items-center justify-between pb-3 border-b border-gray-100">
-						<div class="flex items-center gap-3">
-							<div class="w-10 h-10 rounded-full bg-navy-900 text-gold-400 font-bold text-sm flex items-center justify-center shrink-0 shadow-xs">
+				<div class="bg-white rounded-xl p-3.5 border border-gray-200 shadow-2xs space-y-2.5">
+					<!-- Top Bar: Avatar + Name + Class Badge -->
+					<div class="flex items-center justify-between gap-2">
+						<div class="flex items-center gap-2.5 min-w-0">
+							<div class="w-8 h-8 rounded-full bg-navy-900 text-gold-400 font-bold text-xs flex items-center justify-center shrink-0">
 								${initial}
 							</div>
-							<div>
-								<div class="flex items-center gap-2">
-									<h4 class="font-bold text-base text-navy-900">${item.name || '---'}</h4>
-									<span class="bg-blue-50 text-navy-900 border border-blue-200 text-[10px] px-2 py-0.5 rounded-full font-bold">${item.className || '---'}</span>
+							<div class="min-w-0">
+								<div class="flex items-center gap-1.5">
+									<h4 class="font-bold text-sm text-navy-900 truncate">${item.name || '---'}</h4>
+									<span class="bg-blue-50 text-navy-900 border border-blue-200 text-[10px] px-1.5 py-0.2 rounded font-bold shrink-0">${item.className || '---'}</span>
 								</div>
-								<span class="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5">
-									<i data-lucide="clock" class="w-3 h-3"></i> ${dateStr}
-								</span>
+								${dateStr ? `<span class="text-[10px] text-gray-400 block">${dateStr}</span>` : ''}
 							</div>
 						</div>
-						<span class="text-xs font-bold text-gray-300">#${index + 1}</span>
+						<span class="text-xs font-bold text-gray-300 shrink-0">#${index + 1}</span>
 					</div>
 
-					<!-- Content Pair Info -->
-					<div class="bg-gold-50/60 p-3 rounded-xl border border-gold-200/60 flex items-center gap-3">
-						<div class="w-8 h-8 rounded-full bg-gold-400/20 text-gold-700 flex items-center justify-center shrink-0">
-							<i data-lucide="user-check" class="w-4 h-4 text-gold-700"></i>
-						</div>
-						<div class="flex-1">
-							<span class="text-[10px] uppercase font-bold text-gold-700 tracking-wider block">Muốn ở ghép cùng:</span>
-							<span class="text-sm font-bold text-navy-900">${item.roommate || '---'}</span>
-						</div>
+					<!-- Roommate Target Info Box -->
+					<div class="bg-gold-50/70 p-2.5 rounded-lg border border-gold-200/80 flex items-center justify-between">
+						<span class="text-xs text-navy-900 font-medium">Ở ghép cùng:</span>
+						<span class="text-xs font-bold text-gold-700 bg-gold-100/60 px-2 py-0.5 rounded">${item.roommate || '---'}</span>
 					</div>
 
 					<!-- Note (Nếu có) -->
 					${item.note ? `
-						<div class="text-xs text-gray-600 bg-gray-50 p-2.5 rounded-lg flex items-start gap-2">
-							<i data-lucide="message-square" class="w-3.5 h-3.5 text-gray-400 shrink-0 mt-0.5"></i>
-							<span>Ghi chú: ${item.note}</span>
+						<div class="text-xs text-gray-600 bg-gray-50 p-2 rounded-md">
+							<span class="font-semibold text-gray-700">Ghi chú:</span> ${item.note}
 						</div>
 					` : ''}
 				</div>
 			`;
 		}).join('');
-
-		if (window.lucide) window.lucide.createIcons();
 	}
 
 	window.filterBanAn = render6Tables;

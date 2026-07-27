@@ -127,20 +127,6 @@ import Footer from '../components/Footer.astro';
 				</div>
 			</div>
 
-			<!-- Hướng dẫn cấu hình Google Sheets (Dành cho Ban tổ chức) -->
-			<div class="mt-12 bg-white rounded-xl p-6 border border-gray-200 text-xs text-gray-600 space-y-3">
-				<h4 class="font-bold text-navy-900 text-sm flex items-center gap-2">
-					<i data-lucide="settings" class="w-4 h-4 text-gold-500"></i>
-					Hướng dẫn tích hợp Google Sheets dành cho Ban Tổ Chức:
-				</h4>
-				<p>Để lưu trữ dữ liệu thực tế vào file Excel Google Sheets của bạn:</p>
-				<ol class="list-decimal pl-5 space-y-1">
-					<li>Tạo 1 Google Sheet mới.</li>
-					<li>Vào <strong>Mở rộng (Extensions) &gt; Apps Script</strong> và dán đoạn mã backend được cung cấp.</li>
-					<li>Triển khai dưới dạng Web App (Deploy as Web App) với quyền <em>Anyone (Bất kỳ ai)</em>.</li>
-					<li>Dán đường link Web App URL vào biến <code>GOOGLE_SCRIPT_URL</code> trong file này.</li>
-				</ol>
-			</div>
 		</div>
 	</main>
 
