@@ -1,0 +1,280 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Danh Sách Bốc Thăm & Ở Ghép - 30 Năm Hội Ngộ 96Q">
+	<Header />
+	
+	<main class="pt-28 pb-16 bg-ivory min-h-screen">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<!-- Header Title -->
+			<div class="text-center mb-8">
+				<span class="bg-gold-100 text-gold-700 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-semibold border border-gold-300">Cập nhật Real-time</span>
+				<h1 class="text-3xl md:text-4xl font-serif font-bold text-navy-900 mt-3 uppercase">DANH SÁCH BỐC THĂM & Ở GHÉP</h1>
+				<p class="text-gray-600 text-sm mt-2">Dữ liệu được cập nhật tự động ngay khi có người đăng ký</p>
+			</div>
+
+			<!-- Tabs Header -->
+			<div class="flex justify-center mb-8 border-b border-gray-200">
+				<button id="tab-btn-ban-an" onclick="switchViewTab('ban-an')" class="px-6 py-3 font-medium text-sm border-b-2 border-gold-500 text-navy-900 transition-all flex items-center gap-2">
+					<i data-lucide="layout-grid" class="w-4 h-4"></i>
+					1. Sơ đồ 6 Bàn Ăn Gala Dinner
+				</button>
+				<button id="tab-btn-o-ghep" onclick="switchViewTab('o-ghep')" class="px-6 py-3 font-medium text-sm border-b-2 border-transparent text-gray-500 hover:text-navy-900 transition-all flex items-center gap-2">
+					<i data-lucide="users" class="w-4 h-4"></i>
+					2. Danh sách Đăng ký Ở Ghép
+				</button>
+			</div>
+
+			<!-- TAB 1: SƠ ĐỒ 6 BÀN ĂN -->
+			<div id="view-content-ban-an" class="space-y-6">
+				<!-- Thanh công cụ tìm kiếm & Thống kê -->
+				<div class="bg-white p-4 rounded-xl border border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 shadow-sm">
+					<div class="flex items-center gap-4 text-sm">
+						<span class="font-bold text-navy-900">Tổng quan:</span>
+						<span class="bg-blue-50 text-navy-900 px-3 py-1 rounded-full font-semibold border border-blue-100" id="stat-total-seated">Đã xếp: 0/60 người</span>
+						<span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full font-semibold border border-purple-100" id="stat-total-female">Nữ: 0 người</span>
+					</div>
+					<div class="relative w-full md:w-72">
+						<i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+						<input type="text" id="search-ban-an" oninput="filterBanAn()" placeholder="Tìm tên thành viên..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-navy-900">
+					</div>
+				</div>
+
+				<!-- Grid 6 Bàn -->
+				<div id="grid-6-tables" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					<!-- JS Render 6 Bàn ở đây -->
+				</div>
+			</div>
+
+			<!-- TAB 2: DANH SÁCH Ở GHÉP -->
+			<div id="view-content-o-ghep" class="hidden space-y-6">
+				<div class="bg-white p-4 rounded-xl border border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 shadow-sm">
+					<div class="flex items-center gap-4 text-sm">
+						<span class="font-bold text-navy-900">Tổng số lượt đăng ký ở ghép:</span>
+						<span class="bg-gold-100 text-gold-800 px-3 py-1 rounded-full font-bold" id="stat-total-oghep">0 cặp</span>
+					</div>
+					<div class="relative w-full md:w-72">
+						<i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+						<input type="text" id="search-o-ghep" oninput="filterOGhep()" placeholder="Tìm tên thành viên..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-navy-900">
+					</div>
+				</div>
+
+				<!-- Bảng danh sách cặp ở ghép -->
+				<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+					<div class="overflow-x-auto">
+						<table class="w-full text-left text-sm">
+							<thead class="bg-navy-900 text-white uppercase text-xs tracking-wider">
+								<tr>
+									<th class="px-6 py-4">#</th>
+									<th class="px-6 py-4">Người đăng ký</th>
+									<th class="px-6 py-4">Lớp</th>
+									<th class="px-6 py-4">Nguyện vọng ở ghép với</th>
+									<th class="px-6 py-4">Ghi chú</th>
+									<th class="px-6 py-4">Thời gian đăng ký</th>
+								</tr>
+							</thead>
+							<tbody id="tbody-o-ghep" class="divide-y divide-gray-200">
+								<!-- JS Render Danh sách Ở Ghép -->
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</main>
+
+	<Footer />
+</Layout>
+
+<!-- Firebase App & Firestore SDKs -->
+<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<script is:inline>
+	const firebaseConfig = {
+		apiKey: "AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",
+		authDomain: "register-to-participate.firebaseapp.com",
+		projectId: "register-to-participate",
+		storageBucket: "register-to-participate.firebasestorage.app",
+		messagingSenderId: "578991866095",
+		appId: "1:578991866095:web:9ce9b6b5e5d13314359b1a",
+		measurementId: "G-DYQZETP6LS"
+	};
+
+	firebase.initializeApp(firebaseConfig);
+	const db = firebase.firestore();
+
+	const tableNames = [
+		"Bàn Nặn tượng",
+		"Bàn Vật lý kiến trúc",
+		"Bàn Hình học họa hình",
+		"Bàn Mực nho - Đi màu",
+		"Bàn ĐA Quán Hoa",
+		"Bàn Sức bền Vật Liệu"
+	];
+
+	let rawBocTham = [];
+	let rawOGhep = [];
+
+	// Switch View Tabs
+	window.switchViewTab = function(tabName) {
+		const vBanAn = document.getElementById('view-content-ban-an');
+		const vOGhep = document.getElementById('view-content-o-ghep');
+		const btnBanAn = document.getElementById('tab-btn-ban-an');
+		const btnOGhep = document.getElementById('tab-btn-o-ghep');
+
+		if (tabName === 'ban-an') {
+			vBanAn.classList.remove('hidden');
+			vOGhep.classList.add('hidden');
+			btnBanAn.className = 'px-6 py-3 font-medium text-sm border-b-2 border-gold-500 text-navy-900 transition-all flex items-center gap-2';
+			btnOGhep.className = 'px-6 py-3 font-medium text-sm border-b-2 border-transparent text-gray-500 hover:text-navy-900 transition-all flex items-center gap-2';
+		} else {
+			vBanAn.classList.add('hidden');
+			vOGhep.classList.remove('hidden');
+			btnOGhep.className = 'px-6 py-3 font-medium text-sm border-b-2 border-gold-500 text-navy-900 transition-all flex items-center gap-2';
+			btnBanAn.className = 'px-6 py-3 font-medium text-sm border-b-2 border-transparent text-gray-500 hover:text-navy-900 transition-all flex items-center gap-2';
+		}
+	};
+
+	// Lắng nghe dữ liệu real-time từ Firebase
+	function initListeners() {
+		// 1. Bốc thăm bàn
+		db.collection("boc_tham").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+			rawBocTham = [];
+			snapshot.forEach(doc => {
+				rawBocTham.push({ id: doc.id, ...doc.data() });
+			});
+			render6Tables();
+		});
+
+		// 2. Ở ghép
+		db.collection("o_ghep").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+			rawOGhep = [];
+			snapshot.forEach(doc => {
+				rawOGhep.push({ id: doc.id, ...doc.data() });
+			});
+			renderOGhepTable();
+		});
+	}
+
+	// Render 6 Bàn ăn
+	function render6Tables() {
+		const container = document.getElementById('grid-6-tables');
+		const searchKeyword = (document.getElementById('search-ban-an').value || '').toLowerCase().trim();
+
+		let totalSeated = rawBocTham.length;
+		let totalFemale = rawBocTham.filter(item => item.isFemale).length;
+
+		document.getElementById('stat-total-seated').innerText = `Đã xếp: ${totalSeated}/60 người`;
+		document.getElementById('stat-total-female').innerText = `Nữ: ${totalFemale} người`;
+
+		container.innerHTML = tableNames.map(tName => {
+			// Lọc ra các thành viên ở bàn này
+			const members = rawBocTham.filter(item => item.tableName === tName);
+			const count = members.length;
+			const isFull = count >= 10;
+
+			// Lọc theo từ khóa tìm kiếm
+			const filteredMembers = members.filter(m => 
+				!searchKeyword || 
+				(m.name && m.name.toLowerCase().includes(searchKeyword)) || 
+				(m.className && m.className.toLowerCase().includes(searchKeyword))
+			);
+
+			return `
+				<div class="bg-white rounded-2xl border ${isFull ? 'border-amber-300' : 'border-gray-200'} shadow-sm overflow-hidden flex flex-col">
+					<!-- Header Bàn -->
+					<div class="bg-navy-900 text-white p-4 flex justify-between items-center">
+						<div>
+							<h3 class="font-bold text-base text-gold-400">${tName}</h3>
+							<span class="text-xs text-gray-300">Sức chứa: 10 ghế</span>
+						</div>
+						<span class="text-xs px-2.5 py-1 rounded-full font-bold ${isFull ? 'bg-amber-500 text-white' : 'bg-white/20 text-white'}">
+							${count}/10 người
+						</span>
+					</div>
+
+					<!-- List người ở bàn -->
+					<div class="p-4 flex-1 space-y-2">
+						${filteredMembers.length === 0 ? `
+							<p class="text-xs text-gray-400 italic text-center py-6">
+								${searchKeyword ? 'Không có kết quả tìm kiếm' : 'Chưa có ai bốc vào bàn này'}
+							</p>
+						` : filteredMembers.map((m, idx) => `
+							<div class="flex items-center justify-between p-2.5 rounded-lg bg-gray-50 border border-gray-100 hover:bg-gold-50/50 transition-colors">
+								<div class="flex items-center gap-2.5">
+									<span class="w-5 h-5 rounded-full bg-navy-900/10 text-navy-900 font-bold text-xs flex items-center justify-center">${idx + 1}</span>
+									<span class="font-semibold text-sm text-gray-800">${m.name || '---'}</span>
+								</div>
+								<div class="flex items-center gap-1.5">
+									${m.isFemale ? '<span class="bg-pink-100 text-pink-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Nữ</span>' : ''}
+									<span class="bg-blue-100 text-navy-900 text-[10px] px-2 py-0.5 rounded-full font-semibold">${m.className || ''}</span>
+								</div>
+							</div>
+						`).join('')}
+					</div>
+				</div>
+			`;
+		}).join('');
+
+		if (window.lucide) window.lucide.createIcons();
+	}
+
+	// Render Bảng Ở Ghép
+	function renderOGhepTable() {
+		const tbody = document.getElementById('tbody-o-ghep');
+		const searchKeyword = (document.getElementById('search-o-ghep').value || '').toLowerCase().trim();
+
+		document.getElementById('stat-total-oghep').innerText = `${rawOGhep.length} lượt đăng ký`;
+
+		const filtered = rawOGhep.filter(item => 
+			!searchKeyword || 
+			(item.name && item.name.toLowerCase().includes(searchKeyword)) ||
+			(item.roommate && item.roommate.toLowerCase().includes(searchKeyword)) ||
+			(item.className && item.className.toLowerCase().includes(searchKeyword))
+		);
+
+		if (filtered.length === 0) {
+			tbody.innerHTML = `
+				<tr>
+					<td colspan="6" class="text-center py-8 text-gray-400 text-sm italic">
+						${searchKeyword ? 'Không tìm thấy kết quả phù hợp' : 'Chưa có lượt đăng ký ở ghép nào'}
+					</td>
+				</tr>
+			`;
+			return;
+		}
+
+		tbody.innerHTML = filtered.map((item, index) => {
+			let dateStr = '---';
+			if (item.createdAt && item.createdAt.toDate) {
+				const d = item.createdAt.toDate();
+				dateStr = `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')} - ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+			}
+
+			return `
+				<tr class="hover:bg-gray-50 transition-colors">
+					<td class="px-6 py-4 text-xs font-bold text-gray-400">${index + 1}</td>
+					<td class="px-6 py-4 font-bold text-navy-900">${item.name || '---'}</td>
+					<td class="px-6 py-4">
+						<span class="bg-blue-50 text-navy-900 border border-blue-200 text-xs px-2.5 py-1 rounded-md font-semibold">${item.className || '---'}</span>
+					</td>
+					<td class="px-6 py-4 font-bold text-gold-600">${item.roommate || '---'}</td>
+					<td class="px-6 py-4 text-gray-600 text-xs">${item.note || '<span class="text-gray-300">Không có</span>'}</td>
+					<td class="px-6 py-4 text-xs text-gray-400">${dateStr}</td>
+				</tr>
+			`;
+		}).join('');
+	}
+
+	window.filterBanAn = render6Tables;
+	window.filterOGhep = renderOGhepTable;
+
+	document.addEventListener('DOMContentLoaded', () => {
+		initListeners();
+	});
+</script>
