@@ -1,7 +1,7 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
 ---
 
 <Layout title="Danh Sách Đăng Ký Ở Ghép - 30 Năm Hội Ngộ 96Q">
@@ -9,61 +9,139 @@ import Footer from '../../components/Footer.astro';
 
 	<main class="pt-24 pb-20 bg-ivory min-h-screen">
 		<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-
 			<!-- Header Title -->
 			<div class="text-center mb-5">
-				<h1 class="text-2xl sm:text-3xl font-serif font-bold text-navy-900 mt-2 uppercase tracking-tight">
+				<h1
+					class="text-2xl sm:text-3xl font-serif font-bold text-navy-900 mt-2 uppercase tracking-tight"
+				>
 					DANH SÁCH ĐĂNG KÝ Ở GHÉP
 				</h1>
-				<p class="text-xs text-gray-500 mt-1">Hội ngộ 30 năm Kỷ niệm 96Q1 & 96Q2</p>
+				<p class="text-xs text-gray-500 mt-1">
+					Hội ngộ 30 năm Kỷ niệm 96Q1 & 96Q2
+				</p>
 			</div>
 
 			<!-- Nav links -->
 			<div class="flex justify-center gap-3 mb-5">
-				<a href="/PageForMeeting/danh-sach/" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-navy-900 border border-gray-200 rounded-lg hover:border-navy-900 transition-all flex items-center gap-2">
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+				<a
+					href="/PageForMeeting/danh-sach/"
+					class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-navy-900 border border-gray-200 rounded-lg hover:border-navy-900 transition-all flex items-center gap-2"
+				>
+					<svg
+						class="w-4 h-4"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M15 19l-7-7 7-7"></path></svg
+					>
 					Quay lại
 				</a>
-				<a href="/PageForMeeting/danh-sach/ban-an/" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-navy-900 border border-gray-200 rounded-lg hover:border-navy-900 transition-all flex items-center gap-2">
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+				<a
+					href="/PageForMeeting/danh-sach/ban-an/"
+					class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-navy-900 border border-gray-200 rounded-lg hover:border-navy-900 transition-all flex items-center gap-2"
+				>
+					<svg
+						class="w-4 h-4"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+						></path></svg
+					>
 					Xem Bàn Ăn
 				</a>
 			</div>
 
 			<!-- Header Card Banner -->
-			<div class="bg-navy-900 text-white p-4 rounded-xl shadow-sm flex justify-between items-center mb-4">
+			<div
+				class="bg-navy-900 text-white p-4 rounded-xl shadow-sm flex justify-between items-center mb-4"
+			>
 				<div>
-					<h2 class="font-serif font-bold text-sm sm:text-base text-gold-400 uppercase">ĐĂNG KÝ Ở GHÉP PHÒNG</h2>
-					<p class="text-[11px] text-gray-300">Đêm nghỉ 15/08 tại khu du lịch</p>
+					<h2
+						class="font-serif font-bold text-sm sm:text-base text-gold-400 uppercase"
+					>
+						ĐĂNG KÝ Ở GHÉP PHÒNG
+					</h2>
+					<p class="text-[11px] text-gray-300">
+						Đêm nghỉ 15/08 tại khu du lịch
+					</p>
 				</div>
 				<div class="text-right shrink-0">
-					<span id="stat-total-oghep" class="text-lg sm:text-xl font-bold text-gold-400">0</span>
-					<span class="block text-[10px] text-gray-300 uppercase">Lượt Đăng Ký</span>
+					<span
+						id="stat-total-oghep"
+						class="text-lg sm:text-xl font-bold text-gold-400"
+						>0</span
+					>
+					<span class="block text-[10px] text-gray-300 uppercase"
+						>Lượt Đăng Ký</span
+					>
 				</div>
 			</div>
 
 			<!-- Search & Filter -->
-			<div class="bg-white p-3 rounded-xl border border-gray-200 shadow-2xs space-y-2.5 mb-4">
-				<div class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus-within:bg-white focus-within:ring-2 focus-within:ring-navy-900 transition-all">
-					<svg class="w-4 h-4 text-gray-400 shrink-0 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-					<input type="text" id="search-o-ghep" oninput="filterOGhep()" placeholder="Tìm người đăng ký hoặc người ở ghép..." class="w-full text-xs sm:text-sm bg-transparent outline-none text-navy-900 placeholder-gray-400">
-					<button id="clear-search-oghep" onclick="clearSearch('search-o-ghep', filterOGhep)" class="hidden text-gray-400 hover:text-gray-600 ml-1">
-						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+			<div
+				class="bg-white p-3 rounded-xl border border-gray-200 shadow-2xs space-y-2.5 mb-4"
+			>
+				<div
+					class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus-within:bg-white focus-within:ring-2 focus-within:ring-navy-900 transition-all"
+				>
+					<svg
+						class="w-4 h-4 text-gray-400 shrink-0 mr-2"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+						></path></svg
+					>
+					<input
+						type="text"
+						id="search-o-ghep"
+						oninput="filterOGhep()"
+						placeholder="Tìm người đăng ký hoặc người ở ghép..."
+						class="w-full text-xs sm:text-sm bg-transparent outline-none text-navy-900 placeholder-gray-400"
+					/>
+					<button
+						id="clear-search-oghep"
+						onclick="clearSearch('search-o-ghep', filterOGhep)"
+						class="hidden text-gray-400 hover:text-gray-600 ml-1"
+					>
+						<svg
+							class="w-4 h-4"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+							><path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"></path></svg
+						>
 					</button>
 				</div>
-				<div class="flex items-center gap-1.5 overflow-x-auto text-xs no-scrollbar pt-0.5">
+				<!-- <div class="flex items-center gap-1.5 overflow-x-auto text-xs no-scrollbar pt-0.5">
 					<span class="text-gray-400 font-medium text-[11px] shrink-0">Lọc lớp:</span>
 					<button onclick="setClassFilterOGhep('ALL')" id="filter-oghep-all" class="filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs">Tất cả</button>
 					<button onclick="setClassFilterOGhep('96Q1')" id="filter-oghep-q1" class="filter-pill-oghep px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q1</button>
 					<button onclick="setClassFilterOGhep('96Q2')" id="filter-oghep-q2" class="filter-pill-oghep px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200">Lớp 96Q2</button>
-				</div>
+				</div> -->
 			</div>
 
 			<!-- Container Thẻ Ở Ghép -->
 			<div id="cards-container-o-ghep" class="space-y-3">
 				<!-- JS Render Thẻ Ở Ghép -->
 			</div>
-
 		</div>
 	</main>
 
@@ -71,13 +149,24 @@ import Footer from '../../components/Footer.astro';
 </Layout>
 
 <style>
-	.no-scrollbar::-webkit-scrollbar { display: none; }
-	.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
 </style>
 
 <!-- Firebase SDKs -->
-<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script
+	is:inline
+	src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"
+></script>
+<script
+	is:inline
+	src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"
+></script>
 
 <script is:inline>
 	const firebaseConfig = {
@@ -87,52 +176,66 @@ import Footer from '../../components/Footer.astro';
 		storageBucket: "register-to-participate.firebasestorage.app",
 		messagingSenderId: "578991866095",
 		appId: "1:578991866095:web:9ce9b6b5e5d13314359b1a",
-		measurementId: "G-DYQZETP6LS"
+		measurementId: "G-DYQZETP6LS",
 	};
 
 	firebase.initializeApp(firebaseConfig);
 	const db = firebase.firestore();
 
 	let rawOGhep = [];
-	let currentFilterOGhep = 'ALL';
+	let currentFilterOGhep = "ALL";
 
-	window.setClassFilterOGhep = function(filter) {
+	window.setClassFilterOGhep = function (filter) {
 		currentFilterOGhep = filter;
-		document.querySelectorAll('.filter-pill-oghep').forEach(el => {
-			el.className = 'filter-pill-oghep px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200';
+		document.querySelectorAll(".filter-pill-oghep").forEach((el) => {
+			el.className =
+				"filter-pill-oghep px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200";
 		});
-		if (filter === 'ALL') document.getElementById('filter-oghep-all').className = 'filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
-		if (filter === '96Q1') document.getElementById('filter-oghep-q1').className = 'filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
-		if (filter === '96Q2') document.getElementById('filter-oghep-q2').className = 'filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs';
+		if (filter === "ALL")
+			document.getElementById("filter-oghep-all").className =
+				"filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs";
+		if (filter === "96Q1")
+			document.getElementById("filter-oghep-q1").className =
+				"filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs";
+		if (filter === "96Q2")
+			document.getElementById("filter-oghep-q2").className =
+				"filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs";
 		renderOGhepCards();
 	};
 
-	window.clearSearch = function(inputId, renderFn) {
-		document.getElementById(inputId).value = '';
+	window.clearSearch = function (inputId, renderFn) {
+		document.getElementById(inputId).value = "";
 		renderFn();
 	};
 
 	function renderOGhepCards() {
-		const container = document.getElementById('cards-container-o-ghep');
-		const searchInput = document.getElementById('search-o-ghep');
-		const clearBtn = document.getElementById('clear-search-oghep');
-		const searchKeyword = (searchInput.value || '').toLowerCase().trim();
+		const container = document.getElementById("cards-container-o-ghep");
+		const searchInput = document.getElementById("search-o-ghep");
+		const clearBtn = document.getElementById("clear-search-oghep");
+		const searchKeyword = (searchInput.value || "").toLowerCase().trim();
 
 		if (clearBtn) {
-			if (searchKeyword) clearBtn.classList.remove('hidden');
-			else clearBtn.classList.add('hidden');
+			if (searchKeyword) clearBtn.classList.remove("hidden");
+			else clearBtn.classList.add("hidden");
 		}
 
-		document.getElementById('stat-total-oghep').innerText = `${rawOGhep.length}`;
+		document.getElementById("stat-total-oghep").innerText =
+			`${rawOGhep.length}`;
 
-		const filtered = rawOGhep.filter(item => {
-			const matchSearch = !searchKeyword ||
-				(item.name && item.name.toLowerCase().includes(searchKeyword)) ||
-				(item.roommate && item.roommate.toLowerCase().includes(searchKeyword)) ||
-				(item.className && item.className.toLowerCase().includes(searchKeyword));
+		const filtered = rawOGhep.filter((item) => {
+			const matchSearch =
+				!searchKeyword ||
+				(item.name &&
+					item.name.toLowerCase().includes(searchKeyword)) ||
+				(item.roommate &&
+					item.roommate.toLowerCase().includes(searchKeyword)) ||
+				(item.className &&
+					item.className.toLowerCase().includes(searchKeyword));
 			let matchClass = true;
-			if (currentFilterOGhep === '96Q1') matchClass = item.className === '96Q1';
-			if (currentFilterOGhep === '96Q2') matchClass = item.className === '96Q2';
+			if (currentFilterOGhep === "96Q1")
+				matchClass = item.className === "96Q1";
+			if (currentFilterOGhep === "96Q2")
+				matchClass = item.className === "96Q2";
 			return matchSearch && matchClass;
 		});
 
@@ -140,23 +243,24 @@ import Footer from '../../components/Footer.astro';
 			container.innerHTML = `
 				<div class="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-2xs">
 					<p class="text-xs text-gray-500 font-medium">
-						${searchKeyword || currentFilterOGhep !== 'ALL' ? 'Không tìm thấy kết quả phù hợp' : 'Chưa có lượt đăng ký ở ghép nào'}
+						${searchKeyword || currentFilterOGhep !== "ALL" ? "Không tìm thấy kết quả phù hợp" : "Chưa có lượt đăng ký ở ghép nào"}
 					</p>
 				</div>
 			`;
 			return;
 		}
 
-		container.innerHTML = filtered.map((item, index) => {
-			let dateStr = '';
-			if (item.createdAt && item.createdAt.toDate) {
-				const d = item.createdAt.toDate();
-				dateStr = `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')} - ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-			}
+		container.innerHTML = filtered
+			.map((item, index) => {
+				let dateStr = "";
+				if (item.createdAt && item.createdAt.toDate) {
+					const d = item.createdAt.toDate();
+					dateStr = `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")} - ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+				}
 
-			const initial = (item.name || 'U').charAt(0).toUpperCase();
+				const initial = (item.name || "U").charAt(0).toUpperCase();
 
-			return `
+				return `
 				<div class="bg-white rounded-xl p-3.5 border border-gray-200 shadow-2xs space-y-2.5">
 					<div class="flex items-center justify-between gap-2">
 						<div class="flex items-center gap-2.5 min-w-0">
@@ -165,10 +269,10 @@ import Footer from '../../components/Footer.astro';
 							</div>
 							<div class="min-w-0">
 								<div class="flex items-center gap-1.5">
-									<h4 class="font-bold text-sm text-navy-900 truncate">${item.name || '---'}</h4>
-									<span class="bg-blue-50 text-navy-900 border border-blue-200 text-[10px] px-1.5 py-0.2 rounded font-bold shrink-0">${item.className || '---'}</span>
+									<h4 class="font-bold text-sm text-navy-900 truncate">${item.name || "---"}</h4>
+									<span class="bg-blue-50 text-navy-900 border border-blue-200 text-[10px] px-1.5 py-0.2 rounded font-bold shrink-0">${item.className || "---"}</span>
 								</div>
-								${dateStr ? `<span class="text-[10px] text-gray-400 block">${dateStr}</span>` : ''}
+								${dateStr ? `<span class="text-[10px] text-gray-400 block">${dateStr}</span>` : ""}
 							</div>
 						</div>
 						<span class="text-xs font-bold text-gray-300 shrink-0">#${index + 1}</span>
@@ -181,25 +285,32 @@ import Footer from '../../components/Footer.astro';
 						</span>
 					</div>
 
-					${item.note ? `
+					${
+						item.note
+							? `
 						<div class="text-xs text-gray-600 bg-gray-50 p-2 rounded-md">
 							<span class="font-semibold text-gray-700">Ghi chú:</span> ${item.note}
 						</div>
-					` : ''}
+					`
+							: ""
+					}
 				</div>
 			`;
-		}).join('');
+			})
+			.join("");
 	}
 
 	window.filterOGhep = renderOGhepCards;
 
-	document.addEventListener('DOMContentLoaded', () => {
-		db.collection("o_ghep").orderBy("createdAt", "desc").onSnapshot(snapshot => {
-			rawOGhep = [];
-			snapshot.forEach(doc => {
-				rawOGhep.push({ id: doc.id, ...doc.data() });
+	document.addEventListener("DOMContentLoaded", () => {
+		db.collection("o_ghep")
+			.orderBy("createdAt", "desc")
+			.onSnapshot((snapshot) => {
+				rawOGhep = [];
+				snapshot.forEach((doc) => {
+					rawOGhep.push({ id: doc.id, ...doc.data() });
+				});
+				renderOGhepCards();
 			});
-			renderOGhepCards();
-		});
 	});
 </script>
