@@ -172,6 +172,14 @@ import Footer from '../components/Footer.astro';
 		{ id: 6, name: "Bàn Sức bền Vật Liệu", total: 10, occupied: 0, females: 0 }
 	];
 
+	const currentPath = window.location.pathname.replace(/\/dang-ky-thu\/?$/, '') || '/';
+	const basePath = currentPath.replace(/\/$/, '');
+	const danhSachUrl = `${basePath}/danh-sach/` || '/danh-sach/';
+
+	const redirectToDanhSach = () => {
+		window.location.replace(danhSachUrl);
+	};
+
 	// Switch Tab Logic
 	window.switchTab = function(tabName) {
 		const tabOghep = document.getElementById('tab-content-o-ghep');
@@ -271,6 +279,9 @@ import Footer from '../components/Footer.astro';
 
 			alert(`Đăng ký ở ghép thành công!\n\nNgười đăng ký: ${name} (${className})\nỞ ghép cùng: ${roommate}`);
 			document.getElementById('form-o-ghep').reset();
+			setTimeout(() => {
+				redirectToDanhSach();
+			}, 1000);
 		} catch (err) {
 			alert('Có lỗi xảy ra khi kết nối Firebase: ' + err.message);
 		} finally {
@@ -352,6 +363,9 @@ import Footer from '../components/Footer.astro';
 
 			resultTableName.innerText = selectedTable.name;
 			resultBox.classList.remove('hidden');
+			setTimeout(() => {
+				redirectToDanhSach();
+			}, 1200);
 
 			btn.disabled = false;
 			btn.innerHTML = '<i data-lucide="dice-5" class="w-5 h-5"></i> BỐC THĂM BÀN NGỮU NHIÊN';

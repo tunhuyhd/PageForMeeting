@@ -1,62 +1,91 @@
 ---
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1C-HSl3zwbb_-DAeBEhNWGLEq29_CiT4N_y4Thg7_xRE/export?format=csv&gid=0';
+const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/1C-HSl3zwbb_-DAeBEhNWGLEq29_CiT4N_y4Thg7_xRE/export?format=csv&gid=0";
 
-let members = [];
+interface Member {
+  id: string;
+  name: string;
+  phone: string;
+}
+
+let members: Member[] = [];
+
 try {
   const response = await fetch(SHEET_URL);
   const csvText = await response.text();
-  
+
   // Phân tích cú pháp CSV đơn giản
-  const rows = csvText.split('\n').filter(row => row.trim() !== '');
+  const rows = csvText.split("\n").filter((row) => row.trim() !== "");
   // Bỏ qua dòng tiêu đề (header)
   const dataRows = rows.slice(1);
-  
-  members = dataRows.map(row => {
-    const columns = row.split(',');
+
+  members = dataRows.map((row) => {
+    const columns = row.split(",");
     return {
       id: columns[0]?.trim(),
       name: columns[1]?.trim(),
-      phone: columns[2]?.trim()
+      phone: columns[2]?.trim(),
     };
   });
 } catch (error) {
   console.error("Lỗi lấy dữ liệu từ Google Sheet:", error);
 }
 ---
-<section id="thanh-vien" class="py-16 bg-white relative z-10 border-t border-gray-100">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-serif font-bold text-navy-900 uppercase">THÀNH VIÊN 96Q</h2>
-            <div class="mt-4 flex items-center justify-center gap-2">
-                <div class="h-[1px] w-12 bg-gold-400"></div>
-                <div class="w-2 h-2 rotate-45 bg-gold-400"></div>
-                <div class="h-[1px] w-12 bg-gold-400"></div>
-            </div>
-            <p class="text-gray-500 mt-4 text-sm max-w-2xl mx-auto">
-                Danh sách thành viên đăng ký tham gia (Đồng bộ trực tiếp từ Google Sheet).
-            </p>
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {members.length > 0 ? members.map((member) => (
-                <div class="bg-gray-50 border border-gray-100 rounded-xl p-5 hover:shadow-md hover:border-gold-300 hover:-translate-y-1 transition-all flex items-center gap-4 group cursor-default">
-                    <div class="w-12 h-12 rounded-full bg-blue-50 text-navy-900 font-bold flex items-center justify-center shrink-0 group-hover:bg-navy-900 group-hover:text-gold-400 transition-colors shadow-inner">
-                        {member.id}
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800 mb-0.5">{member.name}</h4>
-                        <div class="flex items-center text-xs text-gray-500 gap-1.5 font-medium">
-                            <i data-lucide="phone-call" class="w-3.5 h-3.5 text-gold-500"></i>
-                            {member.phone}
-                        </div>
-                    </div>
-                </div>
-            )) : (
-                <div class="col-span-full text-center text-gray-500 py-10 border-2 border-dashed border-gray-200 rounded-xl">
-                    <i data-lucide="inbox" class="w-10 h-10 mx-auto text-gray-300 mb-3"></i>
-                    Không thể lấy dữ liệu hoặc danh sách đang trống.
-                </div>
-            )}
-        </div>
+<section
+  id="thanh-vien"
+  class="py-16 bg-white relative z-10 border-t border-gray-100"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2
+        class="text-3xl md:text-4xl font-serif font-bold text-navy-900 uppercase"
+      >
+        THÀNH VIÊN 96Q
+      </h2>
+      <div class="mt-4 flex items-center justify-center gap-2">
+        <div class="h-[1px] w-12 bg-gold-400"></div>
+        <div class="w-2 h-2 rotate-45 bg-gold-400"></div>
+        <div class="h-[1px] w-12 bg-gold-400"></div>
+      </div>
+      <p class="text-gray-500 mt-4 text-sm max-w-2xl mx-auto">
+        Danh sách thành viên đăng ký tham gia (Đồng bộ trực tiếp từ Google
+        Sheet).
+      </p>
     </div>
+
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    >
+      {
+        members.length > 0 ? (
+          members.map((member) => (
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-5 hover:shadow-md hover:border-gold-300 hover:-translate-y-1 transition-all flex items-center gap-4 group cursor-default">
+              <div class="w-12 h-12 rounded-full bg-blue-50 text-navy-900 font-bold flex items-center justify-center shrink-0 group-hover:bg-navy-900 group-hover:text-gold-400 transition-colors shadow-inner">
+                {member.id}
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 mb-0.5">{member.name}</h4>
+                <div class="flex items-center text-xs text-gray-500 gap-1.5 font-medium">
+                  <i
+                    data-lucide="phone-call"
+                    class="w-3.5 h-3.5 text-gold-500"
+                  />
+                  {member.phone}
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div class="col-span-full text-center text-gray-500 py-10 border-2 border-dashed border-gray-200 rounded-xl">
+            <i
+              data-lucide="inbox"
+              class="w-10 h-10 mx-auto text-gray-300 mb-3"
+            />
+            Không thể lấy dữ liệu hoặc danh sách đang trống.
+          </div>
+        )
+      }
+    </div>
+  </div>
 </section>
