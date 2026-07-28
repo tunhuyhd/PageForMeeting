@@ -1,0 +1,69 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Layout title="Đăng ký & Bốc thăm Bàn - 30 Năm Hội Ngộ 96Q">
+	<Header />
+	
+	<main class="pt-28 pb-16 bg-ivory min-h-screen">
+		<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+			<!-- Header Title -->
+			<div class="text-center mb-12">
+				<span class="bg-gold-100 text-gold-700 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-semibold border border-gold-300">Trang Thử Nghiệm Nội Bộ</span>
+				<h1 class="text-3xl md:text-4xl font-serif font-bold text-navy-900 mt-3 uppercase">ĐĂNG KÝ & BỐC THĂM BÀN</h1>
+				<p class="text-gray-600 text-sm mt-2">Chọn chức năng bạn muốn thực hiện — Dành cho cựu sinh viên 96Q1 & 96Q2</p>
+			</div>
+
+			<!-- Two Option Cards -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+				<!-- Card 1: Đăng ký ở ghép -->
+				<a href="/PageForMeeting/dang-ky-thu/o-ghep/"
+				   id="card-o-ghep"
+				   class="group bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:border-navy-900 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center cursor-pointer">
+					<div class="w-16 h-16 bg-navy-900 group-hover:bg-navy-800 rounded-2xl flex items-center justify-center mb-5 transition-colors shadow-lg">
+						<i data-lucide="home" class="w-8 h-8 text-white"></i>
+					</div>
+					<h2 class="text-xl font-bold text-navy-900 mb-2">Đăng ký ở ghép</h2>
+					<p class="text-sm text-gray-500 leading-relaxed">
+						Đăng ký sắp xếp ở chung phòng nghỉ đêm 15/08 với người bạn muốn.
+					</p>
+					<div class="mt-6 px-5 py-2.5 bg-navy-900 text-white text-sm font-medium rounded-lg group-hover:bg-gold-500 transition-colors flex items-center gap-2">
+						<i data-lucide="arrow-right" class="w-4 h-4"></i>
+						Đăng ký ngay
+					</div>
+				</a>
+
+				<!-- Card 2: Bốc thăm bàn ăn -->
+				<a href="/PageForMeeting/dang-ky-thu/boc-tham/"
+				   id="card-boc-tham"
+				   class="group bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:border-gold-500 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center cursor-pointer">
+					<div class="w-16 h-16 bg-gradient-to-br from-gold-500 to-gold-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:from-gold-600 group-hover:to-gold-700 transition-all">
+						<i data-lucide="sparkles" class="w-8 h-8 text-white"></i>
+					</div>
+					<h2 class="text-xl font-bold text-navy-900 mb-2">Bốc thăm bàn ăn</h2>
+					<p class="text-sm text-gray-500 leading-relaxed">
+						Bốc thăm ngẫu nhiên để xếp bàn Gala Dinner. Mỗi bàn 10 người, hệ thống tự động phân bổ.
+					</p>
+					<div class="mt-6 px-5 py-2.5 bg-gradient-to-r from-gold-500 to-gold-600 text-white text-sm font-medium rounded-lg group-hover:from-gold-600 group-hover:to-gold-700 transition-all flex items-center gap-2">
+						<i data-lucide="dice-5" class="w-4 h-4"></i>
+						Bốc thăm ngay
+					</div>
+				</a>
+
+			</div>
+
+			<!-- Back link -->
+			<div class="text-center mt-10">
+				<a href="/PageForMeeting/" class="text-sm text-gray-400 hover:text-navy-900 transition-colors flex items-center justify-center gap-1">
+					<i data-lucide="chevron-left" class="w-4 h-4"></i>
+					Về trang chủ
+				</a>
+			</div>
+		</div>
+	</main>
+
+	<Footer />
+</Layout>

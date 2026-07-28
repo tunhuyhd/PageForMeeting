@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Layout title="Danh Sách Kết Quả - 30 Năm Hội Ngộ 96Q">
+	<Header />
+	
+	<main class="pt-28 pb-16 bg-ivory min-h-screen">
+		<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+			<!-- Header -->
+			<div class="text-center mb-12">
+				<span class="bg-gold-100 text-gold-700 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-semibold border border-gold-300">Kết Quả Nội Bộ</span>
+				<h1 class="text-3xl md:text-4xl font-serif font-bold text-navy-900 mt-3 uppercase">KẾT QUẢ ĐĂNG KÝ</h1>
+				<p class="text-gray-600 text-sm mt-2">Chọn danh sách bạn muốn xem — Hội ngộ 30 năm 96Q1 & 96Q2</p>
+			</div>
+
+			<!-- Two Option Cards -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+				<!-- Card 1: Sơ đồ bàn ăn -->
+				<a href="/PageForMeeting/danh-sach/ban-an/"
+				   id="card-ban-an"
+				   class="group bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:border-navy-900 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center cursor-pointer">
+					<div class="w-16 h-16 bg-navy-900 group-hover:bg-navy-800 rounded-2xl flex items-center justify-center mb-5 transition-colors shadow-lg">
+						<svg class="w-8 h-8 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+						</svg>
+					</div>
+					<h2 class="text-xl font-bold text-navy-900 mb-2">Sơ Đồ 6 Bàn Ăn</h2>
+					<p class="text-sm text-gray-500 leading-relaxed">
+						Xem kết quả bốc thăm — ai ngồi bàn nào trong Gala Dinner đêm 15/08.
+					</p>
+					<div class="mt-6 px-5 py-2.5 bg-navy-900 text-white text-sm font-medium rounded-lg group-hover:bg-gold-500 group-hover:text-navy-900 transition-colors flex items-center gap-2">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+						Xem danh sách bàn
+					</div>
+				</a>
+
+				<!-- Card 2: Danh sách ở ghép -->
+				<a href="/PageForMeeting/danh-sach/o-ghep/"
+				   id="card-o-ghep"
+				   class="group bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:border-gold-500 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center cursor-pointer">
+					<div class="w-16 h-16 bg-gradient-to-br from-gold-500 to-gold-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:from-gold-600 group-hover:to-gold-700 transition-all">
+						<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+						</svg>
+					</div>
+					<h2 class="text-xl font-bold text-navy-900 mb-2">Đăng Ký Ở Ghép</h2>
+					<p class="text-sm text-gray-500 leading-relaxed">
+						Xem danh sách những người đã đăng ký ở ghép phòng nghỉ đêm 15/08.
+					</p>
+					<div class="mt-6 px-5 py-2.5 bg-gradient-to-r from-gold-500 to-gold-600 text-white text-sm font-medium rounded-lg group-hover:from-gold-600 group-hover:to-gold-700 transition-all flex items-center gap-2">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+						Xem danh sách ghép
+					</div>
+				</a>
+
+			</div>
+
+			<!-- Back link -->
+			<div class="text-center mt-10">
+				<a href="/PageForMeeting/" class="text-sm text-gray-400 hover:text-navy-900 transition-colors flex items-center justify-center gap-1">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+					Về trang chủ
+				</a>
+			</div>
+		</div>
+	</main>
+
+	<Footer />
+</Layout>
