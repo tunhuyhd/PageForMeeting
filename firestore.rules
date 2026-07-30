@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true;
+    }
+
+    match /admins/{uid} {
+      allow read: if isAdmin() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /persons/{personId} {
+      allow read, create, update, delete: if isAdmin();
+    }
+
+    match /rooms/{roomId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /dinner_tables/{tableId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /audit_logs/{logId} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // Dữ liệu đăng ký cũ chỉ còn dành cho quản trị viên.
+    match /o_ghep/{document=**} {
+      allow read, write: if isAdmin();
+    }
+    match /boc_tham/{document=**} {
+      allow read, write: if isAdmin();
+    }
+    match /room_inventory/{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
