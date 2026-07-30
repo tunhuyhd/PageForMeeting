@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+const danhSachUrl = import.meta.env.BASE_URL + "danh-sach/o-ghep/";
 ---
 
 <Layout title="Đăng ký Ở Ghép - 30 Năm Hội Ngộ 96Q">
@@ -28,14 +29,14 @@ import Footer from "../../components/Footer.astro";
       <!-- Nav links -->
       <div class="flex justify-center gap-3 mb-8">
         <a
-          href="/PageForMeeting/dang-ky-thu/"
+          href={import.meta.env.BASE_URL + "dang-ky-thu/"}
           class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-navy-900 border border-gray-200 rounded-lg hover:border-navy-900 transition-all flex items-center gap-2"
         >
           <i data-lucide="arrow-left" class="w-4 h-4"></i>
           Quay lại
         </a>
         <a
-          href="/PageForMeeting/dang-ky-thu/boc-tham/"
+          href={import.meta.env.BASE_URL + "dang-ky-thu/boc-tham/"}
           class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-navy-900 border border-gray-200 rounded-lg hover:border-navy-900 transition-all flex items-center gap-2"
         >
           <i data-lucide="sparkles" class="w-4 h-4"></i>
@@ -154,7 +155,7 @@ import Footer from "../../components/Footer.astro";
   src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"
 ></script>
 
-<script is:inline>
+<script define:vars={{ danhSachUrl }}>
   const firebaseConfig = {
     apiKey: "AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",
     authDomain: "register-to-participate.firebaseapp.com",
@@ -176,8 +177,6 @@ import Footer from "../../components/Footer.astro";
       console.error("Firebase Init Error:", e);
     }
   }
-
-  const danhSachUrl = "/PageForMeeting/danh-sach/o-ghep/";
 
   // Xử lý Form Đăng ký ở ghép
   window.handleFormOGhep = async function (e) {

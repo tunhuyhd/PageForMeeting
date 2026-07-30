@@ -24,7 +24,7 @@ import Footer from "../../components/Footer.astro";
 			<!-- Nav links -->
 			<div class="flex justify-center gap-3 mb-5">
 				<a
-					href="/PageForMeeting/danh-sach/"
+					href={import.meta.env.BASE_URL + "danh-sach/"}
 					class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-navy-900 border border-gray-200 rounded-lg hover:border-navy-900 transition-all flex items-center gap-2"
 				>
 					<svg
@@ -41,7 +41,7 @@ import Footer from "../../components/Footer.astro";
 					Quay lại
 				</a>
 				<a
-					href="/PageForMeeting/danh-sach/o-ghep/"
+					href={import.meta.env.BASE_URL + "danh-sach/o-ghep/"}
 					class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-navy-900 border border-gray-200 rounded-lg hover:border-navy-900 transition-all flex items-center gap-2"
 				>
 					<svg

@@ -29,7 +29,7 @@ import Footer from "../../components/Footer.astro";
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Card 1: Sơ đồ bàn ăn -->
         <a
-          href="/PageForMeeting/danh-sach/ban-an/"
+          href={import.meta.env.BASE_URL + "danh-sach/ban-an/"}
           id="card-ban-an"
           class="group bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:border-navy-900 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center cursor-pointer"
         >
@@ -74,7 +74,7 @@ import Footer from "../../components/Footer.astro";
 
         <!-- Card 2: Danh sách ở ghép -->
         <a
-          href="/PageForMeeting/danh-sach/o-ghep/"
+          href={import.meta.env.BASE_URL + "danh-sach/o-ghep/"}
           id="card-o-ghep"
           class="group bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:border-gold-500 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center cursor-pointer"
         >
@@ -121,7 +121,7 @@ import Footer from "../../components/Footer.astro";
       <!-- Back link -->
       <div class="text-center mt-10">
         <a
-          href="/PageForMeeting/"
+          href={import.meta.env.BASE_URL}
           class="text-sm text-gray-400 hover:text-navy-900 transition-colors flex items-center justify-center gap-1"
         >
           <svg

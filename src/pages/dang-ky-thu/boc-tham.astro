@@ -27,13 +27,13 @@ import Footer from "../../components/Footer.astro";
 
       <div class="mb-8 flex flex-wrap justify-center gap-3">
         <a
-          href="/PageForMeeting/dang-ky-thu/"
+          href={import.meta.env.BASE_URL + "dang-ky-thu/"}
           class="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-500 transition-all hover:border-navy-900 hover:text-navy-900"
         >
           <i data-lucide="arrow-left" class="h-4 w-4"></i> Quay lại
         </a>
         <a
-          href="/PageForMeeting/danh-sach/ban-an/"
+          href={import.meta.env.BASE_URL + "danh-sach/ban-an/"}
           class="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-500 transition-all hover:border-navy-900 hover:text-navy-900"
         >
           <i data-lucide="list" class="h-4 w-4"></i> Danh sách bàn
