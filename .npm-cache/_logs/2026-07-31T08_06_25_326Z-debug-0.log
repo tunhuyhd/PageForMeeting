@@ -1,0 +1,27 @@
+0 verbose cli G:\NodeJs\node.exe G:\NodeJs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.2
+2 info using node@v24.12.0
+3 silly config load:file:G:\NodeJs\node_modules\npm\npmrc
+4 silly config load:file:G:\Job\PageForMrThang\event-landing-astro\.npmrc
+5 silly config load:file:C:\Users\DELL\.npmrc
+6 silly config load:file:C:\Users\DELL\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm ci
+8 verbose argv "ci" "--ignore-scripts" "--no-audit" "--cache" ".npm-cache"
+9 verbose logfile logs-max:10 dir:G:\Job\PageForMrThang\event-landing-astro\.npm-cache\_logs\2026-07-31T08_06_25_326Z-
+10 verbose logfile G:\Job\PageForMrThang\event-landing-astro\.npm-cache\_logs\2026-07-31T08_06_25_326Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly idealTree buildDeps
+14 silly fetch manifest @emnapi/runtime@^1.11.1
+15 silly packumentCache full:https://registry.npmjs.org/@emnapi%2fruntime cache-miss
+16 http fetch GET https://registry.npmjs.org/npm attempt 1 failed with EACCES
+17 http fetch GET https://registry.npmjs.org/@emnapi%2fruntime attempt 1 failed with EACCES
+18 http fetch GET https://registry.npmjs.org/npm attempt 2 failed with EACCES
+19 http fetch GET https://registry.npmjs.org/@emnapi%2fruntime attempt 2 failed with EACCES
+20 http fetch GET https://registry.npmjs.org/npm attempt 3 failed with EACCES
+21 http fetch GET https://registry.npmjs.org/@emnapi%2fruntime attempt 3 failed with EACCES
+22 silly placeDep node_modules/@img/sharp-wasm32 @emnapi/runtime@ REPLACE for: @img/sharp-wasm32@0.35.3 want: ^1.11.1
+23 silly fetch manifest @emnapi/runtime@^1.7.1
+24 silly packumentCache full:https://registry.npmjs.org/@emnapi%2fruntime cache-miss
+25 http fetch GET https://registry.npmjs.org/@emnapi%2fruntime attempt 1 failed with EACCES
+26 http fetch GET https://registry.npmjs.org/@emnapi%2fruntime attempt 2 failed with EACCES

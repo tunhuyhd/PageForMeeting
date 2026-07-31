@@ -9,6 +9,14 @@ import Footer from '../components/Footer.astro';
 ---
 
 <Layout title="30 Năm Hội Ngộ 96Q - Kỷ Niệm 1996 - 2026">
+	<script is:inline>
+		// Custom hosting returns the homepage for directory-style admin URLs.
+		// Send those requests to the generated static index.html files.
+		const adminPath = window.location.pathname.match(/^(.*\/admin(?:\/login|\/dinner)?)(?:\/)?$/);
+		if (adminPath) {
+			window.location.replace(`${adminPath[1]}/index.html${window.location.search}${window.location.hash}`);
+		}
+	</script>
 	<Header />
 	<main>
 		<Hero />
