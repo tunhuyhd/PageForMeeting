@@ -131,8 +131,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 <script>
   // Countdown Timer Logic
-  // Set event date to Aug 15, 2026
-  const eventDate = new Date("Aug 15, 2026 11:00:00").getTime();
+  // Đếm ngược đến 11:00 ngày 15/08/2026 (giờ Việt Nam) – lúc đón đoàn.
+  const eventDate = new Date("2026-08-15T11:00:00+07:00").getTime();
 
   const updateCountdown = () => {
     const now = new Date().getTime();
