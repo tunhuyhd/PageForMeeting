@@ -395,13 +395,14 @@ import Footer from "../../components/Footer.astro";
 	window.filterBanAn = render6Tables;
 
 	document.addEventListener("DOMContentLoaded", () => {
-		db.collection("boc_tham")
-			.orderBy("createdAt", "desc")
+		db.collection("public_results")
 			.onSnapshot((snapshot) => {
 				rawBocTham = [];
 				snapshot.forEach((doc) => {
-					rawBocTham.push({ id: doc.id, ...doc.data() });
+					const person = doc.data();
+					if (person.tableName) rawBocTham.push({ id: doc.id, ...person });
 				});
+				rawBocTham.sort((a,b)=>(a.name||"").localeCompare(b.name||"","vi"));
 				render6Tables();
 			});
 	});

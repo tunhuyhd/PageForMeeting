@@ -2,13 +2,12 @@
 ---
 <section class="py-12 -mt-16 relative z-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <a href={import.meta.env.BASE_URL + "dang-ky-thu/boc-tham/index.html"} class="bg-white rounded-xl p-6 shadow-sm border border-gold-200 hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group cursor-pointer">
-                <div class="w-12 h-12 rounded-full bg-gold-100 text-navy-900 flex items-center justify-center mb-3 group-hover:bg-navy-900 group-hover:text-gold-400 transition-colors">
-                    <i data-lucide="circle-dot" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-gray-800 text-sm mb-1 uppercase">BỐC THĂM BÀN DINNER</h4>
-                <p class="text-xs text-gray-500">Tìm tên và quay bàn</p>
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <a id="home-accommodation-result" href={import.meta.env.BASE_URL + "danh-sach/o-ghep/index.html"} class="order-last hidden rounded-xl border border-gold-400 bg-gold-400 p-6 shadow-md transition-all hover:-translate-y-1 hover:bg-gold-500 flex-col items-center text-center group md:col-start-2">
+                <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-400"><i data-lucide="hotel" class="h-6 w-6"></i></div><h4 class="mb-1 text-sm font-extrabold uppercase text-navy-900">KẾT QUẢ XẾP CHỖ Ở</h4><p class="text-xs font-medium text-navy-900/70">Tra cứu khách sạn và phòng ngủ</p>
+            </a>
+            <a id="home-dinner-result" href={import.meta.env.BASE_URL + "danh-sach/ban-an/index.html"} class="order-last hidden rounded-xl border border-gold-400 bg-gold-400 p-6 shadow-md transition-all hover:-translate-y-1 hover:bg-gold-500 flex-col items-center text-center group">
+                <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-400"><i data-lucide="utensils" class="h-6 w-6"></i></div><h4 class="mb-1 text-sm font-extrabold uppercase text-navy-900">KẾT QUẢ XẾP BÀN ĂN</h4><p class="text-xs font-medium text-navy-900/70">Tra cứu vị trí bàn Dinner</p>
             </a>
             <!-- Card 2 -->
             <a href="#chuong-trinh" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group cursor-pointer">
@@ -65,3 +64,9 @@
         </div>
     </div>
 </div>
+
+<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script is:inline>
+    const resultFirebaseConfig={apiKey:"AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",authDomain:"register-to-participate.firebaseapp.com",projectId:"register-to-participate",storageBucket:"register-to-participate.firebasestorage.app",messagingSenderId:"578991866095",appId:"1:578991866095:web:9ce9b6b5e5d13314359b1a"};if(!firebase.apps.length)firebase.initializeApp(resultFirebaseConfig);firebase.firestore().collection("public_settings").doc("homepage").onSnapshot(doc=>{const data=doc.data()||{},accommodation=document.getElementById("home-accommodation-result"),dinner=document.getElementById("home-dinner-result");accommodation.classList.toggle("hidden",data.showAccommodationResult!==true);accommodation.classList.toggle("flex",data.showAccommodationResult===true);dinner.classList.toggle("hidden",data.showDinnerResult!==true);dinner.classList.toggle("flex",data.showDinnerResult===true);});
+</script>

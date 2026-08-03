@@ -78,6 +78,16 @@ service cloud.firestore {
       );
     }
 
+    match /public_results/{personId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /public_settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     match /audit_logs/{logId} {
       allow read, create: if isAdmin();
       allow update, delete: if false;

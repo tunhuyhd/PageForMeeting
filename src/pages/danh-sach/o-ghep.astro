@@ -288,9 +288,9 @@ import Footer from "../../components/Footer.astro";
 							<span class="text-xs font-medium text-navy-900">🏨 ${item.hotelName || "Khách sạn"}</span>
 							<span class="rounded bg-navy-900 px-2 py-1 text-xs font-bold text-gold-400">Phòng ${item.roomNumber}</span>
 						</div>
-						<div class="mt-2 flex justify-between text-[11px] text-gray-600">
-							<span>🛏️ ${item.bed || "---"}${item.extraBed && item.extraBed !== "—" ? ` · Extra ${item.extraBed}` : ""}</span>
-							<span>Tối đa ${item.capacity || "---"} người</span>
+						<div class="mt-2 rounded-lg border border-gold-200 bg-white/80 p-2.5">
+							<span class="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Ở cùng phòng</span>
+							<span class="mt-1 block text-xs font-semibold leading-5 text-navy-900">${item.roommate || "Chưa có người ở cùng"}</span>
 						</div>
 					</div>` : `
 					<div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 flex items-center justify-between">
@@ -316,12 +316,19 @@ import Footer from "../../components/Footer.astro";
 	window.filterOGhep = renderOGhepCards;
 
 	document.addEventListener("DOMContentLoaded", () => {
-		db.collection("o_ghep")
-			.orderBy("createdAt", "desc")
+		db.collection("public_results")
 			.onSnapshot((snapshot) => {
 				rawOGhep = [];
 				snapshot.forEach((doc) => {
-					rawOGhep.push({ id: doc.id, ...doc.data() });
+					const person = doc.data();
+					if (person.roomNumber) rawOGhep.push({ id: doc.id, ...person });
+				});
+				rawOGhep.sort((a,b)=>(a.name||"").localeCompare(b.name||"","vi"));
+				rawOGhep.forEach((person) => {
+					person.roommate = rawOGhep
+						.filter((other) => other.id !== person.id && other.hotelName === person.hotelName && String(other.roomNumber) === String(person.roomNumber))
+						.map((other) => `${other.name} (${other.className || "---"})`)
+						.join(", ");
 				});
 				renderOGhepCards();
 			});
