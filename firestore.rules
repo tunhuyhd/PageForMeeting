@@ -13,7 +13,17 @@ service cloud.firestore {
     }
 
     match /persons/{personId} {
-      allow read, create, update, delete: if isAdmin();
+      allow read, create, delete: if isAdmin();
+      allow update: if isAdmin() || (
+        resource.data.dinnerTableId == null
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['dinnerTableId', 'dinnerTableName', 'dinnerAssignedAt'])
+        && request.resource.data.dinnerAssignedAt == request.time
+        && getAfter(/databases/$(database)/documents/dinner_candidates/$(personId)).data.dinnerTableId
+          == request.resource.data.dinnerTableId
+        && getAfter(/databases/$(database)/documents/dinner_candidates/$(personId)).data.dinnerTableName
+          == request.resource.data.dinnerTableName
+      );
     }
 
     match /rooms/{roomId} {
@@ -21,9 +31,48 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    function isDinnerTablePair(tableId, tableName) {
+      return (tableId == 'table-1' && tableName == 'Bàn Nặn tượng')
+        || (tableId == 'table-2' && tableName == 'Bàn Vật lý kiến trúc')
+        || (tableId == 'table-3' && tableName == 'Bàn Hình học họa hình')
+        || (tableId == 'table-4' && tableName == 'Bàn Mực nho - Đi màu')
+        || (tableId == 'table-5' && tableName == 'Bàn ĐA Quán Hoa')
+        || (tableId == 'table-6' && tableName == 'Bàn Sức bền Vật Liệu');
+    }
+
     match /dinner_tables/{tableId} {
-      allow read, create, update: if isAdmin();
+      allow read: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() || (
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['occupied', 'females', 'lastAssignedPersonId', 'updatedAt'])
+        && request.resource.data.occupied == resource.data.occupied + 1
+        && request.resource.data.occupied <= resource.data.capacity
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.females
+          == resource.data.females
+            + (get(/databases/$(database)/documents/dinner_candidates/$(request.resource.data.lastAssignedPersonId)).data.isFemale == true ? 1 : 0)
+        && request.resource.data.females <= 2
+        && get(/databases/$(database)/documents/dinner_candidates/$(request.resource.data.lastAssignedPersonId)).data.dinnerTableId == null
+        && getAfter(/databases/$(database)/documents/dinner_candidates/$(request.resource.data.lastAssignedPersonId)).data.dinnerTableId == tableId
+      );
       allow delete: if false;
+    }
+
+    // Danh sách công khai tối thiểu để thành viên tìm tên và quay bàn.
+    // Không chứa số điện thoại, ghi chú hay thông tin phòng khách sạn.
+    match /dinner_candidates/{personId} {
+      allow read: if true;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || (
+        resource.data.dinnerTableId == null
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['dinnerTableId', 'dinnerTableName', 'dinnerAssignedAt'])
+        && request.resource.data.dinnerTableId in ['table-1', 'table-2', 'table-3', 'table-4', 'table-5', 'table-6']
+        && isDinnerTablePair(request.resource.data.dinnerTableId, request.resource.data.dinnerTableName)
+        && request.resource.data.dinnerAssignedAt == request.time
+        && getAfter(/databases/$(database)/documents/dinner_tables/$(request.resource.data.dinnerTableId)).data.lastAssignedPersonId == personId
+      );
     }
 
     match /audit_logs/{logId} {

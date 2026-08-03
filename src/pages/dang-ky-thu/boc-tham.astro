@@ -60,64 +60,33 @@ import Footer from "../../components/Footer.astro";
 
             <form id="form-boc-tham" class="space-y-5">
               <div>
-                <label
-                  for="boctham-name"
-                  class="mb-1.5 block text-sm font-medium text-gray-700"
-                  >Họ và tên của bạn <span class="text-red-500">*</span></label
-                >
-                <input
-                  type="text"
-                  id="boctham-name"
-                  required
-                  autocomplete="name"
-                  placeholder="Nguyễn Văn A"
-                  class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
-                />
-              </div>
-
-              <div>
-                <label
-                  for="boctham-class"
-                  class="mb-1.5 block text-sm font-medium text-gray-700"
-                  >Lớp <span class="text-red-500">*</span></label
-                >
-                <select
-                  id="boctham-class"
-                  required
-                  class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
-                >
-                  <option value="">-- Chọn lớp --</option>
+                <label for="boctham-class" class="mb-1.5 block text-sm font-medium text-gray-700">Lọc theo lớp</label>
+                <select id="boctham-class" class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30">
+                  <option value="">Tất cả lớp</option>
                   <option value="96Q1">96Q1</option>
                   <option value="96Q2">96Q2</option>
                 </select>
               </div>
 
-              <label
-                for="boctham-is-female"
-                class="flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4"
-              >
-                <input
-                  type="checkbox"
-                  id="boctham-is-female"
-                  class="mt-0.5 h-4 w-4 rounded border-gray-300 text-navy-900 focus:ring-navy-900"
-                />
-                <span class="text-sm font-medium leading-relaxed text-gray-700"
-                  >Thành viên nữ <span
-                    class="block text-xs font-normal text-gray-500"
-                    >Hệ thống sẽ ưu tiên bàn có dưới 2 thành viên nữ.</span
-                  ></span
-                >
-              </label>
+              <div class="relative">
+                <label for="boctham-search" class="mb-1.5 block text-sm font-medium text-gray-700">Tìm tên của bạn <span class="text-red-500">*</span></label>
+                <div class="relative"><i data-lucide="search" class="absolute left-3.5 top-3.5 h-4 w-4 text-gray-400"></i><input type="search" id="boctham-search" autocomplete="off" placeholder="Ví dụ: Ti, Tiến, Nguyễn..." class="w-full rounded-xl border border-gray-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30" /></div>
+                <div id="person-search-results" class="absolute z-30 mt-1 hidden max-h-64 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white p-1 shadow-xl"></div>
+              </div>
+
+              <div id="selected-person" class="hidden rounded-xl border-2 border-gold-400 bg-gold-50 p-4"></div>
+              <p id="person-loading" class="rounded-xl bg-gray-50 p-3 text-center text-xs text-gray-500">Đang tải danh sách thành viên...</p>
 
               <button
                 type="submit"
                 id="btn-spin"
-                class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 py-3.5 text-base font-bold text-white shadow-md transition-all hover:-translate-y-0.5 hover:from-gold-600 hover:to-gold-700 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
+                disabled
+                class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 py-3.5 text-base font-bold text-white shadow-md transition-all hover:-translate-y-0.5 hover:from-gold-600 hover:to-gold-700 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <i data-lucide="play" class="h-5 w-5"></i> QUAY BÀN NGẪU NHIÊN
               </button>
               <p class="text-center text-xs text-gray-400">
-                Mỗi người chỉ được Đặt chỗ một lần.
+                Mỗi thành viên chỉ được quay bàn một lần.
               </p>
             </form>
           </section>
@@ -155,6 +124,7 @@ import Footer from "../../components/Footer.astro";
                 type="submit"
                 form="form-boc-tham"
                 id="wheel-spin-button"
+                disabled
                 class="wheel-center"
                 aria-label="Quay bàn ngẫu nhiên"
               >
@@ -343,82 +313,23 @@ import Footer from "../../components/Footer.astro";
 ></script>
 
 <script is:inline>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",
-    authDomain: "register-to-participate.firebaseapp.com",
-    projectId: "register-to-participate",
-    storageBucket: "register-to-participate.firebasestorage.app",
-    messagingSenderId: "578991866095",
-    appId: "1:578991866095:web:9ce9b6b5e5d13314359b1a",
-    measurementId: "G-DYQZETP6LS",
-  };
-
-  let db = null;
-  try {
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    db = firebase.firestore();
-  } catch (error) {
-    console.error("Không thể kết nối Firebase:", error);
-  }
-
-  const tables = [
-    {
-      id: 1,
-      name: "Bàn Nặn tượng",
-      label: "Nặn tượng",
-      total: 10,
-      occupied: 0,
-      females: 0,
-    },
-    {
-      id: 2,
-      name: "Bàn Vật lý kiến trúc",
-      label: "Vật lý KT",
-      total: 10,
-      occupied: 0,
-      females: 0,
-    },
-    {
-      id: 3,
-      name: "Bàn Hình học họa hình",
-      label: "Hình họa",
-      total: 10,
-      occupied: 0,
-      females: 0,
-    },
-    {
-      id: 4,
-      name: "Bàn Mực nho - Đi màu",
-      label: "Mực nho",
-      total: 10,
-      occupied: 0,
-      females: 0,
-    },
-    {
-      id: 5,
-      name: "Bàn ĐA Quán Hoa",
-      label: "ĐA Quán Hoa",
-      total: 10,
-      occupied: 0,
-      females: 0,
-    },
-    {
-      id: 6,
-      name: "Bàn Sức bền Vật Liệu",
-      label: "Sức bền VL",
-      total: 10,
-      occupied: 0,
-      females: 0,
-    },
+  const firebaseConfig={apiKey:"AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",authDomain:"register-to-participate.firebaseapp.com",projectId:"register-to-participate",storageBucket:"register-to-participate.firebasestorage.app",messagingSenderId:"578991866095",appId:"1:578991866095:web:9ce9b6b5e5d13314359b1a"};
+  if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+  const db=firebase.firestore();
+  const tableConfigs=[
+    {id:"table-1",name:"Bàn Nặn tượng",label:"Nặn tượng",capacity:10},
+    {id:"table-2",name:"Bàn Vật lý kiến trúc",label:"Vật lý KT",capacity:10},
+    {id:"table-3",name:"Bàn Hình học họa hình",label:"Hình họa",capacity:10},
+    {id:"table-4",name:"Bàn Mực nho - Đi màu",label:"Mực nho",capacity:10},
+    {id:"table-5",name:"Bàn ĐA Quán Hoa",label:"ĐA Quán Hoa",capacity:10},
+    {id:"table-6",name:"Bàn Sức bền Vật Liệu",label:"Sức bền VL",capacity:10},
   ];
-
-  let currentRotation = 0;
-  let isSpinning = false;
+  let candidates=[],tables={},selectedPerson=null,currentRotation=0,isSpinning=false,candidateLoadError="";
+  const normalize=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("vi").trim();
+  const esc=(value="")=>String(value).replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
 
   function renderWheelLabels() {
-    const container = document.getElementById("wheel-labels");
-    if (!container) return;
-    container.innerHTML = tables
+    document.getElementById("wheel-labels").innerHTML = tableConfigs
       .map((table, index) => {
         const angle = index * 60;
         const radians = (angle * Math.PI) / 180;
@@ -429,25 +340,10 @@ import Footer from "../../components/Footer.astro";
       .join("");
   }
 
-  function loadTablesFromFirebase() {
-    if (!db) return;
-    db.collection("boc_tham").onSnapshot(
-      (snapshot) => {
-        tables.forEach((table) => {
-          table.occupied = 0;
-          table.females = 0;
-        });
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          const table = tables.find((item) => item.name === data.tableName);
-          if (table) {
-            table.occupied += 1;
-            if (data.isFemale) table.females += 1;
-          }
-        });
-      },
-      (error) => console.error("Lỗi khi tải dữ liệu bàn:", error),
-    );
+  function updateSpinState(){const disabled=!selectedPerson||Boolean(selectedPerson.dinnerTableId)||isSpinning;document.getElementById("btn-spin").disabled=disabled;document.getElementById("wheel-spin-button").disabled=disabled;}
+  function selectPerson(person){selectedPerson=person;document.getElementById("boctham-search").value=person.fullName;document.getElementById("person-search-results").classList.add("hidden");const box=document.getElementById("selected-person");box.innerHTML=`<p class="text-xs font-bold uppercase tracking-wider text-gold-600">Đã chọn</p><p class="mt-1 font-semibold text-navy-900">${esc(person.fullName)}</p><p class="text-xs text-gray-500">${esc(person.className)}${person.isFemale?" · Nữ":""}</p>`;box.classList.remove("hidden");if(person.dinnerTableId){const index=tableConfigs.findIndex(table=>table.id===person.dinnerTableId);if(index>=0)spinToTable(index);document.getElementById("wheel-status").textContent="Bạn đã quay bàn trước đó";showResult(person.dinnerTableName,"Kết quả trước của bạn là");}else{document.getElementById("result-box").classList.add("hidden");document.getElementById("wheel-status").textContent="Đã chọn thành viên — nhấn QUAY";}updateSpinState();}
+  function renderSearchResults(){const query=normalize(document.getElementById("boctham-search").value),className=document.getElementById("boctham-class").value,container=document.getElementById("person-search-results");if(candidateLoadError){container.innerHTML=`<p class="rounded-lg bg-red-50 p-3 text-center text-xs font-medium text-red-600">${esc(candidateLoadError)}</p>`;container.classList.remove("hidden");return;}if(query.length<2){container.innerHTML='<p class="p-3 text-center text-xs text-gray-400">Nhập ít nhất 2 ký tự để tìm kiếm</p>';container.classList.toggle("hidden",!query);return;}const matches=candidates.filter(person=>!person.dinnerTableId&&(!className||person.className===className)&&normalize(person.fullName).includes(query)).slice(0,12);container.innerHTML=matches.length?matches.map(person=>`<button type="button" data-person-id="${person.id}" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left hover:bg-gold-50"><span><b class="block text-sm text-navy-900">${esc(person.fullName)}</b><small class="text-gray-500">${esc(person.className)}${person.isFemale?" · Nữ":""}</small></span><small class="ml-2 shrink-0 font-semibold text-orange-500">Chưa quay</small></button>`).join(""):'<p class="p-3 text-center text-xs text-gray-400">Không có thành viên chưa có bàn phù hợp</p>';container.classList.remove("hidden");container.querySelectorAll("[data-person-id]").forEach(button=>button.onclick=()=>selectPerson(candidates.find(person=>person.id===button.dataset.personId)));}
+  function subscribeData(){db.collection("dinner_candidates").orderBy("fullName").onSnapshot(snapshot=>{candidateLoadError="";candidates=snapshot.docs.map(doc=>({id:doc.id,...doc.data()}));document.getElementById("person-loading").classList.add("hidden");renderSearchResults();},error=>{candidateLoadError=error?.code==="permission-denied"?"Firebase chưa cấp quyền đọc danh sách. Quản trị viên cần Publish firestore.rules mới.":"Chưa thể tải danh sách thành viên. Vui lòng thử lại.";const loading=document.getElementById("person-loading");loading.textContent=candidateLoadError;loading.className="rounded-xl bg-red-50 p-3 text-center text-xs font-medium text-red-600";renderSearchResults();console.error(error);});db.collection("dinner_tables").onSnapshot(snapshot=>{tables={};snapshot.forEach(doc=>{tables[doc.id]={id:doc.id,...doc.data()};});},error=>console.error(error));
   }
 
   function showResult(tableName, message = "Bàn của bạn là") {
@@ -470,55 +366,20 @@ import Footer from "../../components/Footer.astro";
     event.preventDefault();
     if (isSpinning) return;
 
-    const name = document.getElementById("boctham-name").value.trim();
-    const className = document.getElementById("boctham-class").value;
-    const isFemale = document.getElementById("boctham-is-female").checked;
+    if(!selectedPerson)return;
     const button = document.getElementById("btn-spin");
     const wheelButton = document.getElementById("wheel-spin-button");
     const resultBox = document.getElementById("result-box");
     const status = document.getElementById("wheel-status");
 
-    if (db) {
-      try {
-        const existing = await db
-          .collection("boc_tham")
-          .where("name", "==", name)
-          .where("className", "==", className)
-          .get();
-        if (!existing.empty) {
-          const previous = existing.docs[0].data();
-          const previousIndex = tables.findIndex(
-            (table) => table.name === previous.tableName,
-          );
-          if (previousIndex >= 0) spinToTable(previousIndex);
-          status.textContent = "Bạn đã Đặt chỗ trước đó";
-          showResult(previous.tableName, "Kết quả Đặt chỗ trước của bạn là");
-          return;
-        }
-      } catch (error) {
-        console.error("Không thể kiểm tra lượt Đặt chỗ:", error);
-      }
-    }
-
-    let availableTables = tables.filter(
-      (table) => table.occupied < table.total,
-    );
-    if (isFemale) {
-      const suitableTables = availableTables.filter(
-        (table) => table.females < 2,
-      );
-      if (suitableTables.length) availableTables = suitableTables;
-    }
+    if(selectedPerson.dinnerTableId){showResult(selectedPerson.dinnerTableName,"Kết quả trước của bạn là");return;}
+    let availableTables=tableConfigs.filter(config=>{const table=tables[config.id];return table&&!table.locked&&Number(table.occupied||0)<config.capacity&&(!selectedPerson.isFemale||Number(table.females||0)<2);});
     if (!availableTables.length) {
       alert("Rất tiếc! Tất cả 6 bàn đều đã kín chỗ.");
       return;
     }
 
-    const selectedTable =
-      availableTables[Math.floor(Math.random() * availableTables.length)];
-    const selectedIndex = tables.findIndex(
-      (table) => table.id === selectedTable.id,
-    );
+    const selectedTable=availableTables[Math.floor(Math.random()*availableTables.length)],selectedIndex=tableConfigs.findIndex(table=>table.id===selectedTable.id);
     isSpinning = true;
     button.disabled = true;
     wheelButton.disabled = true;
@@ -527,40 +388,27 @@ import Footer from "../../components/Footer.astro";
     resultBox.classList.add("hidden");
     status.textContent = "Vòng quay đang chọn bàn cho bạn...";
     if (window.lucide) window.lucide.createIcons();
+    try{await db.runTransaction(async transaction=>{const candidateRef=db.collection("dinner_candidates").doc(selectedPerson.id),tableRef=db.collection("dinner_tables").doc(selectedTable.id),personRef=db.collection("persons").doc(selectedPerson.id),candidateSnapshot=await transaction.get(candidateRef),tableSnapshot=await transaction.get(tableRef);if(!candidateSnapshot.exists||!tableSnapshot.exists)throw Error("Dữ liệu không tồn tại.");const candidate=candidateSnapshot.data(),table=tableSnapshot.data();if(candidate.dinnerTableId)throw Error("Thành viên đã có bàn.");if(table.locked||Number(table.occupied||0)>=Number(table.capacity||10))throw Error("Bàn vừa hết chỗ.");if(candidate.isFemale&&Number(table.females||0)>=2)throw Error("Bàn vừa đủ thành viên nữ.");const assignedAt=firebase.firestore.FieldValue.serverTimestamp();transaction.update(tableRef,{occupied:Number(table.occupied||0)+1,females:Number(table.females||0)+(candidate.isFemale?1:0),lastAssignedPersonId:selectedPerson.id,updatedAt:assignedAt});transaction.update(candidateRef,{dinnerTableId:selectedTable.id,dinnerTableName:selectedTable.name,dinnerAssignedAt:assignedAt});transaction.update(personRef,{dinnerTableId:selectedTable.id,dinnerTableName:selectedTable.name,dinnerAssignedAt:assignedAt});});}catch(error){isSpinning=false;button.innerHTML='<i data-lucide="play" class="h-5 w-5"></i> QUAY BÀN NGẪU NHIÊN';status.textContent=error.message;updateSpinState();if(window.lucide)window.lucide.createIcons();return;}
     spinToTable(selectedIndex);
-
-    window.setTimeout(async () => {
-      if (db) {
-        try {
-          await db.collection("boc_tham").add({
-            name,
-            className,
-            isFemale,
-            tableName: selectedTable.name,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          });
-        } catch (error) {
-          console.error("Lỗi khi lưu kết quả Đặt chỗ:", error);
-        }
-      } else {
-        selectedTable.occupied += 1;
-        if (isFemale) selectedTable.females += 1;
-      }
-
+    window.setTimeout(() => {
       status.textContent = "Vòng quay đã dừng — chúc mừng bạn!";
       showResult(selectedTable.name);
-      button.disabled = false;
-      wheelButton.disabled = false;
+      selectedPerson={...selectedPerson,dinnerTableId:selectedTable.id,dinnerTableName:selectedTable.name};
       button.innerHTML =
         '<i data-lucide="check-circle-2" class="h-5 w-5"></i> ĐÃ Đặt chỗ XONG';
       if (window.lucide) window.lucide.createIcons();
       isSpinning = false;
+      updateSpinState();
     }, 4700);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     renderWheelLabels();
-    loadTablesFromFirebase();
+    subscribeData();
+    document.getElementById("boctham-search").addEventListener("input",()=>{selectedPerson=null;document.getElementById("selected-person").classList.add("hidden");document.getElementById("result-box").classList.add("hidden");updateSpinState();renderSearchResults();});
+    document.getElementById("boctham-search").addEventListener("focus",renderSearchResults);
+    document.getElementById("boctham-class").addEventListener("change",()=>{selectedPerson=null;document.getElementById("selected-person").classList.add("hidden");updateSpinState();renderSearchResults();});
+    document.addEventListener("click",event=>{if(!event.target.closest("#person-search-results")&&!event.target.closest("#boctham-search"))document.getElementById("person-search-results").classList.add("hidden");});
     document
       .getElementById("form-boc-tham")
       ?.addEventListener("submit", handleSpin);
