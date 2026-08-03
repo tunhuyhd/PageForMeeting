@@ -40,6 +40,7 @@ def convert(source, class_name):
                 "fullName": full_name,
                 "className": class_name,
                 "isFemale": "th\u1ecb" in full_name.casefold().split(),
+                "isAttending": True,
                 "phone": "",
                 "note": source_note,
                 "roomKey": None,

@@ -53,6 +53,7 @@ service cloud.firestore {
           == resource.data.females
             + (get(/databases/$(database)/documents/dinner_candidates/$(request.resource.data.lastAssignedPersonId)).data.isFemale == true ? 1 : 0)
         && request.resource.data.females <= 2
+        && get(/databases/$(database)/documents/dinner_candidates/$(request.resource.data.lastAssignedPersonId)).data.isAttending != false
         && get(/databases/$(database)/documents/dinner_candidates/$(request.resource.data.lastAssignedPersonId)).data.dinnerTableId == null
         && getAfter(/databases/$(database)/documents/dinner_candidates/$(request.resource.data.lastAssignedPersonId)).data.dinnerTableId == tableId
       );
@@ -65,6 +66,8 @@ service cloud.firestore {
       allow read: if true;
       allow create, delete: if isAdmin();
       allow update: if isAdmin() || (
+        resource.data.isAttending != false
+        &&
         resource.data.dinnerTableId == null
         && request.resource.data.diff(resource.data).affectedKeys()
           .hasOnly(['dinnerTableId', 'dinnerTableName', 'dinnerAssignedAt'])
