@@ -88,6 +88,10 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    match /pickleball/{documentId} {
+      allow read, write: if isAdmin();
+    }
+
     match /audit_logs/{logId} {
       allow read, create: if isAdmin();
       allow update, delete: if false;

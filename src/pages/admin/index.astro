@@ -4,6 +4,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const loginUrl = `${base}/admin/login/index.html`;
 const homeUrl = `${base}/`;
 const dinnerUrl = `${base}/admin/dinner/index.html`;
+const pickleballUrl = `${base}/admin/pickleball/index.html`;
 ---
 
 <Layout title="Quản trị thành viên & khách sạn - 96Q">
@@ -17,9 +18,10 @@ const dinnerUrl = `${base}/admin/dinner/index.html`;
     </header>
 
     <main class="mx-auto max-w-[1500px] p-4 sm:p-6">
-      <nav aria-label="Chuyển trang quản trị" class="mb-5 grid grid-cols-2 rounded-xl bg-white p-1 shadow-sm sm:ml-auto sm:w-fit">
+      <nav aria-label="Chuyển trang quản trị" class="mb-5 grid grid-cols-3 rounded-xl bg-white p-1 shadow-sm sm:ml-auto sm:w-fit">
         <span aria-current="page" class="flex items-center justify-center gap-2 rounded-lg bg-navy-900 px-4 py-2.5 text-xs font-bold text-white"><i data-lucide="hotel" class="h-4 w-4"></i>Xếp phòng</span>
         <a href={dinnerUrl} class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-gray-600 transition hover:bg-gold-100 hover:text-navy-900"><i data-lucide="circle-dot" class="h-4 w-4"></i>Bàn Dinner</a>
+        <a href={pickleballUrl} class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-gray-600 transition hover:bg-gold-100 hover:text-navy-900"><i data-lucide="trophy" class="h-4 w-4"></i>Pickleball</a>
       </nav>
       <section class="mb-5 rounded-xl border border-gold-200 bg-gold-50 p-4 shadow-sm"><div class="flex flex-wrap items-center justify-between gap-3"><div><h2 class="font-bold text-navy-900">Hiển thị kết quả trên trang chủ</h2><p class="text-xs text-gray-600">Bật hoặc tắt độc lập hai thẻ tra cứu dành cho thành viên.</p></div><div class="flex flex-wrap gap-4"><label class="flex cursor-pointer items-center gap-2 text-sm font-semibold text-navy-900"><input id="show-accommodation-result" type="checkbox" class="h-5 w-5 accent-gold-500" /> Kết quả xếp chỗ ở</label><label class="flex cursor-pointer items-center gap-2 text-sm font-semibold text-navy-900"><input id="show-dinner-result" type="checkbox" class="h-5 w-5 accent-gold-500" /> Kết quả xếp bàn ăn</label></div></div></section>
       <div class="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4">

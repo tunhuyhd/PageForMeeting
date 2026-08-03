@@ -53,10 +53,10 @@
         </button>
         <h3 class="text-2xl font-bold text-navy-900 mb-6 text-center">GIẢI PICKLEBALL</h3>
         <div class="flex flex-col gap-4">
-            <a href="#" onclick="alert('Đang cập nhật điều lệ giải!'); document.getElementById('pickleball-modal').classList.add('hidden'); document.getElementById('pickleball-modal').classList.remove('flex');" class="flex items-center justify-center gap-3 bg-navy-900 text-white p-4 rounded-xl hover:bg-gold-500 transition-colors font-medium">
+            <button id="open-pickleball-rules" type="button" class="flex items-center justify-center gap-3 bg-navy-900 text-white p-4 rounded-xl hover:bg-gold-500 transition-colors font-medium">
                 <i data-lucide="file-text" class="w-5 h-5"></i>
                 Điều lệ giải
-            </a>
+            </button>
             <a href="#san-pickleball" onclick="document.getElementById('pickleball-modal').classList.add('hidden'); document.getElementById('pickleball-modal').classList.remove('flex')" class="flex items-center justify-center gap-3 bg-gray-100 text-navy-900 p-4 rounded-xl hover:bg-gray-200 transition-colors font-medium">
                 <i data-lucide="map-pin" class="w-5 h-5"></i>
                 Địa điểm thi đấu
@@ -65,8 +65,34 @@
     </div>
 </div>
 
+<div id="pickleball-rules-modal" class="fixed inset-0 z-[120] hidden items-center justify-center bg-navy-950/80 p-3 backdrop-blur-sm sm:p-6" role="dialog" aria-modal="true" aria-labelledby="pickleball-rules-title">
+    <article class="flex max-h-[94dvh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-ivory shadow-2xl">
+        <header class="relative shrink-0 overflow-hidden bg-navy-900 px-12 py-5 text-center text-white sm:px-14 sm:py-7">
+            <div class="absolute inset-x-0 top-0 h-1 bg-gold-400"></div>
+            <button id="close-pickleball-rules" type="button" aria-label="Đóng điều lệ" class="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white/80 transition hover:bg-white/20 hover:text-white"><i data-lucide="x" class="h-5 w-5"></i></button>
+            <span class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-gold-400 text-navy-900 sm:mb-3 sm:h-12 sm:w-12"><i data-lucide="trophy" class="h-5 w-5 sm:h-6 sm:w-6"></i></span>
+            <h2 id="pickleball-rules-title" class="mx-auto max-w-3xl font-serif text-lg font-bold leading-tight text-gold-400 sm:text-2xl lg:text-3xl">ĐIỀU LỆ GIẢI PICKLEBALL<br class="sm:hidden" /> GIAO LƯU 96Q</h2>
+            <p class="mt-2 text-xs leading-5 text-white/75 sm:text-sm">Kỷ niệm 30 năm Hội ngộ lớp 96Q <span class="whitespace-nowrap">(1996–2026)</span></p>
+        </header>
+        <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-5 sm:px-10 sm:py-8">
+            <div class="grid gap-4 md:grid-cols-2">
+                <section class="rounded-xl border border-gold-200 bg-white p-4"><h3 class="mb-2 flex items-center gap-2 font-bold text-navy-900"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-gold-400 text-xs">1</span>Mục đích</h3><ul class="ml-5 list-disc space-y-1 text-sm leading-6 text-gray-700"><li>Tăng cường giao lưu, kết nối giữa các thành viên lớp 96Q1 và 96Q2.</li><li>Thi đấu trên tinh thần đoàn kết, vui vẻ, fair-play.</li></ul></section>
+                <section class="rounded-xl border border-gold-200 bg-white p-4"><h3 class="mb-2 flex items-center gap-2 font-bold text-navy-900"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-gold-400 text-xs">2</span>Thành phần tham gia</h3><ul class="ml-5 list-disc space-y-1 text-sm leading-6 text-gray-700"><li>Các thành viên đăng ký trước thời hạn quy định.</li><li>Ban Tổ chức tổng hợp và công bố danh sách chính thức.</li></ul></section>
+                <section class="rounded-xl border border-gold-200 bg-white p-4"><h3 class="mb-2 flex items-center gap-2 font-bold text-navy-900"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-gold-400 text-xs">3</span>Thành lập đội</h3><ul class="ml-5 list-disc space-y-1 text-sm leading-6 text-gray-700"><li>Mỗi đội gồm 02 vận động viên.</li><li>Hai cặp vợ chồng được giữ nguyên theo danh sách Ban Tổ chức.</li><li>Các đội còn lại được bốc thăm ngẫu nhiên, ghép giữa thành viên 96Q1 và 96Q2 nhằm tăng tính giao lưu.</li></ul></section>
+                <section class="rounded-xl border border-gold-200 bg-white p-4"><h3 class="mb-2 flex items-center gap-2 font-bold text-navy-900"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-gold-400 text-xs">4</span>Thể thức thi đấu</h3><ul class="ml-5 list-disc space-y-1 text-sm leading-6 text-gray-700"><li>Thi đấu đôi nam, đôi nam – nữ hoặc đôi nữ theo kết quả bốc thăm.</li><li>Thể thức vòng tròn hoặc loại trực tiếp sẽ được Ban Tổ chức quyết định căn cứ vào số lượng đội đăng ký.</li></ul></section>
+                <section class="rounded-xl border border-gold-200 bg-white p-4"><h3 class="mb-2 flex items-center gap-2 font-bold text-navy-900"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-gold-400 text-xs">5</span>Luật thi đấu</h3><ul class="ml-5 list-disc space-y-1 text-sm leading-6 text-gray-700"><li>Áp dụng Luật Pickleball hiện hành.</li><li>Trường hợp có tranh chấp, quyết định của Ban Tổ chức là quyết định cuối cùng.</li></ul></section>
+                <section class="rounded-xl border border-gold-200 bg-white p-4"><h3 class="mb-2 flex items-center gap-2 font-bold text-navy-900"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-gold-400 text-xs">6</span>Tinh thần thi đấu</h3><ul class="ml-5 list-disc space-y-1 text-sm leading-6 text-gray-700"><li>Tôn trọng đối thủ, trọng tài và đồng đội.</li><li>Thi đấu trung thực, văn minh.</li><li>Ưu tiên niềm vui hội ngộ hơn thành tích.</li></ul></section>
+                <section class="rounded-xl border border-gold-300 bg-gold-50 p-4 md:col-span-2"><h3 class="mb-2 flex items-center gap-2 font-bold text-navy-900"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-gold-400 text-xs">7</span>Giải thưởng</h3><div class="grid gap-2 text-sm text-gray-700 sm:grid-cols-2"><p>🏆 01 Giải Vô địch</p><p>🥈 01 Giải Nhì</p><p>🥉 02 Giải Ba (nếu áp dụng thể thức phù hợp)</p><p>🎖️ Có thể bổ sung các giải phụ do Ban Tổ chức quyết định.</p></div></section>
+            </div>
+            <blockquote class="mt-5 rounded-xl bg-navy-900 px-5 py-5 text-center font-serif text-lg font-semibold italic leading-7 text-gold-400">“Không chỉ tranh tài – mà còn lưu giữ những khoảnh khắc đáng nhớ sau 30 năm hội ngộ.”</blockquote>
+            <button id="accept-pickleball-rules" type="button" class="mx-auto mt-5 flex items-center justify-center gap-2 rounded-xl bg-gold-400 px-8 py-3 text-sm font-bold text-navy-900 transition hover:bg-gold-500"><i data-lucide="check" class="h-4 w-4"></i>Đã hiểu</button>
+        </div>
+    </article>
+</div>
+
 <script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <script is:inline>
     const resultFirebaseConfig={apiKey:"AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",authDomain:"register-to-participate.firebaseapp.com",projectId:"register-to-participate",storageBucket:"register-to-participate.firebasestorage.app",messagingSenderId:"578991866095",appId:"1:578991866095:web:9ce9b6b5e5d13314359b1a"};if(!firebase.apps.length)firebase.initializeApp(resultFirebaseConfig);firebase.firestore().collection("public_settings").doc("homepage").onSnapshot(doc=>{const data=doc.data()||{},accommodation=document.getElementById("home-accommodation-result"),dinner=document.getElementById("home-dinner-result");accommodation.classList.toggle("hidden",data.showAccommodationResult!==true);accommodation.classList.toggle("flex",data.showAccommodationResult===true);dinner.classList.toggle("hidden",data.showDinnerResult!==true);dinner.classList.toggle("flex",data.showDinnerResult===true);});
+    const pickleballMenu=document.getElementById("pickleball-modal"),rulesModal=document.getElementById("pickleball-rules-modal");function closePickleballRules(){rulesModal.classList.add("hidden");rulesModal.classList.remove("flex");document.body.classList.remove("overflow-hidden")}document.getElementById("open-pickleball-rules").onclick=()=>{pickleballMenu.classList.add("hidden");pickleballMenu.classList.remove("flex");rulesModal.classList.remove("hidden");rulesModal.classList.add("flex");document.body.classList.add("overflow-hidden")};document.getElementById("close-pickleball-rules").onclick=closePickleballRules;document.getElementById("accept-pickleball-rules").onclick=closePickleballRules;rulesModal.onclick=event=>{if(event.target===rulesModal)closePickleballRules()};document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!rulesModal.classList.contains("hidden"))closePickleballRules()});
 </script>

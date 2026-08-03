@@ -4,6 +4,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const loginUrl = `${base}/admin/login/index.html`;
 const homeUrl = `${base}/`;
 const hotelAdminUrl = `${base}/admin/index.html`;
+const pickleballUrl = `${base}/admin/pickleball/index.html`;
 ---
 
 <Layout title="Quản lý bàn Dinner - 96Q">
@@ -17,9 +18,10 @@ const hotelAdminUrl = `${base}/admin/index.html`;
     </header>
 
     <main class="mx-auto max-w-[1450px] p-4 sm:p-6">
-      <nav aria-label="Chuyển trang quản trị" class="mb-5 grid grid-cols-2 rounded-xl bg-white p-1 shadow-sm sm:ml-auto sm:w-fit">
+      <nav aria-label="Chuyển trang quản trị" class="mb-5 grid grid-cols-3 rounded-xl bg-white p-1 shadow-sm sm:ml-auto sm:w-fit">
         <a href={hotelAdminUrl} class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-gray-600 transition hover:bg-gold-100 hover:text-navy-900"><i data-lucide="hotel" class="h-4 w-4"></i>Xếp phòng</a>
         <span aria-current="page" class="flex items-center justify-center gap-2 rounded-lg bg-navy-900 px-4 py-2.5 text-xs font-bold text-white"><i data-lucide="circle-dot" class="h-4 w-4"></i>Bàn Dinner</span>
+        <a href={pickleballUrl} class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-gray-600 transition hover:bg-gold-100 hover:text-navy-900"><i data-lucide="trophy" class="h-4 w-4"></i>Pickleball</a>
       </nav>
       <div class="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4"><div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Tổng thành viên</span><strong id="stat-total" class="mt-1 block text-2xl text-navy-900">0</strong></div><div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Chưa có bàn</span><strong id="stat-unassigned" class="mt-1 block text-2xl text-orange-500">0</strong></div><div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Đã có bàn</span><strong id="stat-assigned" class="mt-1 block text-2xl text-green-600">0</strong></div><div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Chỗ còn lại</span><strong id="stat-available" class="mt-1 block text-2xl text-gold-600">60</strong></div></div>
       <div class="space-y-6">
