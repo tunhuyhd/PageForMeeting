@@ -15,6 +15,8 @@ const loginUrl=`${base}/admin/login/index.html`,homeUrl=`${base}/`,roomUrl=`${ba
         <div class="space-y-5">
           <section class="rounded-2xl bg-white p-5 shadow-sm sm:p-6"><div class="flex items-center gap-3"><span class="flex h-11 w-11 items-center justify-center rounded-full bg-gold-400"><i data-lucide="shuffle" class="h-5 w-5"></i></span><div><h2 class="font-serif text-2xl font-bold text-navy-900">Ghép cặp thi đấu</h2><p class="text-xs text-gray-500">Chọn bảng, người thứ nhất rồi chọn cách ghép</p></div></div><div class="mt-5 grid gap-3 md:grid-cols-2"><label class="rounded-xl border bg-gray-50 p-3 text-sm font-semibold"><span class="block text-xs font-bold text-gold-600">BƯỚC 1</span>Chọn bảng<select id="team-group" class="mt-2 w-full rounded-lg border bg-white px-4 py-3"><option value="A">Bảng A</option><option value="B">Bảng B</option></select></label><label class="rounded-xl border bg-gray-50 p-3 text-sm font-semibold"><span class="block text-xs font-bold text-gold-600">BƯỚC 2</span>Chọn người thứ nhất<select id="player-one" class="mt-2 w-full rounded-lg border bg-white px-4 py-3"><option value="">-- Chọn người chưa có cặp --</option></select></label></div><div id="partner-area" class="mt-5 hidden"><div class="mb-3"><span class="text-xs font-bold text-gold-600">BƯỚC 3</span><h3 class="font-bold text-navy-900">Chọn cách ghép cặp</h3></div><div class="grid gap-5 lg:grid-cols-[minmax(250px,0.8fr)_minmax(350px,1.2fr)]"><div class="rounded-xl border bg-gray-50 p-4"><h4 class="font-bold text-navy-900">Ghép thủ công</h4><p class="mt-1 text-xs text-gray-500">Được phép cùng lớp hoặc khác lớp.</p><select id="player-two" class="mt-4 w-full rounded-xl border bg-white px-4 py-3"><option value="">-- Chọn người đánh cặp --</option></select><button id="pair-manual" class="mt-4 w-full rounded-xl bg-navy-900 px-4 py-3 text-sm font-bold text-white disabled:opacity-40"><i data-lucide="user-plus" class="mr-1 inline h-4 w-4"></i> Ghép cặp đã chọn</button></div><div class="rounded-xl border border-gold-300 bg-gold-50 p-4"><div class="text-center"><h4 class="font-bold text-navy-900">Vòng quay ngẫu nhiên khác lớp</h4><p id="wheel-candidate-count" class="mt-1 text-xs text-gray-600"></p></div><div class="relative mx-auto mt-3 aspect-square w-full max-w-[430px]"><div class="absolute left-1/2 top-0 z-20 h-10 w-10 -translate-x-1/2 bg-navy-900 [clip-path:polygon(0_0,100%_0,50%_100%)]"></div><div id="pickleball-wheel" class="absolute inset-3 overflow-hidden rounded-full border-[8px] border-white bg-gold-400 shadow-xl"></div><button id="pair-random" class="absolute left-1/2 top-1/2 z-30 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[6px] border-white bg-navy-900 text-sm font-extrabold text-gold-400 shadow-lg disabled:bg-gray-400 disabled:text-gray-200">QUAY</button></div></div></div></div><div id="random-result" class="mt-5 hidden rounded-xl border-2 border-gold-400 bg-gold-50 p-4 text-center"></div></section>
           <div class="grid gap-5 lg:grid-cols-2"><section class="rounded-2xl border-t-4 border-blue-500 bg-white p-4 shadow-sm"><h2 class="font-serif text-xl font-bold text-blue-800">Bảng A</h2><div id="teams-a" class="mt-3 space-y-2"></div></section><section class="rounded-2xl border-t-4 border-purple-500 bg-white p-4 shadow-sm"><h2 class="font-serif text-xl font-bold text-purple-800">Bảng B</h2><div id="teams-b" class="mt-3 space-y-2"></div></section></div>
+          <div class="flex justify-end"><button id="open-awards" type="button" class="flex w-full items-center justify-center gap-2 rounded-xl bg-gold-400 px-5 py-3 text-sm font-extrabold text-navy-900 shadow-sm transition hover:bg-gold-500 sm:w-fit"><i data-lucide="trophy" class="h-5 w-5"></i> Xếp hạng giải thưởng</button></div>
+          <section id="awards-modal" class="fixed inset-0 z-[180] hidden items-center justify-center bg-navy-900/70 p-4 backdrop-blur-sm"><div role="dialog" aria-modal="true" aria-labelledby="awards-title" class="max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl sm:p-7"><div class="flex items-start justify-between gap-4"><div class="flex items-center gap-3"><span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-400"><i data-lucide="trophy" class="h-5 w-5 text-navy-900"></i></span><div><h2 id="awards-title" class="font-serif text-2xl font-bold text-navy-900">Xếp hạng giải thưởng</h2><p class="text-xs text-gray-500">Chọn trong các cặp đã được ghép; một cặp chỉ nhận một thứ hạng.</p></div></div><button id="close-awards" type="button" aria-label="Đóng" class="rounded-full bg-gray-100 p-2 text-gray-500 hover:bg-gray-200"><i data-lucide="x" class="h-5 w-5"></i></button></div><div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4"><label class="rounded-xl border-2 border-yellow-400 bg-yellow-50 p-4 text-sm font-bold text-yellow-800"><span class="mb-2 block">🏆 Hạng Nhất</span><select id="award-first" class="w-full rounded-lg border bg-white px-3 py-3 text-sm font-medium text-navy-900"><option value="">-- Chưa chọn --</option></select></label><label class="rounded-xl border-2 border-slate-300 bg-slate-50 p-4 text-sm font-bold text-slate-700"><span class="mb-2 block">🥈 Hạng Nhì</span><select id="award-second" class="w-full rounded-lg border bg-white px-3 py-3 text-sm font-medium text-navy-900"><option value="">-- Chưa chọn --</option></select></label><label class="rounded-xl border-2 border-amber-600 bg-orange-50 p-4 text-sm font-bold text-amber-800"><span class="mb-2 block">🥉 Hạng Ba</span><select id="award-third-one" class="w-full rounded-lg border bg-white px-3 py-3 text-sm font-medium text-navy-900"><option value="">-- Chưa chọn --</option></select></label><label class="rounded-xl border-2 border-amber-600 bg-orange-50 p-4 text-sm font-bold text-amber-800"><span class="mb-2 block">🥉 Hạng Ba</span><select id="award-third-two" class="w-full rounded-lg border bg-white px-3 py-3 text-sm font-medium text-navy-900"><option value="">-- Chưa chọn --</option></select></label></div><div class="mt-6 flex flex-col-reverse gap-3 border-t pt-5 sm:flex-row sm:justify-end"><button id="cancel-awards" type="button" class="rounded-xl border px-5 py-3 text-sm font-bold text-gray-600 hover:bg-gray-50">Hủy</button><button id="save-awards" type="button" class="rounded-xl bg-navy-900 px-6 py-3 text-sm font-bold text-white hover:bg-navy-800"><i data-lucide="save" class="mr-1 inline h-4 w-4"></i> Lưu xếp hạng</button></div></div></section>
         </div>
       </div>
     </main>
@@ -30,4 +32,188 @@ function renderRandomWheel(pool){randomPool=pool;const wheel=document.getElement
 document.getElementById("player-one").onchange=e=>{const p=person(e.target.value),area=document.getElementById("partner-area"),paired=pairedIds();area.classList.toggle("hidden",!p);document.getElementById("random-result").classList.add("hidden");if(!p){randomPool=[];return}const candidates=persons.filter(x=>config.participantIds.includes(x.id)&&!paired.has(x.id)&&x.id!==p.id),opposite=candidates.filter(x=>x.className!==p.className);document.getElementById("player-two").innerHTML='<option value="">-- Chọn người đánh cặp --</option>'+candidates.map(x=>`<option value="${x.id}">${esc(x.fullName)} (${x.className})</option>`).join("");document.getElementById("pair-manual").disabled=true;renderRandomWheel(opposite)};
 async function createPair(twoId,random=false){const one=person(document.getElementById("player-one").value),two=person(twoId);if(!one||!two)return toast("Hãy chọn đủ hai thành viên.",true);const group=document.getElementById("team-group").value;config.teams.push({id:`team-${Date.now()}`,group,playerOneId:one.id,playerTwoId:two.id});await save();document.getElementById("player-one").value="";document.getElementById("partner-area").classList.add("hidden");if(random){const box=document.getElementById("random-result");box.innerHTML=`<b class="text-navy-900">Kết quả ghép ngẫu nhiên vào bảng ${group}</b><p class="mt-2">${esc(one.fullName)} (${one.className})</p><p class="font-bold text-gold-600">&</p><p>${esc(two.fullName)} (${two.className})</p>`;box.classList.remove("hidden")}toast(`Đã thêm cặp vào bảng ${group}.`)}
 document.getElementById("player-two").onchange=e=>document.getElementById("pair-manual").disabled=!e.target.value;document.getElementById("pair-manual").onclick=()=>createPair(document.getElementById("player-two").value);document.getElementById("pair-random").onclick=()=>{if(randomSpinning||!randomPool.length)return;const chosenIndex=Math.floor(Math.random()*randomPool.length),step=360/randomPool.length,normal=((wheelRotation%360)+360)%360,target=(360-chosenIndex*step)%360,wheel=document.getElementById("pickleball-wheel"),button=document.getElementById("pair-random");randomSpinning=true;button.disabled=true;button.textContent="ĐANG QUAY";wheelRotation+=1800+(target-normal+360)%360;wheel.style.transition="transform 4.5s cubic-bezier(.12,.72,.08,1)";wheel.style.transform=`rotate(${wheelRotation}deg)`;setTimeout(async()=>{randomSpinning=false;button.textContent="QUAY";await createPair(randomPool[chosenIndex].id,true)},4600)};document.getElementById("person-search").oninput=render;document.getElementById("person-class").onchange=render;document.getElementById("logout").onclick=async()=>{await auth.signOut();location.replace(loginUrl)};
+const originalPickleballRender=render;
+function normalizeAwards(){if(!config.awards||typeof config.awards!=="object")config.awards={first:null,second:null,third:[]};config.awards.first=config.awards.first||null;config.awards.second=config.awards.second||null;config.awards.third=Array.isArray(config.awards.third)?config.awards.third.slice(0,2):[]}
+function awardLabel(team){const one=person(team.playerOneId),two=person(team.playerTwoId);return `Bảng ${team.group} · ${one?.fullName||"---"} (${one?.className||"---"}) & ${two?.fullName||"---"} (${two?.className||"---"})`}
+function renderAwards(){normalizeAwards();const fields=[["award-first",config.awards.first],["award-second",config.awards.second],["award-third-one",config.awards.third[0]],["award-third-two",config.awards.third[1]]],options=config.teams.map(team=>`<option value="${esc(team.id)}">${esc(awardLabel(team))}</option>`).join("");fields.forEach(([id,value])=>{const select=document.getElementById(id);select.innerHTML='<option value="">-- Chưa chọn --</option>'+options;select.value=config.teams.some(team=>team.id===value)?value:""})}
+const awardSelectIds=["award-first","award-second","award-third-one","award-third-two"];
+const awardsDialog=document.querySelector("#awards-modal [role=dialog]");awardsDialog.className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl sm:p-7";
+const awardsGrid=document.getElementById("award-first").closest(".grid");awardsGrid.className="mt-5 grid gap-4 md:grid-cols-2";
+awardSelectIds.forEach(id=>{const select=document.getElementById(id),label=select.closest("label"),preview=document.createElement("div");label.classList.add("p-5");select.classList.add("truncate");preview.id=`${id}-preview`;preview.className="mt-3 min-h-[108px] rounded-xl border border-white/80 bg-white p-3 shadow-sm";label.appendChild(preview);select.addEventListener("change",updateAwardPreviews)});
+function updateAwardPreviews(){awardSelectIds.forEach(id=>{const select=document.getElementById(id),preview=document.getElementById(`${id}-preview`),team=config.teams.find(item=>item.id===select.value);if(!team){preview.innerHTML='<div class="flex min-h-[80px] items-center justify-center text-center text-xs italic text-gray-400">Chưa chọn cặp nhận giải</div>';return}const one=person(team.playerOneId),two=person(team.playerTwoId);preview.innerHTML=`<div class="mb-2 flex items-center justify-between gap-2"><span class="rounded-full bg-navy-900 px-2.5 py-1 text-[11px] font-extrabold text-white">Bảng ${esc(team.group)}</span><span class="text-[11px] font-semibold text-gray-500">Cặp thi đấu</span></div><div class="space-y-2"><div class="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-navy-900 text-xs font-bold text-gold-400">1</span><span class="min-w-0 flex-1"><b class="block text-sm text-navy-900">${esc(one?.fullName||"Chưa có thông tin")}</b><small class="font-bold text-blue-600">${esc(one?.className||"---")}</small></span></div><div class="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-navy-900 text-xs font-bold text-gold-400">2</span><span class="min-w-0 flex-1"><b class="block text-sm text-navy-900">${esc(two?.fullName||"Chưa có thông tin")}</b><small class="font-bold text-purple-600">${esc(two?.className||"---")}</small></span></div></div>`})}
+const renderAwardFields=renderAwards;renderAwards=function(){renderAwardFields();updateAwardPreviews()};
+render=function(){originalPickleballRender();renderAwards()};
+const awardsModal=document.getElementById("awards-modal");
+function closeAwardsModal(){awardsModal.classList.add("hidden");awardsModal.classList.remove("flex");document.body.style.overflow="";renderAwards()}
+function openAwardsModal(){renderAwards();awardsModal.classList.remove("hidden");awardsModal.classList.add("flex");document.body.style.overflow="hidden";document.getElementById("award-first").focus()}
+document.getElementById("open-awards").onclick=openAwardsModal;document.getElementById("close-awards").onclick=closeAwardsModal;document.getElementById("cancel-awards").onclick=closeAwardsModal;awardsModal.onclick=e=>{if(e.target===awardsModal)closeAwardsModal()};document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!awardsModal.classList.contains("hidden"))closeAwardsModal()});
+document.getElementById("save-awards").onclick=async()=>{const first=document.getElementById("award-first").value,second=document.getElementById("award-second").value,thirdOne=document.getElementById("award-third-one").value,thirdTwo=document.getElementById("award-third-two").value,selected=[first,second,thirdOne,thirdTwo].filter(Boolean);if(new Set(selected).size!==selected.length)return toast("Một cặp không thể nhận nhiều thứ hạng.",true);const button=document.getElementById("save-awards");button.disabled=true;button.classList.add("opacity-60");config.awards={first:first||null,second:second||null,third:[thirdOne,thirdTwo].filter(Boolean)};try{await save();closeAwardsModal();toast("Đã lưu xếp hạng giải thưởng.")}catch{toast("Không thể lưu xếp hạng. Vui lòng thử lại.",true)}finally{button.disabled=false;button.classList.remove("opacity-60")}};
+</script>
+<script is:inline type="application/json">
+const renderPickleballPage = render;
+
+function ensureAwards() {
+  if (!config.awards || typeof config.awards !== "object") {
+    config.awards = { first: null, second: null, third: [] };
+  }
+  config.awards.first = config.awards.first || null;
+  config.awards.second = config.awards.second || null;
+  config.awards.third = Array.isArray(config.awards.third)
+    ? config.awards.third.slice(0, 2)
+    : [];
+}
+
+const savePickleballConfig = save;
+save = async function () {
+  ensureAwards();
+  const teamIds = new Set(config.teams.map((team) => team.id));
+  config.awards.first = teamIds.has(config.awards.first) ? config.awards.first : null;
+  config.awards.second = teamIds.has(config.awards.second) ? config.awards.second : null;
+  config.awards.third = config.awards.third.filter((id) => teamIds.has(id));
+  await savePickleballConfig();
+};
+
+function awardTeamLabel(team) {
+  const first = person(team.playerOneId);
+  const second = person(team.playerTwoId);
+  return `Bảng ${team.group} · ${first?.fullName || "---"} (${first?.className || "---"}) & ${second?.fullName || "---"} (${second?.className || "---"})`;
+}
+
+function renderAwards() {
+  ensureAwards();
+  const fields = [
+    ["award-first", config.awards.first],
+    ["award-second", config.awards.second],
+    ["award-third-one", config.awards.third[0]],
+    ["award-third-two", config.awards.third[1]],
+  ];
+  const options = config.teams
+    .map((team) => `<option value="${esc(team.id)}">${esc(awardTeamLabel(team))}</option>`)
+    .join("");
+
+  fields.forEach(([id, value]) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    select.innerHTML = '<option value="">-- Chưa chọn --</option>' + options;
+    select.value = config.teams.some((team) => team.id === value) ? value : "";
+  });
+}
+
+render = function () {
+  ensureAwards();
+  renderPickleballPage();
+  renderAwards();
+};
+
+document.querySelectorAll("[data-award-select]").forEach((select) => {
+  select.addEventListener("change", async () => {
+    const first = document.getElementById("award-first").value;
+    const second = document.getElementById("award-second").value;
+    const thirdOne = document.getElementById("award-third-one").value;
+    const thirdTwo = document.getElementById("award-third-two").value;
+    const selected = [first, second, thirdOne, thirdTwo].filter(Boolean);
+
+    if (new Set(selected).size !== selected.length) {
+      toast("Một cặp không thể nhận nhiều thứ hạng.", true);
+      renderAwards();
+      return;
+    }
+
+    config.awards = {
+      first: first || null,
+      second: second || null,
+      third: [thirdOne, thirdTwo].filter(Boolean),
+    };
+    try {
+      await save();
+      toast("Đã cập nhật xếp hạng giải thưởng.");
+    } catch {
+      toast("Không thể lưu xếp hạng. Vui lòng thử lại.", true);
+      renderAwards();
+    }
+  });
+});
+
+const awardsPanel = document.getElementById("award-first")?.closest("section");
+if (awardsPanel) {
+  const awardsButton = document.createElement("button");
+  awardsButton.type = "button";
+  awardsButton.className = "flex w-full items-center justify-center gap-2 rounded-xl bg-gold-400 px-5 py-3 text-sm font-extrabold text-navy-900 shadow-sm transition hover:bg-gold-500 sm:ml-auto sm:w-fit";
+  awardsButton.innerHTML = '<i data-lucide="trophy" class="h-5 w-5"></i><span>Xếp hạng giải thưởng</span>';
+  awardsPanel.parentElement.insertBefore(awardsButton, awardsPanel);
+
+  awardsPanel.className = "fixed inset-0 z-[180] hidden items-center justify-center bg-navy-900/70 p-4 backdrop-blur-sm";
+  const dialogContent = document.createElement("div");
+  dialogContent.className = "max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl sm:p-7";
+  while (awardsPanel.firstChild) dialogContent.appendChild(awardsPanel.firstChild);
+  dialogContent.setAttribute("role", "dialog");
+  dialogContent.setAttribute("aria-modal", "true");
+  dialogContent.setAttribute("aria-label", "Xếp hạng giải thưởng Pickleball");
+
+  const actions = document.createElement("div");
+  actions.className = "mt-6 flex flex-col-reverse gap-3 border-t pt-5 sm:flex-row sm:justify-end";
+  actions.innerHTML = '<button id="cancel-awards" type="button" class="rounded-xl border px-5 py-3 text-sm font-bold text-gray-600 hover:bg-gray-50">Hủy</button><button id="save-awards" type="button" class="rounded-xl bg-navy-900 px-6 py-3 text-sm font-bold text-white hover:bg-navy-800"><i data-lucide="save" class="mr-1 inline h-4 w-4"></i> Lưu xếp hạng</button>';
+  dialogContent.appendChild(actions);
+  awardsPanel.appendChild(dialogContent);
+
+  const closeAwards = () => {
+    awardsPanel.classList.add("hidden");
+    awardsPanel.classList.remove("flex");
+    document.body.style.overflow = "";
+    renderAwards();
+  };
+  const openAwards = () => {
+    renderAwards();
+    awardsPanel.classList.remove("hidden");
+    awardsPanel.classList.add("flex");
+    document.body.style.overflow = "hidden";
+    document.getElementById("award-first")?.focus();
+  };
+
+  document.querySelectorAll("[data-award-select]").forEach((select) => {
+    select.addEventListener("change", (event) => event.stopImmediatePropagation(), true);
+  });
+
+  awardsButton.addEventListener("click", openAwards);
+  document.getElementById("cancel-awards").addEventListener("click", closeAwards);
+  awardsPanel.addEventListener("click", (event) => {
+    if (event.target === awardsPanel) closeAwards();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !awardsPanel.classList.contains("hidden")) closeAwards();
+  });
+
+  document.getElementById("save-awards").addEventListener("click", async () => {
+    const first = document.getElementById("award-first").value;
+    const second = document.getElementById("award-second").value;
+    const thirdOne = document.getElementById("award-third-one").value;
+    const thirdTwo = document.getElementById("award-third-two").value;
+    const selected = [first, second, thirdOne, thirdTwo].filter(Boolean);
+    if (new Set(selected).size !== selected.length) {
+      toast("Một cặp không thể nhận nhiều thứ hạng.", true);
+      return;
+    }
+
+    const saveButton = document.getElementById("save-awards");
+    saveButton.disabled = true;
+    saveButton.classList.add("opacity-60");
+    config.awards = {
+      first: first || null,
+      second: second || null,
+      third: [thirdOne, thirdTwo].filter(Boolean),
+    };
+    try {
+      await save();
+      closeAwards();
+      toast("Đã lưu xếp hạng giải thưởng.");
+    } catch {
+      toast("Không thể lưu xếp hạng. Vui lòng thử lại.", true);
+    } finally {
+      saveButton.disabled = false;
+      saveButton.classList.remove("opacity-60");
+    }
+  });
+
+  if (window.lucide) window.lucide.createIcons();
+}
 </script>

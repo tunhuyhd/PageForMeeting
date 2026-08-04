@@ -1,0 +1,155 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const homeUrl = `${base}/`;
+---
+
+<Layout title="Danh sách & xếp hạng Pickleball - 96Q">
+  <main class="min-h-screen bg-gray-100 pb-16">
+    <header class="bg-navy-900 px-4 py-8 text-center text-white shadow-lg">
+      <div class="mx-auto max-w-6xl">
+        <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gold-400 text-navy-900">
+          <i data-lucide="trophy" class="h-7 w-7"></i>
+        </div>
+        <h1 class="font-serif text-3xl font-bold sm:text-4xl">GIẢI PICKLEBALL 96Q</h1>
+        <p class="mt-2 text-sm text-gray-300">Danh sách các cặp thi đấu và kết quả xếp hạng</p>
+        <a href={homeUrl} class="mt-5 inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold hover:bg-white/20">
+          <i data-lucide="arrow-left" class="h-4 w-4"></i> Về trang chủ
+        </a>
+      </div>
+    </header>
+
+    <div id="loading" class="mx-auto flex max-w-6xl items-center justify-center px-4 py-24 text-gray-500">
+      <i data-lucide="loader-2" class="mr-2 h-6 w-6 animate-spin text-gold-500"></i> Đang tải kết quả...
+    </div>
+
+    <section id="unavailable" class="mx-auto hidden max-w-xl px-4 py-20 text-center">
+      <div class="rounded-2xl bg-white p-8 shadow-sm">
+        <i data-lucide="eye-off" class="mx-auto h-12 w-12 text-gray-400"></i>
+        <h2 class="mt-4 text-xl font-bold text-navy-900">Kết quả chưa được công bố</h2>
+        <p class="mt-2 text-sm text-gray-500">Ban tổ chức chưa bật hiển thị danh sách và xếp hạng Pickleball.</p>
+      </div>
+    </section>
+
+    <div id="result-content" class="mx-auto hidden max-w-6xl space-y-7 px-4 py-8 sm:px-6">
+      <section>
+        <div class="mb-4 text-center">
+          <p class="text-xs font-bold uppercase tracking-[0.25em] text-gold-600">Kết quả chung cuộc</p>
+          <h2 class="mt-1 font-serif text-3xl font-bold text-navy-900">Bảng vàng giải đấu</h2>
+        </div>
+        <div id="awards-list" class="grid gap-4 md:grid-cols-2"></div>
+      </section>
+
+      <section class="rounded-2xl bg-white p-5 shadow-sm sm:p-6">
+        <div class="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 class="font-serif text-2xl font-bold text-navy-900">Danh sách tham gia</h2>
+            <p class="text-sm text-gray-500">Các thành viên được Ban tổ chức chọn thi đấu</p>
+          </div>
+          <span id="participant-count" class="rounded-full bg-gold-100 px-3 py-1 text-sm font-bold text-gold-700"></span>
+        </div>
+        <div id="participants" class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </section>
+
+      <section>
+        <div class="mb-4 text-center">
+          <h2 class="font-serif text-3xl font-bold text-navy-900">Hai bảng thi đấu</h2>
+          <p class="mt-1 text-sm text-gray-500">Danh sách các cặp thuộc bảng A và bảng B</p>
+        </div>
+        <div class="grid gap-6 lg:grid-cols-2">
+          <div class="overflow-hidden rounded-2xl border-t-4 border-blue-500 bg-white shadow-sm">
+            <div class="border-b bg-blue-50 px-5 py-4"><h3 class="font-serif text-2xl font-bold text-blue-800">Bảng A</h3><p id="count-a" class="text-xs text-blue-600"></p></div>
+            <div id="public-teams-a" class="space-y-3 p-4"></div>
+          </div>
+          <div class="overflow-hidden rounded-2xl border-t-4 border-purple-500 bg-white shadow-sm">
+            <div class="border-b bg-purple-50 px-5 py-4"><h3 class="font-serif text-2xl font-bold text-purple-800">Bảng B</h3><p id="count-b" class="text-xs text-purple-600"></p></div>
+            <div id="public-teams-b" class="space-y-3 p-4"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",
+    authDomain: "register-to-participate.firebaseapp.com",
+    projectId: "register-to-participate",
+    storageBucket: "register-to-participate.firebasestorage.app",
+    messagingSenderId: "578991866095",
+    appId: "1:578991866095:web:9ce9b6b5e5d13314359b1a",
+  };
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const esc = (value = "") => String(value).replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
+  const loading = document.getElementById("loading");
+  const unavailable = document.getElementById("unavailable");
+  const content = document.getElementById("result-content");
+
+  function personCard(person) {
+    return `<div class="flex items-center gap-3 rounded-xl border bg-gray-50 p-3"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-navy-900 text-sm font-bold text-gold-400">${esc((person?.name || "?").charAt(0))}</span><span class="min-w-0"><b class="block text-sm text-navy-900">${esc(person?.name || "Chưa có thông tin")}</b><small class="font-bold ${person?.className === "96Q1" ? "text-blue-600" : "text-purple-600"}">${esc(person?.className || "---")}</small></span></div>`;
+  }
+
+  function teamCard(team, people, awardName = "") {
+    const one = people.get(team.playerOneId), two = people.get(team.playerTwoId);
+    return `<article class="rounded-xl border bg-white p-4 shadow-sm"><div class="mb-3 flex items-center justify-between gap-2"><b class="text-sm text-navy-900">Cặp thi đấu</b>${awardName ? `<span class="rounded-full bg-gold-400 px-2.5 py-1 text-[11px] font-extrabold text-navy-900">${esc(awardName)}</span>` : ""}</div><div class="space-y-2">${personCard(one)}${personCard(two)}</div></article>`;
+  }
+
+  function renderResults(config, people) {
+    const teams = Array.isArray(config.teams) ? config.teams : [];
+    const awards = config.awards || { first: null, second: null, third: [] };
+    const awardSlots = [
+      { id: awards.first, title: "Hạng Nhất", icon: "🏆", style: "border-yellow-400 bg-yellow-50" },
+      { id: awards.second, title: "Hạng Nhì", icon: "🥈", style: "border-slate-300 bg-slate-50" },
+      { id: awards.third?.[0], title: "Hạng Ba", icon: "🥉", style: "border-amber-500 bg-orange-50" },
+      { id: awards.third?.[1], title: "Hạng Ba", icon: "🥉", style: "border-amber-500 bg-orange-50" },
+    ];
+    document.getElementById("awards-list").innerHTML = awardSlots.map((slot) => {
+      const team = teams.find((item) => item.id === slot.id);
+      return `<div class="rounded-2xl border-2 ${slot.style} p-4"><h3 class="mb-3 text-lg font-extrabold text-navy-900">${slot.icon} ${slot.title}</h3>${team ? teamCard(team, people, `Bảng ${team.group}`) : '<p class="rounded-xl bg-white/70 p-5 text-center text-sm italic text-gray-400">Chưa công bố</p>'}</div>`;
+    }).join("");
+
+    const participantIds = Array.isArray(config.participantIds) ? config.participantIds : [];
+    document.getElementById("participant-count").textContent = `${participantIds.length} thành viên`;
+    document.getElementById("participants").innerHTML = participantIds.map((id) => personCard(people.get(id))).join("") || '<p class="text-sm italic text-gray-400">Chưa có danh sách tham gia.</p>';
+
+    ["A", "B"].forEach((group) => {
+      const groupTeams = teams.filter((team) => team.group === group);
+      document.getElementById(`count-${group.toLowerCase()}`).textContent = `${groupTeams.length} cặp thi đấu`;
+      document.getElementById(`public-teams-${group.toLowerCase()}`).innerHTML = groupTeams.map((team) => {
+        let award = "";
+        if (awards.first === team.id) award = "Hạng Nhất";
+        else if (awards.second === team.id) award = "Hạng Nhì";
+        else if ((awards.third || []).includes(team.id)) award = "Hạng Ba";
+        return teamCard(team, people, award);
+      }).join("") || '<p class="py-10 text-center text-sm italic text-gray-400">Chưa có cặp thi đấu</p>';
+    });
+  }
+
+  async function loadResults() {
+    try {
+      const settings = await db.collection("public_settings").doc("pickleball").get();
+      if (settings.data()?.showResult !== true) {
+        loading.classList.add("hidden");
+        unavailable.classList.remove("hidden");
+        return;
+      }
+      const [configDoc, peopleSnapshot] = await Promise.all([
+        db.collection("pickleball").doc("config").get(),
+        db.collection("public_results").get(),
+      ]);
+      const people = new Map(peopleSnapshot.docs.map((doc) => [doc.id, doc.data()]));
+      renderResults(configDoc.data() || {}, people);
+      loading.classList.add("hidden");
+      content.classList.remove("hidden");
+      if (window.lucide) window.lucide.createIcons();
+    } catch (error) {
+      loading.innerHTML = `<span class="text-red-600">Không thể tải kết quả: ${esc(error.message)}</span>`;
+    }
+  }
+  loadResults();
+</script>

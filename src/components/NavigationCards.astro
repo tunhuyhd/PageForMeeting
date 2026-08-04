@@ -1,5 +1,5 @@
 ---
-
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <section class="py-12 -mt-16 relative z-20">
@@ -7,7 +7,7 @@
     <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
       <a
         id="home-accommodation-result"
-        href={import.meta.env.BASE_URL + "danh-sach/o-ghep/index.html"}
+        href={`${base}/danh-sach/o-ghep/index.html`}
         class="order-last hidden rounded-xl border border-gold-400 bg-gold-400 p-6 shadow-md transition-all hover:-translate-y-1 hover:bg-gold-500 flex-col items-center text-center group md:col-start-2"
       >
         <div
@@ -22,7 +22,7 @@
       </a>
       <a
         id="home-dinner-result"
-        href={import.meta.env.BASE_URL + "danh-sach/ban-an/index.html"}
+        href={`${base}/danh-sach/ban-an/index.html`}
         class="order-last hidden rounded-xl border border-gold-400 bg-gold-400 p-6 shadow-md transition-all hover:-translate-y-1 hover:bg-gold-500 flex-col items-center text-center group"
       >
         <div
@@ -131,6 +131,15 @@
       >
         <i data-lucide="map-pin" class="w-5 h-5"></i>
         Địa điểm thi đấu
+      </a>
+      <a
+        id="public-pickleball-result"
+        href={`${base}/danh-sach/pickleball/index.html`}
+        style="display: none"
+        class="items-center justify-center gap-3 rounded-xl bg-gold-400 p-4 font-bold text-navy-900 transition-colors hover:bg-gold-500"
+      >
+        <i data-lucide="trophy" class="h-5 w-5"></i>
+        Danh sách tham gia & xếp hạng
       </a>
     </div>
   </div>
@@ -365,7 +374,8 @@
     .onSnapshot((doc) => {
       const data = doc.data() || {},
         accommodation = document.getElementById("home-accommodation-result"),
-        dinner = document.getElementById("home-dinner-result");
+        dinner = document.getElementById("home-dinner-result"),
+        pickleballResult = document.getElementById("public-pickleball-result");
       accommodation.classList.toggle(
         "hidden",
         data.showAccommodationResult !== true,
@@ -376,6 +386,15 @@
       );
       dinner.classList.toggle("hidden", data.showDinnerResult !== true);
       dinner.classList.toggle("flex", data.showDinnerResult === true);
+    });
+  firebase
+    .firestore()
+    .collection("public_settings")
+    .doc("pickleball")
+    .onSnapshot((doc) => {
+      const pickleballResult = document.getElementById("public-pickleball-result");
+      pickleballResult.style.display =
+        doc.data()?.showResult === true ? "flex" : "none";
     });
   const pickleballMenu = document.getElementById("pickleball-modal"),
     rulesModal = document.getElementById("pickleball-rules-modal");

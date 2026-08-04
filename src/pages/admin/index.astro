@@ -104,6 +104,14 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
                 class="h-5 w-5 accent-gold-500"
               /> Kết quả xếp bàn ăn</label
             >
+            <label
+              class="flex cursor-pointer items-center gap-2 text-sm font-semibold text-navy-900"
+              ><input
+                id="show-pickleball-result"
+                type="checkbox"
+                class="h-5 w-5 accent-gold-500"
+              /> Danh sách & xếp hạng Pickleball</label
+            >
           </div>
         </div>
       </section>
@@ -552,16 +560,6 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     } catch (error) {
       toast(`Không thể khởi tạo phòng: ${error.message}`, true);
     }
-    try {
-      await syncRoomMetadata();
-    } catch (error) {
-      toast(`Không thể đồng bộ thông tin phòng: ${error.message}`, true);
-    }
-    try {
-      await syncDinnerCandidates();
-    } catch (error) {
-      toast(`Không thể đồng bộ danh sách Dinner: ${error.message}`, true);
-    }
   });
   async function initializeRooms() {
     const batch = db.batch();
@@ -695,9 +693,6 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
         (s) => {
           persons = s.docs.map((d) => ({ id: d.id, ...d.data() }));
           renderAll();
-          syncPublicResults().catch((e) =>
-            toast(`Không đồng bộ được kết quả công khai: ${e.message}`, true),
-          );
         },
         (e) => toast(`Không tải được danh sách: ${e.message}`, true),
       );
@@ -718,6 +713,15 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
         document.getElementById("show-dinner-result").checked =
           data.showDinnerResult === true;
       });
+    db.collection("public_settings")
+      .doc("pickleball")
+      .onSnapshot(
+        (doc) => {
+          document.getElementById("show-pickleball-result").checked =
+            doc.data()?.showResult === true;
+        },
+        (error) => toast(`Không tải được trạng thái Pickleball: ${error.message}`, true),
+      );
   }
   function renderAll() {
     const attending = persons.filter((p) => p.isAttending !== false),
@@ -1115,9 +1119,8 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
       return;
     }
     try {
-      if (id) await db.collection("persons").doc(id).update(data);
-      else
-        await db.collection("persons").add({
+      let personRef;
+      const completeData = id ? { ...old, ...data } : {
           ...data,
           isAttending: true,
           roomKey: null,
@@ -1127,8 +1130,32 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
           dinnerTableId: null,
           dinnerTableName: null,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-      await syncDinnerCandidates();
+        };
+      if (id) {
+        personRef = db.collection("persons").doc(id);
+        await personRef.update(data);
+      } else {
+        personRef = await db.collection("persons").add(completeData);
+      }
+      const publicBatch = db.batch();
+      publicBatch.set(db.collection("dinner_candidates").doc(personRef.id), {
+        fullName: completeData.fullName,
+        className: completeData.className,
+        isFemale: Boolean(completeData.isFemale),
+        isAttending: completeData.isAttending !== false,
+        dinnerTableId: completeData.dinnerTableId || null,
+        dinnerTableName: completeData.dinnerTableName || null,
+      }, { merge: true });
+      publicBatch.set(db.collection("public_results").doc(personRef.id), {
+        name: completeData.fullName,
+        className: completeData.className,
+        isFemale: Boolean(completeData.isFemale),
+        isAttending: completeData.isAttending !== false,
+        hotelName: completeData.hotelName || null,
+        roomNumber: completeData.roomNumber || null,
+        tableName: completeData.dinnerTableName || null,
+      }, { merge: true });
+      await publicBatch.commit();
       closePersonModal();
       toast(id ? "Đã cập nhật thành viên." : "Đã thêm thành viên.");
     } catch (err) {
@@ -1328,6 +1355,27 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     updateHomepageSetting("showAccommodationResult", event.target.checked);
   document.getElementById("show-dinner-result").onchange = (event) =>
     updateHomepageSetting("showDinnerResult", event.target.checked);
+  document.getElementById("show-pickleball-result").onchange = async (event) => {
+    const checkbox = event.target,
+      value = checkbox.checked;
+    checkbox.disabled = true;
+    try {
+      await db.collection("public_settings").doc("pickleball").set(
+        {
+          showResult: value,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedBy: currentAdmin.uid,
+        },
+        { merge: true },
+      );
+      toast(value ? "Đã công khai kết quả Pickleball." : "Đã ẩn kết quả Pickleball.");
+    } catch (error) {
+      checkbox.checked = !value;
+      toast(`Không cập nhật được Pickleball: ${error.message}`, true);
+    } finally {
+      checkbox.disabled = false;
+    }
+  };
   document.getElementById("logout-button").onclick = async () => {
     await auth.signOut();
     location.replace(loginUrl);

@@ -393,7 +393,6 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     subscribe();
     try {
       await initializeTables();
-      await syncDinnerCandidates();
     } catch (error) {
       toast(
         "Chưa thể đồng bộ danh sách Dinner. Hãy cập nhật firestore.rules trên Firebase Console.",
@@ -472,9 +471,6 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
           persons = s.docs.map((d) => ({ id: d.id, ...d.data() }));
           render();
           renderDinnerPersons();
-          syncPublicResults().catch((e) =>
-            toast(`Không đồng bộ được kết quả công khai: ${e.message}`, true),
-          );
         },
         (e) => toast(e.message, true),
       );

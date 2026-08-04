@@ -89,7 +89,9 @@ service cloud.firestore {
     }
 
     match /pickleball/{documentId} {
-      allow read, write: if isAdmin();
+      allow read: if isAdmin()
+        || get(/databases/$(database)/documents/public_settings/pickleball).data.showResult == true;
+      allow write: if isAdmin();
     }
 
     match /audit_logs/{logId} {
