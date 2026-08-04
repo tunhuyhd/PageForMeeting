@@ -88,7 +88,12 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
             </h2><p class="text-xs text-gray-600">
               Bật hoặc tắt độc lập hai thẻ tra cứu dành cho thành viên.
             </p>
-          </div><div class="flex flex-wrap gap-4">
+          </div><div class="flex flex-wrap items-center gap-4">
+            <button
+              id="sync-accommodation-results"
+              type="button"
+              class="rounded-lg border border-navy-900 bg-white px-3 py-2 text-xs font-bold text-navy-900 hover:bg-navy-900 hover:text-white"
+            >Đồng bộ dữ liệu chỗ ở</button>
             <label
               class="flex cursor-pointer items-center gap-2 text-sm font-semibold text-navy-900"
               ><input
@@ -685,9 +690,24 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     }
   }
   async function syncPublicResults() {
-    for (let start = 0; start < persons.length; start += 400) {
+    const [personSnapshot, roomSnapshot] = await Promise.all([
+        db.collection("persons").get(),
+        db.collection("rooms").get(),
+      ]),
+      currentPersons = personSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })),
+      currentRooms = {};
+    roomSnapshot.docs.forEach(
+      (doc) => (currentRooms[doc.id] = { id: doc.id, ...doc.data() }),
+    );
+    for (let start = 0; start < currentPersons.length; start += 400) {
       const batch = db.batch();
-      persons.slice(start, start + 400).forEach((person) =>
+      currentPersons.slice(start, start + 400).forEach((person) => {
+        const assignedRoom = person.roomKey
+          ? currentRooms[person.roomKey]
+          : null;
         batch.set(
           db.collection("public_results").doc(person.id),
           {
@@ -695,13 +715,14 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
             className: person.className,
             isFemale: Boolean(person.isFemale),
             isAttending: person.isAttending !== false,
-            hotelName: person.hotelName || null,
-            roomNumber: person.roomNumber || null,
+            roomKey: person.roomKey || null,
+            hotelName: assignedRoom?.hotelName || null,
+            roomNumber: assignedRoom?.roomNumber || null,
             tableName: person.dinnerTableName || null,
           },
           { merge: false },
-        ),
-      );
+        );
+      });
       await batch.commit();
     }
   }
@@ -1080,6 +1101,7 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
       await db.runTransaction(async (tx) => {
         const personRef = db.collection("persons").doc(personId),
           targetRef = db.collection("rooms").doc(targetKey),
+          publicRef = db.collection("public_results").doc(personId),
           personSnap = await tx.get(personRef),
           targetSnap = await tx.get(targetRef);
         if (!personSnap.exists || !targetSnap.exists)
@@ -1120,6 +1142,19 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
           updatedBy: currentAdmin.uid,
         });
+        tx.set(
+          publicRef,
+          {
+            name: p.fullName,
+            className: p.className,
+            isFemale: Boolean(p.isFemale),
+            isAttending: p.isAttending !== false,
+            roomKey: targetKey,
+            hotelName: target.hotelName,
+            roomNumber: target.roomNumber,
+          },
+          { merge: true },
+        );
       });
       toast("Đã xếp phòng thành công.");
     } catch (e) {
@@ -1133,6 +1168,7 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     try {
       await db.runTransaction(async (tx) => {
         const pRef = db.collection("persons").doc(personId),
+          publicRef = db.collection("public_results").doc(personId),
           rRef = db.collection("rooms").doc(p.roomKey),
           rSnap = await tx.get(rRef);
         if (rSnap.exists)
@@ -1145,6 +1181,19 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
           updatedBy: currentAdmin.uid,
         });
+        tx.set(
+          publicRef,
+          {
+            name: p.fullName,
+            className: p.className,
+            isFemale: Boolean(p.isFemale),
+            isAttending: p.isAttending !== false,
+            roomKey: null,
+            hotelName: null,
+            roomNumber: null,
+          },
+          { merge: true },
+        );
       });
       toast("Đã gỡ người khỏi phòng.");
     } catch (e) {
@@ -1225,6 +1274,7 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
         className: completeData.className,
         isFemale: Boolean(completeData.isFemale),
         isAttending: completeData.isAttending !== false,
+        roomKey: completeData.roomKey || null,
         hotelName: completeData.hotelName || null,
         roomNumber: completeData.roomNumber || null,
         tableName: completeData.dinnerTableName || null,
@@ -1434,6 +1484,20 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
   }
   document.getElementById("show-accommodation-result").onchange = (event) =>
     updateHomepageSetting("showAccommodationResult", event.target.checked);
+  document.getElementById("sync-accommodation-results").onclick = async (event) => {
+    const button = event.currentTarget;
+    button.disabled = true;
+    button.textContent = "Đang đồng bộ...";
+    try {
+      await syncPublicResults();
+      toast("Đã đồng bộ dữ liệu chỗ ở công khai.");
+    } catch (error) {
+      toast(error.message, true);
+    } finally {
+      button.disabled = false;
+      button.textContent = "Đồng bộ dữ liệu chỗ ở";
+    }
+  };
   document.getElementById("show-dinner-result").onchange = (event) =>
     updateHomepageSetting("showDinnerResult", event.target.checked);
   document.getElementById("show-pickleball-result").onchange = async (event) => {
