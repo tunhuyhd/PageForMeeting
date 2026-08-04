@@ -8,68 +8,851 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
 ---
 
 <Layout title="Quản lý bàn Dinner - 96Q">
-  <div id="auth-loading" class="fixed inset-0 z-[200] flex items-center justify-center bg-navy-900 text-white"><div class="text-center"><i data-lucide="loader-2" class="mx-auto h-9 w-9 animate-spin text-gold-400"></i><p class="mt-3 text-sm">Đang kiểm tra quyền quản trị...</p></div></div>
+  <div
+    id="auth-loading"
+    class="fixed inset-0 z-[200] flex items-center justify-center bg-navy-900 text-white"
+  >
+    <div class="text-center">
+      <i
+        data-lucide="loader-2"
+        class="mx-auto h-9 w-9 animate-spin text-gold-400"></i><p
+        class="mt-3 text-sm"
+      >
+        Đang kiểm tra quyền quản trị...
+      </p>
+    </div>
+  </div>
   <div id="admin-app" class="hidden min-h-screen bg-gray-100">
-    <header class="sticky top-0 z-40 border-b border-white/10 bg-navy-900 text-white shadow-lg">
-      <div class="mx-auto flex max-w-[1450px] items-center justify-between gap-3 px-4 py-3 sm:px-6">
-        <div class="flex items-center gap-3"><img src={`${base}/logo30.png`} alt="96Q" class="h-11 w-auto" /><div><h1 class="font-serif font-bold">Quản lý bàn Dinner</h1><p class="text-[10px] uppercase tracking-wider text-gold-400">30 năm hội ngộ 96Q</p></div></div>
-        <div class="flex items-center gap-2"><span id="admin-email-label" class="hidden text-xs text-gray-300 lg:block"></span><button id="logout-button" class="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-xs font-semibold hover:bg-red-500"><i data-lucide="log-out" class="h-4 w-4"></i><span class="hidden sm:inline">Đăng xuất</span></button></div>
+    <header
+      class="sticky top-0 z-40 border-b border-white/10 bg-navy-900 text-white shadow-lg"
+    >
+      <div
+        class="mx-auto flex max-w-[1450px] items-center justify-between gap-3 px-4 py-3 sm:px-6"
+      >
+        <div class="flex items-center gap-3">
+          <img src={`${base}/logo30.png`} alt="96Q" class="h-11 w-auto" /><div>
+            <h1 class="font-serif font-bold">Quản lý bàn Dinner</h1><p
+              class="text-[10px] uppercase tracking-wider text-gold-400"
+            >
+              30 năm hội ngộ 96Q
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            id="admin-email-label"
+            class="hidden text-xs text-gray-300 lg:block"></span><button
+            id="logout-button"
+            class="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-xs font-semibold hover:bg-red-500"
+            ><i data-lucide="log-out" class="h-4 w-4"></i><span
+              class="hidden sm:inline">Đăng xuất</span
+            ></button
+          >
+        </div>
       </div>
     </header>
 
     <main class="mx-auto max-w-[1450px] p-4 sm:p-6">
-      <nav aria-label="Chuyển trang quản trị" class="mb-5 grid grid-cols-3 rounded-xl bg-white p-1 shadow-sm sm:ml-auto sm:w-fit">
-        <a href={hotelAdminUrl} class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-gray-600 transition hover:bg-gold-100 hover:text-navy-900"><i data-lucide="hotel" class="h-4 w-4"></i>Xếp phòng</a>
-        <span aria-current="page" class="flex items-center justify-center gap-2 rounded-lg bg-navy-900 px-4 py-2.5 text-xs font-bold text-white"><i data-lucide="circle-dot" class="h-4 w-4"></i>Bàn Dinner</span>
-        <a href={pickleballUrl} class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-gray-600 transition hover:bg-gold-100 hover:text-navy-900"><i data-lucide="trophy" class="h-4 w-4"></i>Pickleball</a>
+      <nav
+        aria-label="Chuyển trang quản trị"
+        class="mb-5 grid grid-cols-3 rounded-xl bg-white p-1 shadow-sm sm:ml-auto sm:w-fit"
+      >
+        <a
+          href={hotelAdminUrl}
+          class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-gray-600 transition hover:bg-gold-100 hover:text-navy-900"
+          ><i data-lucide="hotel" class="h-4 w-4"></i>Xếp phòng</a
+        >
+        <span
+          aria-current="page"
+          class="flex items-center justify-center gap-2 rounded-lg bg-navy-900 px-4 py-2.5 text-xs font-bold text-white"
+          ><i data-lucide="circle-dot" class="h-4 w-4"></i>Bàn Dinner</span
+        >
+        <a
+          href={pickleballUrl}
+          class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-gray-600 transition hover:bg-gold-100 hover:text-navy-900"
+          ><i data-lucide="trophy" class="h-4 w-4"></i>Pickleball</a
+        >
       </nav>
-      <div class="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4"><div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Tổng thành viên</span><strong id="stat-total" class="mt-1 block text-2xl text-navy-900">0</strong></div><div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Chưa có bàn</span><strong id="stat-unassigned" class="mt-1 block text-2xl text-orange-500">0</strong></div><div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Đã có bàn</span><strong id="stat-assigned" class="mt-1 block text-2xl text-green-600">0</strong></div><div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Chỗ còn lại</span><strong id="stat-available" class="mt-1 block text-2xl text-gold-600">60</strong></div></div>
+      <div class="mb-5 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+        <div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Tổng thành viên</span><strong id="stat-total" class="mt-1 block text-2xl text-navy-900">0</strong></div>
+        <div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Thành viên không tham gia</span><strong id="stat-not-attending" class="mt-1 block text-2xl text-gray-500">0</strong></div>
+        <div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Thành viên tham gia</span><strong id="stat-attending" class="mt-1 block text-2xl text-blue-600">0</strong></div>
+        <div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Đã có bàn</span><strong id="stat-assigned" class="mt-1 block text-2xl text-green-600">0</strong></div>
+        <div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Chưa có bàn</span><strong id="stat-unassigned" class="mt-1 block text-2xl text-orange-500">0</strong></div>
+        <div class="rounded-xl bg-white p-4 shadow-sm"><span class="text-xs text-gray-500">Chỗ ngồi còn lại</span><strong id="stat-available" class="mt-1 block text-2xl text-gold-600">60</strong></div>
+      </div>
       <div class="space-y-6">
         <section class="rounded-2xl bg-white p-5 shadow-sm sm:p-7">
-          <div class="grid gap-8 lg:grid-cols-[400px_1fr] lg:items-start xl:grid-cols-[440px_1fr]">
-          <div class="border-b border-gray-200 pb-6 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-7">
-            <div class="flex items-start justify-between gap-3"><div><h2 class="font-serif text-xl font-bold text-navy-900">Danh sách các thành viên</h2><p class="mt-1 text-xs text-gray-500">Chọn người chưa có bàn để quay</p></div><span id="dinner-person-count" class="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-bold text-gray-600">0 người</span></div>
-            <div class="mt-4 grid grid-cols-[1fr_auto] gap-2"><div class="relative"><i data-lucide="search" class="absolute left-3 top-2.5 h-4 w-4 text-gray-400"></i><input id="dinner-list-search" type="search" placeholder="Tìm theo tên, lớp..." class="w-full rounded-lg border border-gray-200 py-2 pl-9 pr-3 text-sm outline-none focus:border-gold-500" /></div><select id="dinner-list-filter" class="rounded-lg border border-red-300 bg-red-50 px-2 text-xs font-semibold text-red-700 outline-none"><option value="all">Tất cả</option><option value="unassigned" selected>Chưa có bàn</option><option value="assigned">Đã có bàn</option><option value="not-attending">Không tham gia</option><option value="96Q1">96Q1</option><option value="96Q2">96Q2</option></select></div>
-            <div id="dinner-person-list" class="mt-3 max-h-80 overflow-y-auto pr-1"></div>
-          </div>
-          <div class="min-w-0"><div class="text-center"><h2 class="font-serif text-2xl font-bold text-navy-900">Vòng quay bàn ăn</h2><p class="mt-1 text-sm text-gray-500">Chọn một thành viên chưa có bàn ở danh sách bên trái rồi nhấn quay</p></div>
-          <div class="mt-5"><select id="dinner-class-filter" class="hidden"><option value="">Tất cả lớp</option><option value="96Q1">96Q1</option><option value="96Q2">96Q2</option></select><input id="dinner-person-search" type="hidden" /><div id="dinner-person-results" class="hidden"></div><input id="dinner-person-select" type="hidden" /><div id="dinner-selected-person" class="hidden rounded-xl border-2 border-gold-400 bg-gold-50 p-3"></div></div>
-          <div class="relative mx-auto mt-8 aspect-square w-full max-w-[520px]"><div class="absolute left-1/2 top-0 z-10 h-12 w-12 -translate-x-1/2 bg-navy-900 [clip-path:polygon(0_0,100%_0,50%_100%)]"></div><div id="dinner-wheel" class="absolute inset-4 rounded-full border-[10px] border-white bg-[conic-gradient(from_-30deg,#d4af37_0deg_60deg,#ef8354_60deg_120deg,#6aa7a1_120deg_180deg,#5b7cba_180deg_240deg,#9b72cf_240deg_300deg,#d96f91_300deg_360deg)] shadow-xl"></div><button id="spin-button" type="button" disabled class="absolute left-1/2 top-1/2 z-20 flex h-28 w-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[7px] border-white/80 bg-white text-base font-extrabold tracking-wider text-navy-900 shadow-lg disabled:cursor-not-allowed disabled:text-gray-300 sm:h-32 sm:w-32">QUAY</button></div>
-          <div id="dinner-result" class="mt-4 hidden rounded-xl border-2 border-gold-400 bg-gold-50 p-4 text-center"></div>
-          </div>
+          <div
+            class="grid gap-8 lg:grid-cols-[400px_1fr] lg:items-start xl:grid-cols-[440px_1fr]"
+          >
+            <div
+              class="border-b border-gray-200 pb-6 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-7"
+            >
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h2 class="font-serif text-xl font-bold text-navy-900">
+                    Danh sách các thành viên
+                  </h2><p class="mt-1 text-xs text-gray-500">
+                    Chọn người chưa có bàn để quay
+                  </p>
+                </div><span
+                  id="dinner-person-count"
+                  class="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-bold text-gray-600"
+                  >0 người</span
+                >
+              </div>
+              <div class="mt-4 grid grid-cols-[1fr_auto] gap-2">
+                <div class="relative">
+                  <i
+                    data-lucide="search"
+                    class="absolute left-3 top-2.5 h-4 w-4 text-gray-400"
+                  ></i><input
+                    id="dinner-list-search"
+                    type="search"
+                    placeholder="Tìm theo tên, lớp..."
+                    class="w-full rounded-lg border border-gray-200 py-2 pl-9 pr-3 text-sm outline-none focus:border-gold-500"
+                  />
+                </div><select
+                  id="dinner-list-filter"
+                  class="rounded-lg border border-red-300 bg-red-50 px-2 text-xs font-semibold text-red-700 outline-none"
+                  ><option value="all">Tất cả</option><option
+                    value="unassigned"
+                    selected>Chưa có bàn</option
+                  ><option value="assigned">Đã có bàn</option><option
+                    value="attending">Xác nhận tham gia</option><option
+                    value="not-attending">Không tham gia</option
+                  ><option value="96Q1">96Q1</option><option value="96Q2"
+                    >96Q2</option
+                  ></select
+                >
+              </div>
+              <div
+                id="dinner-person-list"
+                class="mt-3 max-h-80 overflow-y-auto pr-1"
+              >
+              </div>
+            </div>
+            <div class="min-w-0">
+              <div class="text-center">
+                <h2 class="font-serif text-2xl font-bold text-navy-900">
+                  Vòng quay bàn ăn
+                </h2><p class="mt-1 text-sm text-gray-500">
+                  Chọn một thành viên chưa có bàn ở danh sách bên trái rồi nhấn
+                  quay
+                </p>
+              </div>
+              <div class="mt-5">
+                <select id="dinner-class-filter" class="hidden"
+                  ><option value="">Tất cả lớp</option><option value="96Q1"
+                    >96Q1</option
+                  ><option value="96Q2">96Q2</option></select
+                ><input id="dinner-person-search" type="hidden" /><div
+                  id="dinner-person-results"
+                  class="hidden"
+                >
+                </div><input id="dinner-person-select" type="hidden" /><div
+                  id="dinner-selected-person"
+                  class="hidden rounded-xl border-2 border-gold-400 bg-gold-50 p-3"
+                >
+                </div>
+              </div>
+              <div
+                class="relative mx-auto mt-8 aspect-square w-full max-w-[520px]"
+              >
+                <div
+                  class="absolute left-1/2 top-0 z-10 h-12 w-12 -translate-x-1/2 bg-navy-900 [clip-path:polygon(0_0,100%_0,50%_100%)]"
+                >
+                </div><div
+                  id="dinner-wheel"
+                  class="absolute inset-4 rounded-full border-[10px] border-white bg-[conic-gradient(from_-30deg,#d4af37_0deg_60deg,#ef8354_60deg_120deg,#6aa7a1_120deg_180deg,#5b7cba_180deg_240deg,#9b72cf_240deg_300deg,#d96f91_300deg_360deg)] shadow-xl"
+                >
+                </div><button
+                  id="spin-button"
+                  type="button"
+                  disabled
+                  class="absolute left-1/2 top-1/2 z-20 flex h-28 w-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[7px] border-white/80 bg-white text-base font-extrabold tracking-wider text-navy-900 shadow-lg disabled:cursor-not-allowed disabled:text-gray-300 sm:h-32 sm:w-32"
+                  >QUAY</button
+                >
+              </div>
+              <div
+                id="dinner-result"
+                class="mt-4 hidden rounded-xl border-2 border-gold-400 bg-gold-50 p-4 text-center"
+              >
+              </div>
+            </div>
           </div>
         </section>
-        <section><div class="mb-4 flex items-end justify-between"><div><h2 class="font-serif text-2xl font-bold text-navy-900">Danh sách bàn Dinner</h2><p class="text-xs text-gray-500">6 bàn · tối đa 10 người mỗi bàn</p></div><span id="unassigned-label" class="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-600"></span></div><div id="tables-container" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3"></div></section>
+        <section>
+          <div class="mb-4 flex items-end justify-between">
+            <div>
+              <h2 class="font-serif text-2xl font-bold text-navy-900">
+                Danh sách bàn Dinner
+              </h2><p class="text-xs text-gray-500">
+                6 bàn · tối đa 10 người mỗi bàn
+              </p>
+            </div><span
+              id="unassigned-label"
+              class="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-600"
+            ></span>
+          </div><div
+            id="tables-container"
+            class="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
+          >
+          </div>
+        </section>
       </div>
     </main>
   </div>
-  <div id="dinner-confirm-modal" class="fixed inset-0 z-[140] hidden items-center justify-center bg-navy-900/70 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="dinner-confirm-title">
-    <div class="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
-      <div class="bg-navy-900 px-6 py-5 text-white"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 text-red-600"><i data-lucide="user-minus" class="h-5 w-5"></i></span><div><h2 id="dinner-confirm-title" class="font-serif text-xl font-bold">Xác nhận gỡ khỏi bàn</h2><p class="text-xs text-white/70">Cập nhật vị trí Dinner</p></div></div></div>
-      <div class="p-6"><p id="dinner-confirm-message" class="font-semibold leading-6 text-navy-900"></p><p class="mt-3 rounded-lg bg-amber-50 p-3 text-sm leading-6 text-amber-800">Thành viên sẽ trở lại danh sách “Chưa có bàn” và có thể được chọn để quay lại.</p><div class="mt-6 grid grid-cols-2 gap-3"><button id="dinner-confirm-cancel" type="button" class="rounded-lg border border-gray-300 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-50">Hủy</button><button id="dinner-confirm-accept" type="button" class="rounded-lg bg-red-600 py-2.5 text-sm font-bold text-white hover:bg-red-700">Gỡ khỏi bàn</button></div></div>
+  <div
+    id="dinner-confirm-modal"
+    class="fixed inset-0 z-[140] hidden items-center justify-center bg-navy-900/70 p-4 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dinner-confirm-title"
+  >
+    <div
+      class="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl"
+    >
+      <div class="bg-navy-900 px-6 py-5 text-white">
+        <div class="flex items-center gap-3">
+          <span
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 text-red-600"
+            ><i data-lucide="user-minus" class="h-5 w-5"></i></span
+          ><div>
+            <h2 id="dinner-confirm-title" class="font-serif text-xl font-bold">
+              Xác nhận gỡ khỏi bàn
+            </h2><p class="text-xs text-white/70">Cập nhật vị trí Dinner</p>
+          </div>
+        </div>
+      </div>
+      <div class="p-6">
+        <p
+          id="dinner-confirm-message"
+          class="font-semibold leading-6 text-navy-900"
+        >
+        </p><p
+          class="mt-3 rounded-lg bg-amber-50 p-3 text-sm leading-6 text-amber-800"
+        >
+          Thành viên sẽ trở lại danh sách “Chưa có bàn” và có thể được chọn để
+          quay lại.
+        </p><div class="mt-6 grid grid-cols-2 gap-3">
+          <button
+            id="dinner-confirm-cancel"
+            type="button"
+            class="rounded-lg border border-gray-300 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-50"
+            >Hủy</button
+          ><button
+            id="dinner-confirm-accept"
+            type="button"
+            class="rounded-lg bg-red-600 py-2.5 text-sm font-bold text-white hover:bg-red-700"
+            >Gỡ khỏi bàn</button
+          >
+        </div>
+      </div>
     </div>
   </div>
-  <div id="toast" class="fixed bottom-5 right-5 z-[150] hidden max-w-sm rounded-xl px-4 py-3 text-sm font-medium text-white shadow-xl"></div>
+  <div
+    id="toast"
+    class="fixed bottom-5 right-5 z-[150] hidden max-w-sm rounded-xl px-4 py-3 text-sm font-medium text-white shadow-xl"
+  >
+  </div>
 </Layout>
 
-<script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script><script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script><script is:inline src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script
+  is:inline
+  src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"
+></script><script
+  is:inline
+  src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"
+></script><script
+  is:inline
+  src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"
+></script>
 <script define:vars={{ loginUrl, homeUrl }}>
-  const firebaseConfig={apiKey:"AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",authDomain:"register-to-participate.firebaseapp.com",projectId:"register-to-participate",storageBucket:"register-to-participate.firebasestorage.app",messagingSenderId:"578991866095",appId:"1:578991866095:web:9ce9b6b5e5d13314359b1a"};if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.firestore();
-  const configs=[{id:"table-1",name:"Bàn Nặn tượng",label:"Nặn tượng",capacity:10},{id:"table-2",name:"Bàn Vật lý kiến trúc",label:"Vật lý KT",capacity:10},{id:"table-3",name:"Bàn Hình học họa hình",label:"Hình họa",capacity:10},{id:"table-4",name:"Bàn Mực nho - Đi màu",label:"Mực nho",capacity:10},{id:"table-5",name:"Bàn ĐA Quán Hoa",label:"ĐA Quán Hoa",capacity:10},{id:"table-6",name:"Bàn Sức bền Vật Liệu",label:"Sức bền VL",capacity:10}];let persons=[],tables={},admin=null,selectedPersonId="",rotation=0,spinning=false,inactivityTimer;const esc=(v="")=>String(v).replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));const normalize=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("vi").trim();
-  function renderWheelLabels(){const wheel=document.getElementById("dinner-wheel");wheel.innerHTML=configs.map((table,index)=>{const angle=index*60,radians=angle*Math.PI/180,x=50+Math.sin(radians)*35,y=50-Math.cos(radians)*35;return `<span style="position:absolute;z-index:2;left:${x}%;top:${y}%;width:31%;transform:translate(-50%,-50%) rotate(${angle}deg);color:white;font-size:11px;font-weight:800;line-height:1.1;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.55);pointer-events:none">${esc(table.label)}</span>`}).join("")}
-  function toast(text,error=false){const e=document.getElementById("toast");e.textContent=text;e.className=`fixed bottom-5 right-5 z-[150] max-w-sm rounded-xl px-4 py-3 text-sm font-medium text-white shadow-xl ${error?"bg-red-600":"bg-green-600"}`;clearTimeout(e.timer);e.timer=setTimeout(()=>e.classList.add("hidden"),3500)}function resetInactivity(){clearTimeout(inactivityTimer);inactivityTimer=setTimeout(async()=>{await auth.signOut();location.replace(loginUrl)},30*60*1000)}["click","keydown","touchstart"].forEach(n=>document.addEventListener(n,resetInactivity,{passive:true}));
-  auth.onAuthStateChanged(async user=>{if(!user){location.replace(loginUrl);return}try{const d=await db.collection("admins").doc(user.uid).get();if(!d.exists||d.data().active!==true)throw Error()}catch{await auth.signOut();location.replace(homeUrl);return}admin=user;document.getElementById("admin-email-label").textContent=user.email;document.getElementById("auth-loading").classList.add("hidden");document.getElementById("admin-app").classList.remove("hidden");resetInactivity();render();subscribe();try{await initializeTables();await syncDinnerCandidates()}catch(error){toast("Chưa thể đồng bộ danh sách Dinner. Hãy cập nhật firestore.rules trên Firebase Console.",true)}});
-  async function initializeTables(){const batch=db.batch();let writes=0;for(const c of configs){const ref=db.collection("dinner_tables").doc(c.id),snap=await ref.get();if(!snap.exists){batch.set(ref,{name:c.name,capacity:c.capacity,occupied:0,females:0,locked:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});writes++}}if(writes)await batch.commit()}
-  async function syncDinnerCandidates(){const snapshot=await db.collection("persons").get();for(let start=0;start<snapshot.docs.length;start+=400){const batch=db.batch();snapshot.docs.slice(start,start+400).forEach(doc=>{const person=doc.data();batch.set(db.collection("dinner_candidates").doc(doc.id),{fullName:person.fullName,className:person.className,isFemale:Boolean(person.isFemale),isAttending:person.isAttending!==false,dinnerTableId:person.dinnerTableId||null,dinnerTableName:person.dinnerTableName||null},{merge:true})});await batch.commit()}}
-  async function syncPublicResults(){for(let start=0;start<persons.length;start+=400){const batch=db.batch();persons.slice(start,start+400).forEach(person=>batch.set(db.collection("public_results").doc(person.id),{name:person.fullName,className:person.className,isFemale:Boolean(person.isFemale),isAttending:person.isAttending!==false,hotelName:person.hotelName||null,roomNumber:person.roomNumber||null,tableName:person.dinnerTableName||null},{merge:false}));await batch.commit()}}
-  function subscribe(){db.collection("persons").orderBy("fullName").onSnapshot(s=>{persons=s.docs.map(d=>({id:d.id,...d.data()}));render();renderDinnerPersons();syncPublicResults().catch(e=>toast(`Không đồng bộ được kết quả công khai: ${e.message}`,true))},e=>toast(e.message,true));db.collection("dinner_tables").onSnapshot(s=>{tables={};s.forEach(d=>tables[d.id]={id:d.id,...d.data()});render();renderDinnerPersons()},e=>toast(e.message,true))}
-  function selectDinnerPerson(person){selectedPersonId=person.id;document.getElementById("dinner-person-select").value=person.id;document.getElementById("dinner-person-search").value=person.fullName;document.getElementById("dinner-person-results").classList.add("hidden");const box=document.getElementById("dinner-selected-person");box.innerHTML=`<div class="flex items-center justify-between gap-2"><span><b class="block text-sm text-navy-900">${esc(person.fullName)}</b><small class="text-gray-500">${esc(person.className)}${person.isFemale?" · Nữ":""}</small></span><button id="clear-dinner-person" type="button" class="text-xs font-bold text-red-500">Bỏ chọn</button></div>`;box.classList.remove("hidden");document.getElementById("clear-dinner-person").onclick=clearDinnerPerson;document.getElementById("dinner-result").classList.add("hidden");document.getElementById("spin-button").disabled=spinning;}
-  function clearDinnerPerson(){selectedPersonId="";document.getElementById("dinner-person-select").value="";document.getElementById("dinner-person-search").value="";document.getElementById("dinner-selected-person").classList.add("hidden");document.getElementById("dinner-person-results").classList.add("hidden");document.getElementById("spin-button").disabled=true;renderDinnerPersons();}
-  function renderPersonResults(){const container=document.getElementById("dinner-person-results"),query=normalize(document.getElementById("dinner-person-search").value),className=document.getElementById("dinner-class-filter").value;if(query.length<2){container.innerHTML='<p class="p-3 text-center text-xs text-gray-400">Nhập ít nhất 2 ký tự để tìm kiếm</p>';container.classList.toggle("hidden",!query);return;}const matches=persons.filter(person=>person.isAttending!==false&&!person.dinnerTableId&&(!className||person.className===className)&&normalize(person.fullName).includes(query)).slice(0,12);container.innerHTML=matches.length?matches.map(person=>`<button type="button" data-search-person="${person.id}" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left hover:bg-gold-50"><span><b class="block text-sm text-navy-900">${esc(person.fullName)}</b><small class="text-gray-500">${esc(person.className)}${person.isFemale?" · Nữ":""}</small></span><small class="font-semibold text-orange-500">Chưa có bàn</small></button>`).join(""):'<p class="p-3 text-center text-xs text-gray-400">Không có thành viên chưa có bàn phù hợp</p>';container.classList.remove("hidden");container.querySelectorAll("[data-search-person]").forEach(button=>button.onclick=()=>selectDinnerPerson(persons.find(person=>person.id===button.dataset.searchPerson)));}
-  function render(){const unassigned=persons.filter(p=>!p.dinnerTableId),assigned=persons.length-unassigned.length;if(selectedPersonId&&!unassigned.some(p=>p.id===selectedPersonId))clearDinnerPerson();document.getElementById("spin-button").disabled=!selectedPersonId||spinning;document.getElementById("stat-total").textContent=persons.length;document.getElementById("stat-unassigned").textContent=unassigned.length;document.getElementById("stat-assigned").textContent=assigned;document.getElementById("stat-available").textContent=Math.max(0,60-assigned);document.getElementById("unassigned-label").textContent=`${unassigned.length} người chưa có bàn`;document.getElementById("tables-container").innerHTML=configs.map(c=>{const occupants=persons.filter(p=>p.dinnerTableId===c.id),full=occupants.length>=c.capacity;return `<article class="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm"><div class="flex justify-between gap-2"><div><h3 class="font-serif text-lg font-bold text-navy-900">${esc(c.name)}</h3><p class="text-[11px] text-gray-400">${occupants.length}/${c.capacity} người · ${occupants.filter(p=>p.isFemale).length} nữ</p></div><span class="h-fit rounded-full px-2 py-1 text-[10px] font-bold ${full?"bg-red-100 text-red-600":"bg-green-100 text-green-700"}">${full?"Đã đủ":`Còn ${c.capacity-occupants.length} chỗ`}</span></div><div class="my-3 h-2 rounded-full bg-gray-100"><div class="h-full rounded-full ${full?"bg-red-400":"bg-gold-500"}" style="width:${occupants.length/c.capacity*100}%"></div></div><div class="min-h-20 space-y-1">${occupants.length?occupants.map(p=>`<div class="flex items-center justify-between rounded-md bg-gray-50 px-2 py-1.5 text-xs"><span class="truncate"><b>${esc(p.fullName)}</b> · ${esc(p.className)}${p.isFemale?" · Nữ":""}</span><button data-remove="${p.id}" class="ml-2 text-gray-400 hover:text-red-500"><i data-lucide="x" class="h-3.5 w-3.5"></i></button></div>`).join(""):'<p class="py-6 text-center text-xs italic text-gray-300">Chưa có thành viên</p>'}</div></article>`}).join("");document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>removeFromTable(b.dataset.remove));renderPersonResults();if(window.lucide)window.lucide.createIcons()}
-  async function spin(){if(spinning)return;const id=document.getElementById("dinner-person-select").value,p=persons.find(x=>x.id===id);if(!p)return;const available=configs.filter(c=>{const t=tables[c.id]||{};return !t.locked&&Number(t.occupied||0)<c.capacity&&(!p.isFemale||Number(t.females||0)<2)});if(!available.length){toast("Không còn bàn phù hợp.",true);return}const chosen=available[Math.floor(Math.random()*available.length)],index=configs.findIndex(c=>c.id===chosen.id);spinning=true;render();try{await db.runTransaction(async tx=>{const pr=db.collection("persons").doc(id),tr=db.collection("dinner_tables").doc(chosen.id),cr=db.collection("dinner_candidates").doc(id),ps=await tx.get(pr),ts=await tx.get(tr);if(!ps.exists||!ts.exists)throw Error("Dữ liệu không tồn tại.");const person=ps.data(),table=ts.data();if(person.dinnerTableId)throw Error("Thành viên đã có bàn.");if(table.locked||table.occupied>=table.capacity)throw Error("Bàn vừa hết chỗ.");if(person.isFemale&&table.females>=2)throw Error("Bàn đã đủ thành viên nữ.");const assignedAt=firebase.firestore.FieldValue.serverTimestamp();tx.update(tr,{occupied:Number(table.occupied||0)+1,females:Number(table.females||0)+(person.isFemale?1:0),updatedAt:assignedAt});tx.update(pr,{dinnerTableId:chosen.id,dinnerTableName:chosen.name,dinnerAssignedAt:assignedAt,updatedBy:admin.uid});tx.set(cr,{fullName:person.fullName,className:person.className,isFemale:Boolean(person.isFemale),dinnerTableId:chosen.id,dinnerTableName:chosen.name,dinnerAssignedAt:assignedAt},{merge:true})});const wheel=document.getElementById("dinner-wheel"),normal=((rotation%360)+360)%360,target=(360-index*60)%360;rotation+=1800+(target-normal+360)%360;wheel.style.transition="transform 4.6s cubic-bezier(.12,.72,.08,1)";wheel.style.transform=`rotate(${rotation}deg)`;setTimeout(()=>{const r=document.getElementById("dinner-result");r.innerHTML=`<p class="text-xs font-bold uppercase tracking-wider text-gold-600">Kết quả</p><p class="mt-1 font-semibold text-navy-900">${esc(p.fullName)}</p><p class="font-serif text-xl font-bold text-gold-600">${esc(chosen.name)}</p>`;r.classList.remove("hidden");spinning=false;render()},4700)}catch(e){spinning=false;render();toast(e.message,true)}}
-  function confirmRemoveFromTable(person){return new Promise(resolve=>{const modal=document.getElementById("dinner-confirm-modal"),accept=document.getElementById("dinner-confirm-accept"),cancel=document.getElementById("dinner-confirm-cancel");document.getElementById("dinner-confirm-message").textContent=`Gỡ ${person.fullName} khỏi ${person.dinnerTableName}?`;modal.classList.remove("hidden");modal.classList.add("flex");const finish=value=>{modal.classList.add("hidden");modal.classList.remove("flex");accept.onclick=null;cancel.onclick=null;modal.onclick=null;document.onkeydown=null;resolve(value)};accept.onclick=()=>finish(true);cancel.onclick=()=>finish(false);modal.onclick=event=>{if(event.target===modal)finish(false)};document.onkeydown=event=>{if(event.key==="Escape")finish(false)};accept.focus()})}
-  async function removeFromTable(id){const p=persons.find(x=>x.id===id);if(!p?.dinnerTableId||!await confirmRemoveFromTable(p))return;try{await db.runTransaction(async tx=>{const pr=db.collection("persons").doc(id),tr=db.collection("dinner_tables").doc(p.dinnerTableId),cr=db.collection("dinner_candidates").doc(id),ts=await tx.get(tr);if(ts.exists){const t=ts.data();tx.update(tr,{occupied:Math.max(0,Number(t.occupied||0)-1),females:Math.max(0,Number(t.females||0)-(p.isFemale?1:0)),updatedAt:firebase.firestore.FieldValue.serverTimestamp()})}tx.update(pr,{dinnerTableId:null,dinnerTableName:null,dinnerAssignedAt:null,updatedBy:admin.uid});tx.set(cr,{fullName:p.fullName,className:p.className,isFemale:Boolean(p.isFemale),isAttending:p.isAttending!==false,dinnerTableId:null,dinnerTableName:null,dinnerAssignedAt:null},{merge:true})});toast("Đã gỡ thành viên khỏi bàn.")}catch(e){toast(e.message,true)}}
-  renderWheelLabels();document.getElementById("dinner-person-search").oninput=()=>{selectedPersonId="";document.getElementById("dinner-person-select").value="";document.getElementById("dinner-selected-person").classList.add("hidden");document.getElementById("dinner-result").classList.add("hidden");document.getElementById("spin-button").disabled=true;renderPersonResults()};document.getElementById("dinner-person-search").onfocus=renderPersonResults;document.getElementById("dinner-class-filter").onchange=()=>{clearDinnerPerson();renderPersonResults()};document.addEventListener("click",event=>{if(!event.target.closest("#dinner-person-results")&&!event.target.closest("#dinner-person-search"))document.getElementById("dinner-person-results").classList.add("hidden")});document.getElementById("spin-button").onclick=spin;document.getElementById("logout-button").onclick=async()=>{await auth.signOut();location.replace(loginUrl)};
-  function renderDinnerPersons(){const container=document.getElementById("dinner-person-list"),search=document.getElementById("dinner-list-search"),filterSelect=document.getElementById("dinner-list-filter");if(!container||!search||!filterSelect)return;const query=normalize(search.value),filter=filterSelect.value,filterStyles={all:"border-slate-300 bg-slate-100 text-slate-700",unassigned:"border-red-300 bg-red-50 text-red-700",assigned:"border-green-300 bg-green-50 text-green-700","not-attending":"border-gray-400 bg-gray-100 text-gray-700","96Q1":"border-blue-300 bg-blue-50 text-blue-700","96Q2":"border-purple-300 bg-purple-50 text-purple-700"};filterSelect.className=`rounded-lg border px-2 text-xs font-semibold outline-none transition ${filterStyles[filter]||filterStyles.all}`;const list=persons.filter(person=>{const attending=person.isAttending!==false,assigned=Boolean(person.dinnerTableId),matchesQuery=!query||normalize(`${person.fullName} ${person.className} ${person.dinnerTableName||""} ${person.isFemale?"nữ":"nam"}`).includes(query),matchesFilter=filter==="all"||(filter==="assigned"&&assigned)||(filter==="unassigned"&&!assigned)||(filter==="not-attending"&&!attending)||person.className===filter;return matchesQuery&&matchesFilter});document.getElementById("dinner-person-count").textContent=`${list.length} người`;container.innerHTML=list.length?list.map(person=>{const attending=person.isAttending!==false,assigned=Boolean(person.dinnerTableId),selectable=attending&&!assigned,active=selectedPersonId===person.id,cardClass=active?"border-gold-500 bg-gold-50 ring-1 ring-gold-400":!attending?"border-gray-300 bg-gray-100 opacity-75":assigned?"border-green-200 bg-green-50/70":"border-red-200 bg-red-50/70",avatarClass=!attending?"bg-gray-500":assigned?"bg-green-600":"bg-red-500",classBadge=person.className==="96Q1"?"bg-blue-100 text-blue-700":"bg-purple-100 text-purple-700",attendanceClass=attending?"bg-green-100 text-green-700":"bg-gray-200 text-gray-600",tableClass=assigned?"text-green-700":"text-red-600";return `<button type="button" ${selectable?`data-list-person="${person.id}"`:"disabled"} class="mb-2 w-full rounded-xl border p-3 text-left transition ${cardClass} ${selectable?"hover:border-gold-400":"cursor-default"}"><div class="flex items-start gap-2"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${avatarClass}">${esc(person.fullName?.charAt(0)||"?")}</span><span class="min-w-0 flex-1"><b class="block truncate text-sm text-navy-900">${esc(person.fullName)}</b><span class="mt-1 flex flex-wrap gap-1"><small class="rounded-full px-2 py-0.5 font-bold ${classBadge}">${esc(person.className)}</small><small class="rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-600">${person.isFemale?"Nữ":"Nam"}</small><small class="rounded-full px-2 py-0.5 font-semibold ${attendanceClass}">${attending?"Có tham gia":"Không tham gia"}</small></span><small class="mt-1.5 block font-semibold ${tableClass}">${assigned?`Đã xếp: ${esc(person.dinnerTableName||"Bàn chưa xác định")}`:"Chưa có bàn ăn"}</small></span></div></button>`}).join(""):'<p class="py-8 text-center text-sm text-gray-400">Không có thành viên phù hợp</p>';container.querySelectorAll("[data-list-person]").forEach(button=>button.onclick=()=>{selectDinnerPerson(persons.find(person=>person.id===button.dataset.listPerson));renderDinnerPersons()});search.oninput=renderDinnerPersons;filterSelect.onchange=renderDinnerPersons;if(window.lucide)window.lucide.createIcons()}
+  const firebaseConfig = {
+    apiKey: "AIzaSyAfKEUC4xTaT-6Wo7fMdUUbmf2xAP2CaNM",
+    authDomain: "register-to-participate.firebaseapp.com",
+    projectId: "register-to-participate",
+    storageBucket: "register-to-participate.firebasestorage.app",
+    messagingSenderId: "578991866095",
+    appId: "1:578991866095:web:9ce9b6b5e5d13314359b1a",
+  };
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth(),
+    db = firebase.firestore();
+  const configs = [
+    { id: "table-1", name: "Bàn Nặn tượng", label: "Nặn tượng", capacity: 10 },
+    {
+      id: "table-2",
+      name: "Bàn Vật lý kiến trúc",
+      label: "Vật lý KT",
+      capacity: 10,
+    },
+    {
+      id: "table-3",
+      name: "Bàn Hình học họa hình",
+      label: "Hình họa",
+      capacity: 10,
+    },
+    {
+      id: "table-4",
+      name: "Bàn Mực nho - Đi màu",
+      label: "Mực nho",
+      capacity: 10,
+    },
+    {
+      id: "table-5",
+      name: "Bàn ĐA Quán Hoa",
+      label: "ĐA Quán Hoa",
+      capacity: 10,
+    },
+    {
+      id: "table-6",
+      name: "Bàn Sức bền Vật Liệu",
+      label: "Sức bền VL",
+      capacity: 10,
+    },
+  ];
+  let persons = [],
+    tables = {},
+    admin = null,
+    selectedPersonId = "",
+    rotation = 0,
+    spinning = false,
+    inactivityTimer;
+  const esc = (v = "") =>
+    String(v).replace(
+      /[&<>'"]/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "'": "&#39;",
+          '"': "&quot;",
+        })[c],
+    );
+  const normalize = (v) =>
+    String(v || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLocaleLowerCase("vi")
+      .trim();
+  function renderWheelLabels() {
+    const wheel = document.getElementById("dinner-wheel");
+    wheel.innerHTML = configs
+      .map((table, index) => {
+        const angle = index * 60,
+          radians = (angle * Math.PI) / 180,
+          x = 50 + Math.sin(radians) * 35,
+          y = 50 - Math.cos(radians) * 35;
+        return `<span style="position:absolute;z-index:2;left:${x}%;top:${y}%;width:31%;transform:translate(-50%,-50%) rotate(${angle}deg);color:white;font-size:11px;font-weight:800;line-height:1.1;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.55);pointer-events:none">${esc(table.label)}</span>`;
+      })
+      .join("");
+  }
+  function toast(text, error = false) {
+    const e = document.getElementById("toast");
+    e.textContent = text;
+    e.className = `fixed bottom-5 right-5 z-[150] max-w-sm rounded-xl px-4 py-3 text-sm font-medium text-white shadow-xl ${error ? "bg-red-600" : "bg-green-600"}`;
+    clearTimeout(e.timer);
+    e.timer = setTimeout(() => e.classList.add("hidden"), 3500);
+  }
+  function resetInactivity() {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(
+      async () => {
+        await auth.signOut();
+        location.replace(loginUrl);
+      },
+      30 * 60 * 1000,
+    );
+  }
+  ["click", "keydown", "touchstart"].forEach((n) =>
+    document.addEventListener(n, resetInactivity, { passive: true }),
+  );
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      location.replace(loginUrl);
+      return;
+    }
+    try {
+      const d = await db.collection("admins").doc(user.uid).get();
+      if (!d.exists || d.data().active !== true) throw Error();
+    } catch {
+      await auth.signOut();
+      location.replace(homeUrl);
+      return;
+    }
+    admin = user;
+    document.getElementById("admin-email-label").textContent = user.email;
+    document.getElementById("auth-loading").classList.add("hidden");
+    document.getElementById("admin-app").classList.remove("hidden");
+    resetInactivity();
+    render();
+    subscribe();
+    try {
+      await initializeTables();
+      await syncDinnerCandidates();
+    } catch (error) {
+      toast(
+        "Chưa thể đồng bộ danh sách Dinner. Hãy cập nhật firestore.rules trên Firebase Console.",
+        true,
+      );
+    }
+  });
+  async function initializeTables() {
+    const batch = db.batch();
+    let writes = 0;
+    for (const c of configs) {
+      const ref = db.collection("dinner_tables").doc(c.id),
+        snap = await ref.get();
+      if (!snap.exists) {
+        batch.set(ref, {
+          name: c.name,
+          capacity: c.capacity,
+          occupied: 0,
+          females: 0,
+          locked: false,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        writes++;
+      }
+    }
+    if (writes) await batch.commit();
+  }
+  async function syncDinnerCandidates() {
+    const snapshot = await db.collection("persons").get();
+    for (let start = 0; start < snapshot.docs.length; start += 400) {
+      const batch = db.batch();
+      snapshot.docs.slice(start, start + 400).forEach((doc) => {
+        const person = doc.data();
+        batch.set(
+          db.collection("dinner_candidates").doc(doc.id),
+          {
+            fullName: person.fullName,
+            className: person.className,
+            isFemale: Boolean(person.isFemale),
+            isAttending: person.isAttending !== false,
+            dinnerTableId: person.dinnerTableId || null,
+            dinnerTableName: person.dinnerTableName || null,
+          },
+          { merge: true },
+        );
+      });
+      await batch.commit();
+    }
+  }
+  async function syncPublicResults() {
+    for (let start = 0; start < persons.length; start += 400) {
+      const batch = db.batch();
+      persons.slice(start, start + 400).forEach((person) =>
+        batch.set(
+          db.collection("public_results").doc(person.id),
+          {
+            name: person.fullName,
+            className: person.className,
+            isFemale: Boolean(person.isFemale),
+            isAttending: person.isAttending !== false,
+            hotelName: person.hotelName || null,
+            roomNumber: person.roomNumber || null,
+            tableName: person.dinnerTableName || null,
+          },
+          { merge: false },
+        ),
+      );
+      await batch.commit();
+    }
+  }
+  function subscribe() {
+    db.collection("persons")
+      .orderBy("fullName")
+      .onSnapshot(
+        (s) => {
+          persons = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+          render();
+          renderDinnerPersons();
+          syncPublicResults().catch((e) =>
+            toast(`Không đồng bộ được kết quả công khai: ${e.message}`, true),
+          );
+        },
+        (e) => toast(e.message, true),
+      );
+    db.collection("dinner_tables").onSnapshot(
+      (s) => {
+        tables = {};
+        s.forEach((d) => (tables[d.id] = { id: d.id, ...d.data() }));
+        render();
+        renderDinnerPersons();
+      },
+      (e) => toast(e.message, true),
+    );
+  }
+  function selectDinnerPerson(person) {
+    selectedPersonId = person.id;
+    document.getElementById("dinner-person-select").value = person.id;
+    document.getElementById("dinner-person-search").value = person.fullName;
+    document.getElementById("dinner-person-results").classList.add("hidden");
+    const box = document.getElementById("dinner-selected-person");
+    box.innerHTML = `<div class="flex items-center justify-between gap-2"><span><b class="block text-sm text-navy-900">${esc(person.fullName)}</b><small class="text-gray-500">${esc(person.className)}${person.isFemale ? " · Nữ" : ""}</small></span><button id="clear-dinner-person" type="button" class="text-xs font-bold text-red-500">Bỏ chọn</button></div>`;
+    box.classList.remove("hidden");
+    document.getElementById("clear-dinner-person").onclick = clearDinnerPerson;
+    document.getElementById("dinner-result").classList.add("hidden");
+    document.getElementById("spin-button").disabled = spinning;
+  }
+  function clearDinnerPerson() {
+    selectedPersonId = "";
+    document.getElementById("dinner-person-select").value = "";
+    document.getElementById("dinner-person-search").value = "";
+    document.getElementById("dinner-selected-person").classList.add("hidden");
+    document.getElementById("dinner-person-results").classList.add("hidden");
+    document.getElementById("spin-button").disabled = true;
+    renderDinnerPersons();
+  }
+  function renderPersonResults() {
+    const container = document.getElementById("dinner-person-results"),
+      query = normalize(document.getElementById("dinner-person-search").value),
+      className = document.getElementById("dinner-class-filter").value;
+    if (query.length < 2) {
+      container.innerHTML =
+        '<p class="p-3 text-center text-xs text-gray-400">Nhập ít nhất 2 ký tự để tìm kiếm</p>';
+      container.classList.toggle("hidden", !query);
+      return;
+    }
+    const matches = persons
+      .filter(
+        (person) =>
+          person.isAttending !== false &&
+          !person.dinnerTableId &&
+          (!className || person.className === className) &&
+          normalize(person.fullName).includes(query),
+      )
+      .slice(0, 12);
+    container.innerHTML = matches.length
+      ? matches
+          .map(
+            (person) =>
+              `<button type="button" data-search-person="${person.id}" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left hover:bg-gold-50"><span><b class="block text-sm text-navy-900">${esc(person.fullName)}</b><small class="text-gray-500">${esc(person.className)}${person.isFemale ? " · Nữ" : ""}</small></span><small class="font-semibold text-orange-500">Chưa có bàn</small></button>`,
+          )
+          .join("")
+      : '<p class="p-3 text-center text-xs text-gray-400">Không có thành viên chưa có bàn phù hợp</p>';
+    container.classList.remove("hidden");
+    container
+      .querySelectorAll("[data-search-person]")
+      .forEach(
+        (button) =>
+          (button.onclick = () =>
+            selectDinnerPerson(
+              persons.find(
+                (person) => person.id === button.dataset.searchPerson,
+              ),
+            )),
+      );
+  }
+  function render() {
+    const unassigned = persons.filter((p) => !p.dinnerTableId),
+      assigned = persons.length - unassigned.length;
+    if (selectedPersonId && !unassigned.some((p) => p.id === selectedPersonId))
+      clearDinnerPerson();
+    document.getElementById("spin-button").disabled =
+      !selectedPersonId || spinning;
+    document.getElementById("stat-total").textContent = persons.length;
+    document.getElementById("stat-unassigned").textContent = unassigned.length;
+    document.getElementById("stat-assigned").textContent = assigned;
+    document.getElementById("stat-available").textContent = Math.max(
+      0,
+      60 - assigned,
+    );
+    document.getElementById("unassigned-label").textContent =
+      `${unassigned.length} người chưa có bàn`;
+    document.getElementById("tables-container").innerHTML = configs
+      .map((c) => {
+        const occupants = persons.filter((p) => p.dinnerTableId === c.id),
+          full = occupants.length >= c.capacity;
+        return `<article class="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm"><div class="flex justify-between gap-2"><div><h3 class="font-serif text-lg font-bold text-navy-900">${esc(c.name)}</h3><p class="text-[11px] text-gray-400">${occupants.length}/${c.capacity} người · ${occupants.filter((p) => p.isFemale).length} nữ</p></div><span class="h-fit rounded-full px-2 py-1 text-[10px] font-bold ${full ? "bg-red-100 text-red-600" : "bg-green-100 text-green-700"}">${full ? "Đã đủ" : `Còn ${c.capacity - occupants.length} chỗ`}</span></div><div class="my-3 h-2 rounded-full bg-gray-100"><div class="h-full rounded-full ${full ? "bg-red-400" : "bg-gold-500"}" style="width:${(occupants.length / c.capacity) * 100}%"></div></div><div class="min-h-20 space-y-1">${occupants.length ? occupants.map((p) => `<div class="flex items-center justify-between rounded-md bg-gray-50 px-2 py-1.5 text-xs"><span class="truncate"><b>${esc(p.fullName)}</b> · ${esc(p.className)}${p.isFemale ? " · Nữ" : ""}</span><button data-remove="${p.id}" class="ml-2 text-gray-400 hover:text-red-500"><i data-lucide="x" class="h-3.5 w-3.5"></i></button></div>`).join("") : '<p class="py-6 text-center text-xs italic text-gray-300">Chưa có thành viên</p>'}</div></article>`;
+      })
+      .join("");
+    document
+      .querySelectorAll("[data-remove]")
+      .forEach((b) => (b.onclick = () => removeFromTable(b.dataset.remove)));
+    renderPersonResults();
+    if (window.lucide) window.lucide.createIcons();
+  }
+  async function spin() {
+    if (spinning) return;
+    const id = document.getElementById("dinner-person-select").value,
+      p = persons.find((x) => x.id === id);
+    if (!p) return;
+    const available = configs.filter((c) => {
+      const t = tables[c.id] || {};
+      return (
+        !t.locked &&
+        Number(t.occupied || 0) < c.capacity &&
+        (!p.isFemale || Number(t.females || 0) < 2)
+      );
+    });
+    if (!available.length) {
+      toast("Không còn bàn phù hợp.", true);
+      return;
+    }
+    const chosen = available[Math.floor(Math.random() * available.length)],
+      index = configs.findIndex((c) => c.id === chosen.id);
+    spinning = true;
+    render();
+    try {
+      await db.runTransaction(async (tx) => {
+        const pr = db.collection("persons").doc(id),
+          tr = db.collection("dinner_tables").doc(chosen.id),
+          cr = db.collection("dinner_candidates").doc(id),
+          ps = await tx.get(pr),
+          ts = await tx.get(tr);
+        if (!ps.exists || !ts.exists) throw Error("Dữ liệu không tồn tại.");
+        const person = ps.data(),
+          table = ts.data();
+        if (person.dinnerTableId) throw Error("Thành viên đã có bàn.");
+        if (table.locked || table.occupied >= table.capacity)
+          throw Error("Bàn vừa hết chỗ.");
+        if (person.isFemale && table.females >= 2)
+          throw Error("Bàn đã đủ thành viên nữ.");
+        const assignedAt = firebase.firestore.FieldValue.serverTimestamp();
+        tx.update(tr, {
+          occupied: Number(table.occupied || 0) + 1,
+          females: Number(table.females || 0) + (person.isFemale ? 1 : 0),
+          updatedAt: assignedAt,
+        });
+        tx.update(pr, {
+          dinnerTableId: chosen.id,
+          dinnerTableName: chosen.name,
+          dinnerAssignedAt: assignedAt,
+          updatedBy: admin.uid,
+        });
+        tx.set(
+          cr,
+          {
+            fullName: person.fullName,
+            className: person.className,
+            isFemale: Boolean(person.isFemale),
+            dinnerTableId: chosen.id,
+            dinnerTableName: chosen.name,
+            dinnerAssignedAt: assignedAt,
+          },
+          { merge: true },
+        );
+      });
+      const wheel = document.getElementById("dinner-wheel"),
+        normal = ((rotation % 360) + 360) % 360,
+        target = (360 - index * 60) % 360;
+      rotation += 1800 + ((target - normal + 360) % 360);
+      wheel.style.transition = "transform 4.6s cubic-bezier(.12,.72,.08,1)";
+      wheel.style.transform = `rotate(${rotation}deg)`;
+      setTimeout(() => {
+        const r = document.getElementById("dinner-result");
+        r.innerHTML = `<p class="text-xs font-bold uppercase tracking-wider text-gold-600">Kết quả</p><p class="mt-1 font-semibold text-navy-900">${esc(p.fullName)}</p><p class="font-serif text-xl font-bold text-gold-600">${esc(chosen.name)}</p>`;
+        r.classList.remove("hidden");
+        spinning = false;
+        render();
+      }, 4700);
+    } catch (e) {
+      spinning = false;
+      render();
+      toast(e.message, true);
+    }
+  }
+  function confirmRemoveFromTable(person) {
+    return new Promise((resolve) => {
+      const modal = document.getElementById("dinner-confirm-modal"),
+        accept = document.getElementById("dinner-confirm-accept"),
+        cancel = document.getElementById("dinner-confirm-cancel");
+      document.getElementById("dinner-confirm-message").textContent =
+        `Gỡ ${person.fullName} khỏi ${person.dinnerTableName}?`;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      const finish = (value) => {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        accept.onclick = null;
+        cancel.onclick = null;
+        modal.onclick = null;
+        document.onkeydown = null;
+        resolve(value);
+      };
+      accept.onclick = () => finish(true);
+      cancel.onclick = () => finish(false);
+      modal.onclick = (event) => {
+        if (event.target === modal) finish(false);
+      };
+      document.onkeydown = (event) => {
+        if (event.key === "Escape") finish(false);
+      };
+      accept.focus();
+    });
+  }
+  async function removeFromTable(id) {
+    const p = persons.find((x) => x.id === id);
+    if (!p?.dinnerTableId || !(await confirmRemoveFromTable(p))) return;
+    try {
+      await db.runTransaction(async (tx) => {
+        const pr = db.collection("persons").doc(id),
+          tr = db.collection("dinner_tables").doc(p.dinnerTableId),
+          cr = db.collection("dinner_candidates").doc(id),
+          ts = await tx.get(tr);
+        if (ts.exists) {
+          const t = ts.data();
+          tx.update(tr, {
+            occupied: Math.max(0, Number(t.occupied || 0) - 1),
+            females: Math.max(0, Number(t.females || 0) - (p.isFemale ? 1 : 0)),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+        }
+        tx.update(pr, {
+          dinnerTableId: null,
+          dinnerTableName: null,
+          dinnerAssignedAt: null,
+          updatedBy: admin.uid,
+        });
+        tx.set(
+          cr,
+          {
+            fullName: p.fullName,
+            className: p.className,
+            isFemale: Boolean(p.isFemale),
+            isAttending: p.isAttending !== false,
+            dinnerTableId: null,
+            dinnerTableName: null,
+            dinnerAssignedAt: null,
+          },
+          { merge: true },
+        );
+      });
+      toast("Đã gỡ thành viên khỏi bàn.");
+    } catch (e) {
+      toast(e.message, true);
+    }
+  }
+  renderWheelLabels();
+  document.getElementById("dinner-person-search").oninput = () => {
+    selectedPersonId = "";
+    document.getElementById("dinner-person-select").value = "";
+    document.getElementById("dinner-selected-person").classList.add("hidden");
+    document.getElementById("dinner-result").classList.add("hidden");
+    document.getElementById("spin-button").disabled = true;
+    renderPersonResults();
+  };
+  document.getElementById("dinner-person-search").onfocus = renderPersonResults;
+  document.getElementById("dinner-class-filter").onchange = () => {
+    clearDinnerPerson();
+    renderPersonResults();
+  };
+  document.addEventListener("click", (event) => {
+    if (
+      !event.target.closest("#dinner-person-results") &&
+      !event.target.closest("#dinner-person-search")
+    )
+      document.getElementById("dinner-person-results").classList.add("hidden");
+  });
+  document.getElementById("spin-button").onclick = spin;
+  document.getElementById("logout-button").onclick = async () => {
+    await auth.signOut();
+    location.replace(loginUrl);
+  };
+  function renderDinnerPersons() {
+    const container = document.getElementById("dinner-person-list"),
+      search = document.getElementById("dinner-list-search"),
+      filterSelect = document.getElementById("dinner-list-filter");
+    if (!container || !search || !filterSelect) return;
+    const query = normalize(search.value),
+      filter = filterSelect.value,
+      filterStyles = {
+        all: "border-slate-300 bg-slate-100 text-slate-700",
+        unassigned: "border-red-300 bg-red-50 text-red-700",
+        assigned: "border-green-300 bg-green-50 text-green-700",
+        attending: "border-emerald-300 bg-emerald-50 text-emerald-700",
+        "not-attending": "border-gray-400 bg-gray-100 text-gray-700",
+        "96Q1": "border-blue-300 bg-blue-50 text-blue-700",
+        "96Q2": "border-purple-300 bg-purple-50 text-purple-700",
+      };
+    filterSelect.className = `rounded-lg border px-2 text-xs font-semibold outline-none transition ${filterStyles[filter] || filterStyles.all}`;
+    const list = persons.filter((person) => {
+      const attending = person.isAttending !== false,
+        assigned = Boolean(person.dinnerTableId),
+        matchesQuery =
+          !query ||
+          normalize(
+            `${person.fullName} ${person.className} ${person.dinnerTableName || ""} ${person.isFemale ? "nữ" : "nam"}`,
+          ).includes(query),
+        matchesFilter =
+          filter === "all" ||
+          (filter === "assigned" && assigned) ||
+          (filter === "unassigned" && !assigned) ||
+          (filter === "attending" && attending) ||
+          (filter === "not-attending" && !attending) ||
+          person.className === filter;
+      return matchesQuery && matchesFilter;
+    });
+    document.getElementById("dinner-person-count").textContent =
+      `${list.length} người`;
+    container.innerHTML = list.length
+      ? list
+          .map((person) => {
+            const attending = person.isAttending !== false,
+              assigned = Boolean(person.dinnerTableId),
+              selectable = attending && !assigned,
+              active = selectedPersonId === person.id,
+              cardClass = active
+                ? "border-gold-500 bg-gold-50 ring-1 ring-gold-400"
+                : !attending
+                  ? "border-gray-300 bg-gray-100 opacity-75"
+                  : assigned
+                    ? "border-green-200 bg-green-50/70"
+                    : "border-red-200 bg-red-50/70",
+              avatarClass = !attending
+                ? "bg-gray-500"
+                : assigned
+                  ? "bg-green-600"
+                  : "bg-red-500",
+              classBadge =
+                person.className === "96Q1"
+                  ? "bg-blue-100 text-blue-700"
+                  : "bg-purple-100 text-purple-700",
+              attendanceClass = attending
+                ? "bg-green-100 text-green-700"
+                : "bg-gray-200 text-gray-600",
+              tableClass = assigned ? "text-green-700" : "text-red-600";
+            return `<button type="button" ${selectable ? `data-list-person="${person.id}"` : "disabled"} class="mb-2 w-full rounded-xl border p-3 text-left transition ${cardClass} ${selectable ? "hover:border-gold-400" : "cursor-default"}"><div class="flex items-start gap-2"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${avatarClass}">${esc(person.fullName?.charAt(0) || "?")}</span><span class="min-w-0 flex-1"><b class="block truncate text-sm text-navy-900">${esc(person.fullName)}</b><span class="mt-1 flex flex-wrap gap-1"><small class="rounded-full px-2 py-0.5 font-bold ${classBadge}">${esc(person.className)}</small><small class="rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-600">${person.isFemale ? "Nữ" : "Nam"}</small><small class="rounded-full px-2 py-0.5 font-semibold ${attendanceClass}">${attending ? "Có tham gia" : "Không tham gia"}</small></span><small class="mt-1.5 block font-semibold ${tableClass}">${assigned ? `Đã xếp: ${esc(person.dinnerTableName || "Bàn chưa xác định")}` : "Chưa có bàn ăn"}</small></span></div></button>`;
+          })
+          .join("")
+      : '<p class="py-8 text-center text-sm text-gray-400">Không có thành viên phù hợp</p>';
+    container.querySelectorAll("[data-list-person]").forEach(
+      (button) =>
+        (button.onclick = () => {
+          selectDinnerPerson(
+            persons.find((person) => person.id === button.dataset.listPerson),
+          );
+          renderDinnerPersons();
+        }),
+    );
+    search.oninput = renderDinnerPersons;
+    filterSelect.onchange = renderDinnerPersons;
+    if (window.lucide) window.lucide.createIcons();
+  }
+  const renderDinnerBase = render;
+  render = function () {
+    renderDinnerBase();
+    const attending = persons.filter((person) => person.isAttending !== false),
+      notAttending = persons.length - attending.length,
+      unassigned = attending.filter((person) => !person.dinnerTableId),
+      assigned = attending.length - unassigned.length,
+      actualAssigned = persons.filter((person) => person.dinnerTableId).length;
+    document.getElementById("stat-total").textContent = persons.length;
+    document.getElementById("stat-attending").textContent = attending.length;
+    document.getElementById("stat-unassigned").textContent = unassigned.length;
+    document.getElementById("stat-assigned").textContent = assigned;
+    document.getElementById("stat-not-attending").textContent = notAttending;
+    document.getElementById("stat-available").textContent = Math.max(
+      0,
+      60 - actualAssigned,
+    );
+    document.getElementById("unassigned-label").textContent =
+      `${unassigned.length} người chưa có bàn`;
+  };
 </script>
