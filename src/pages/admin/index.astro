@@ -182,6 +182,11 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
                 ></select
               >
             </div>
+            <div id="class-attendance-summary" class="mt-3 hidden grid-cols-3 gap-2 rounded-xl border p-2.5 text-center">
+              <button type="button" data-class-attendance="all" class="class-attendance-button rounded-lg px-1 py-1.5 transition"><span class="block text-[10px] font-semibold uppercase text-gray-500">Tổng số</span><b id="class-stat-total" class="text-lg text-navy-900">0</b></button>
+              <button type="button" data-class-attendance="attending" class="class-attendance-button rounded-lg px-1 py-1.5 transition"><span class="block text-[10px] font-semibold uppercase text-green-700">Tham gia</span><b id="class-stat-attending" class="text-lg text-green-600">0</b></button>
+              <button type="button" data-class-attendance="not-attending" class="class-attendance-button rounded-lg px-1 py-1.5 transition"><span class="block text-[10px] font-semibold uppercase text-gray-500">Không tham gia</span><b id="class-stat-not-attending" class="text-lg text-gray-500">0</b></button>
+            </div>
           </div>
           <div
             id="selected-person-banner"
@@ -212,6 +217,10 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
                 data-hotel-tab="milla"
                 class="hotel-tab rounded-md px-3 py-2 text-xs font-semibold text-gray-600"
                 >Milla</button
+              ><button
+                data-hotel-tab="milla-park"
+                class="hotel-tab rounded-md px-3 py-2 text-xs font-semibold text-gray-600"
+                >Milla Park</button
               ><button
                 data-hotel-tab="dragon-nest"
                 class="hotel-tab rounded-md px-3 py-2 text-xs font-semibold text-gray-600"
@@ -443,6 +452,14 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
       ],
     },
     {
+      id: "milla-park",
+      name: "Milla Park",
+      rooms: [
+        { number: "206", bed: "Chưa cập nhật", extra: "—", capacity: 3 },
+        { number: "208", bed: "Chưa cập nhật", extra: "—", capacity: 3 },
+      ],
+    },
+    {
       id: "dragon-nest",
       name: "Dragon Nest",
       rooms: [
@@ -461,6 +478,8 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     rooms = {},
     selectedPersonId = "",
     hotelFilter = "all",
+    classAttendanceView = "all",
+    activeClassFilter = "",
     currentAdmin = null,
     inactivityTimer;
   const roomKey = (hotelId, number) => `${hotelId}-${number}`;
@@ -686,12 +705,40 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
       await batch.commit();
     }
   }
+  function personNameParts(fullName = "") {
+    const normalized = String(fullName)
+      .trim()
+      .replace(/\s*\([^)]*\)\s*$/, "")
+      .replace(/\s+\S*\d\s*$/, "")
+      .replace(/\s+/g, " ");
+    return normalized ? normalized.split(" ").reverse() : [];
+  }
+  function comparePersonsByGivenName(first, second) {
+    const firstEndsWithNumber = /\d\s*$/.test(String(first.fullName || "")),
+      secondEndsWithNumber = /\d\s*$/.test(String(second.fullName || ""));
+    if (firstEndsWithNumber !== secondEndsWithNumber)
+      return firstEndsWithNumber ? 1 : -1;
+    const firstParts = personNameParts(first.fullName),
+      secondParts = personNameParts(second.fullName),
+      length = Math.max(firstParts.length, secondParts.length);
+    for (let index = 0; index < length; index++) {
+      const compared = String(firstParts[index] || "").localeCompare(
+        String(secondParts[index] || ""),
+        "vi",
+        { sensitivity: "base" },
+      );
+      if (compared) return compared;
+    }
+    return 0;
+  }
   function subscribeData() {
     db.collection("persons")
       .orderBy("fullName")
       .onSnapshot(
         (s) => {
-          persons = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+          persons = s.docs
+            .map((d) => ({ id: d.id, ...d.data() }))
+            .sort(comparePersonsByGivenName);
           renderAll();
         },
         (e) => toast(`Không tải được danh sách: ${e.message}`, true),
@@ -765,6 +812,29 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
         .trim(),
       filter = document.getElementById("person-filter").value;
     updatePersonFilterStyle();
+    const classSummary = document.getElementById("class-attendance-summary"),
+      isClassFilter = filter === "96Q1" || filter === "96Q2";
+    if (isClassFilter && activeClassFilter !== filter) {
+      activeClassFilter = filter;
+      classAttendanceView = "all";
+    } else if (!isClassFilter) {
+      activeClassFilter = "";
+      classAttendanceView = "all";
+    }
+    classSummary.classList.toggle("hidden", !isClassFilter);
+    classSummary.classList.toggle("grid", isClassFilter);
+    if (isClassFilter) {
+      const classPersons = persons.filter((person) => person.className === filter),
+        classAttending = classPersons.filter((person) => person.isAttending !== false).length;
+      classSummary.className = `mt-3 grid grid-cols-3 gap-2 rounded-xl border p-2.5 text-center ${filter === "96Q1" ? "border-blue-200 bg-blue-50" : "border-purple-200 bg-purple-50"}`;
+      document.getElementById("class-stat-total").textContent = classPersons.length;
+      document.getElementById("class-stat-attending").textContent = classAttending;
+      document.getElementById("class-stat-not-attending").textContent = classPersons.length - classAttending;
+      document.querySelectorAll("[data-class-attendance]").forEach((button) => {
+        const active = button.dataset.classAttendance === classAttendanceView;
+        button.className = `class-attendance-button rounded-lg px-1 py-1.5 transition ${active ? "bg-white shadow-sm ring-1 ring-navy-900/10" : "hover:bg-white/60"}`;
+      });
+    }
     const list = persons.filter((p) => {
       const attending = p.isAttending !== false;
       return (
@@ -777,7 +847,11 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
           (filter === "unassigned" && !p.roomKey) ||
           (filter === "attending" && attending) ||
           (filter === "not-attending" && !attending) ||
-          p.className === filter)
+          p.className === filter) &&
+        (!isClassFilter ||
+          classAttendanceView === "all" ||
+          (classAttendanceView === "attending" && attending) ||
+          (classAttendanceView === "not-attending" && !attending))
       );
     });
     const banner = document.getElementById("selected-person-banner"),
@@ -1313,6 +1387,13 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     .forEach((b) => (b.onclick = closePersonModal));
   document.getElementById("person-search").oninput = renderPersons;
   document.getElementById("person-filter").onchange = renderPersons;
+  document.querySelectorAll("[data-class-attendance]").forEach((button) => {
+    button.onclick = () => {
+      classAttendanceView = button.dataset.classAttendance;
+      document.getElementById("person-search").value = "";
+      renderPersons();
+    };
+  });
   document.querySelectorAll("[data-hotel-tab]").forEach(
     (b) =>
       (b.onclick = () => {

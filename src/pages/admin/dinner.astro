@@ -127,9 +127,14 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
                   ></select
                 >
               </div>
+              <div id="dinner-class-summary" class="mt-3 hidden grid-cols-3 gap-2 rounded-xl border p-2.5 text-center">
+                <button type="button" data-dinner-class-attendance="all" class="dinner-class-attendance-button rounded-lg px-1 py-1.5 transition"><span class="block text-[10px] font-semibold uppercase text-gray-500">Tổng số</span><b id="dinner-class-total" class="text-lg text-navy-900">0</b></button>
+                <button type="button" data-dinner-class-attendance="attending" class="dinner-class-attendance-button rounded-lg px-1 py-1.5 transition"><span class="block text-[10px] font-semibold uppercase text-green-700">Tham gia</span><b id="dinner-class-attending" class="text-lg text-green-600">0</b></button>
+                <button type="button" data-dinner-class-attendance="not-attending" class="dinner-class-attendance-button rounded-lg px-1 py-1.5 transition"><span class="block text-[10px] font-semibold uppercase text-gray-500">Không tham gia</span><b id="dinner-class-not-attending" class="text-lg text-gray-500">0</b></button>
+              </div>
               <div
                 id="dinner-person-list"
-                class="mt-3 max-h-80 overflow-y-auto pr-1"
+                class="mt-3 min-h-[480px] max-h-[620px] overflow-y-auto pr-1 lg:max-h-[calc(100vh-260px)]"
               >
               </div>
             </div>
@@ -318,6 +323,8 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     tables = {},
     admin = null,
     selectedPersonId = "",
+    dinnerClassAttendanceView = "all",
+    activeDinnerClassFilter = "",
     rotation = 0,
     spinning = false,
     inactivityTimer;
@@ -339,6 +346,32 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
       .replace(/[\u0300-\u036f]/g, "")
       .toLocaleLowerCase("vi")
       .trim();
+  function dinnerPersonNameParts(fullName = "") {
+    const normalized = String(fullName)
+      .trim()
+      .replace(/\s*\([^)]*\)\s*$/, "")
+      .replace(/\s+\S*\d\s*$/, "")
+      .replace(/\s+/g, " ");
+    return normalized ? normalized.split(" ").reverse() : [];
+  }
+  function compareDinnerPersons(first, second) {
+    const firstEndsWithNumber = /\d\s*$/.test(String(first.fullName || "")),
+      secondEndsWithNumber = /\d\s*$/.test(String(second.fullName || ""));
+    if (firstEndsWithNumber !== secondEndsWithNumber)
+      return firstEndsWithNumber ? 1 : -1;
+    const firstParts = dinnerPersonNameParts(first.fullName),
+      secondParts = dinnerPersonNameParts(second.fullName),
+      length = Math.max(firstParts.length, secondParts.length);
+    for (let index = 0; index < length; index++) {
+      const compared = String(firstParts[index] || "").localeCompare(
+        String(secondParts[index] || ""),
+        "vi",
+        { sensitivity: "base" },
+      );
+      if (compared) return compared;
+    }
+    return 0;
+  }
   function renderWheelLabels() {
     const wheel = document.getElementById("dinner-wheel");
     wheel.innerHTML = configs
@@ -468,7 +501,9 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
       .orderBy("fullName")
       .onSnapshot(
         (s) => {
-          persons = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+          persons = s.docs
+            .map((d) => ({ id: d.id, ...d.data() }))
+            .sort(compareDinnerPersons);
           render();
           renderDinnerPersons();
         },
@@ -768,6 +803,29 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
         "96Q2": "border-purple-300 bg-purple-50 text-purple-700",
       };
     filterSelect.className = `rounded-lg border px-2 text-xs font-semibold outline-none transition ${filterStyles[filter] || filterStyles.all}`;
+    const classSummary = document.getElementById("dinner-class-summary"),
+      isClassFilter = filter === "96Q1" || filter === "96Q2";
+    if (isClassFilter && activeDinnerClassFilter !== filter) {
+      activeDinnerClassFilter = filter;
+      dinnerClassAttendanceView = "all";
+    } else if (!isClassFilter) {
+      activeDinnerClassFilter = "";
+      dinnerClassAttendanceView = "all";
+    }
+    classSummary.classList.toggle("hidden", !isClassFilter);
+    classSummary.classList.toggle("grid", isClassFilter);
+    if (isClassFilter) {
+      const classPersons = persons.filter((person) => person.className === filter),
+        attendingCount = classPersons.filter((person) => person.isAttending !== false).length;
+      classSummary.className = `mt-3 grid grid-cols-3 gap-2 rounded-xl border p-2.5 text-center ${filter === "96Q1" ? "border-blue-200 bg-blue-50" : "border-purple-200 bg-purple-50"}`;
+      document.getElementById("dinner-class-total").textContent = classPersons.length;
+      document.getElementById("dinner-class-attending").textContent = attendingCount;
+      document.getElementById("dinner-class-not-attending").textContent = classPersons.length - attendingCount;
+      document.querySelectorAll("[data-dinner-class-attendance]").forEach((button) => {
+        const active = button.dataset.dinnerClassAttendance === dinnerClassAttendanceView;
+        button.className = `dinner-class-attendance-button rounded-lg px-1 py-1.5 transition ${active ? "bg-white shadow-sm ring-1 ring-navy-900/10" : "hover:bg-white/60"}`;
+      });
+    }
     const list = persons.filter((person) => {
       const attending = person.isAttending !== false,
         assigned = Boolean(person.dinnerTableId),
@@ -783,7 +841,12 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
           (filter === "attending" && attending) ||
           (filter === "not-attending" && !attending) ||
           person.className === filter;
-      return matchesQuery && matchesFilter;
+      const matchesClassAttendance =
+        !isClassFilter ||
+        dinnerClassAttendanceView === "all" ||
+        (dinnerClassAttendanceView === "attending" && attending) ||
+        (dinnerClassAttendanceView === "not-attending" && !attending);
+      return matchesQuery && matchesFilter && matchesClassAttendance;
     });
     document.getElementById("dinner-person-count").textContent =
       `${list.length} người`;
@@ -829,6 +892,13 @@ const pickleballUrl = `${base}/admin/pickleball/index.html`;
     );
     search.oninput = renderDinnerPersons;
     filterSelect.onchange = renderDinnerPersons;
+    document.querySelectorAll("[data-dinner-class-attendance]").forEach((button) => {
+      button.onclick = () => {
+        dinnerClassAttendanceView = button.dataset.dinnerClassAttendance;
+        search.value = "";
+        renderDinnerPersons();
+      };
+    });
     if (window.lucide) window.lucide.createIcons();
   }
   const renderDinnerBase = render;

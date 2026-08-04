@@ -88,7 +88,7 @@ import Footer from "../../components/Footer.astro";
 
 			<!-- Search & Filter -->
 			<div
-				class="bg-white p-3 rounded-xl border border-gray-200 shadow-2xs space-y-2.5 mb-4"
+				class="relative bg-white p-3 rounded-xl border border-gray-200 shadow-2xs space-y-2.5 mb-4"
 			>
 				<div
 					class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus-within:bg-white focus-within:ring-2 focus-within:ring-navy-900 transition-all"
@@ -109,7 +109,7 @@ import Footer from "../../components/Footer.astro";
 						type="text"
 						id="search-o-ghep"
 						oninput="filterOGhep()"
-						placeholder="Tìm tên, khách sạn hoặc số phòng..."
+						placeholder="Nhập tên thành viên cần tìm..."
 						class="w-full text-xs sm:text-sm bg-transparent outline-none text-navy-900 placeholder-gray-400"
 					/>
 					<button
@@ -130,6 +130,7 @@ import Footer from "../../components/Footer.astro";
 						>
 					</button>
 				</div>
+				<div id="name-suggestions-oghep" class="absolute left-3 right-3 top-[58px] z-30 hidden max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-white p-1 shadow-xl"></div>
 				<!-- <div class="flex items-center gap-1.5 overflow-x-auto text-xs no-scrollbar pt-0.5">
 					<span class="text-gray-400 font-medium text-[11px] shrink-0">Lọc lớp:</span>
 					<button onclick="setClassFilterOGhep('ALL')" id="filter-oghep-all" class="filter-pill-oghep active-pill px-3 py-1 rounded-lg font-semibold whitespace-nowrap bg-navy-900 text-white shadow-2xs">Tất cả</button>
@@ -313,7 +314,72 @@ import Footer from "../../components/Footer.astro";
 			.join("");
 	}
 
-	window.filterOGhep = renderOGhepCards;
+	let selectedOGhepPersonId = "";
+	const foldVietnamese = (value = "") =>
+		String(value)
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "")
+			.replace(/đ/g, "d")
+			.replace(/Đ/g, "D")
+			.toLocaleLowerCase("vi");
+	const escapeOGhep = (value = "") =>
+		String(value).replace(/[&<>'"]/g, (char) => ({
+			"&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
+		})[char]);
+
+	function renderSelectedRoom() {
+		const container = document.getElementById("cards-container-o-ghep"),
+			selected = rawOGhep.find((person) => person.id === selectedOGhepPersonId);
+		document.getElementById("stat-total-oghep").innerText = `${rawOGhep.length}`;
+		if (!selected) {
+			container.innerHTML = `<div class="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-2xs"><span class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold-100 text-navy-900">🔎</span><p class="mt-3 text-sm font-bold text-navy-900">Chọn một thành viên để tra cứu phòng</p><p class="mt-1 text-xs text-gray-500">Nhập từng ký tự trong tên rồi chọn đúng người từ danh sách gợi ý.</p></div>`;
+			return;
+		}
+		const occupants = rawOGhep
+			.filter((person) => person.hotelName === selected.hotelName && String(person.roomNumber) === String(selected.roomNumber))
+			.sort((a, b) => a.id === selected.id ? -1 : b.id === selected.id ? 1 : (a.name || "").localeCompare(b.name || "", "vi"));
+		container.innerHTML = `<article class="overflow-hidden rounded-2xl border border-gold-300 bg-white shadow-md"><header class="flex flex-wrap items-center justify-between gap-3 bg-navy-900 px-5 py-4 text-white"><div><p class="text-[10px] font-bold uppercase tracking-widest text-gold-400">Kết quả chỗ ở</p><h3 class="mt-1 font-serif text-xl font-bold">🏨 ${escapeOGhep(selected.hotelName || "Khách sạn")}</h3></div><span class="rounded-lg bg-gold-400 px-3 py-2 text-sm font-extrabold text-navy-900">Phòng ${escapeOGhep(selected.roomNumber)}</span></header><div class="p-4 sm:p-5"><div class="mb-3 flex items-center justify-between gap-2"><h4 class="font-bold text-navy-900">Những người ở cùng phòng</h4><span class="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-600">${occupants.length} người</span></div><div class="space-y-2">${occupants.map((person) => { const active = person.id === selected.id; return `<div class="flex items-center gap-3 rounded-xl border p-3 ${active ? "border-gold-400 bg-gold-50" : "border-gray-200 bg-gray-50"}"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${active ? "bg-gold-400 text-navy-900" : "bg-navy-900 text-gold-400"} text-sm font-extrabold">${escapeOGhep((person.name || "?").charAt(0))}</span><span class="min-w-0 flex-1"><b class="block text-sm text-navy-900">${escapeOGhep(person.name || "---")}</b><small class="font-bold ${person.className === "96Q1" ? "text-blue-600" : "text-purple-600"}">${escapeOGhep(person.className || "---")}</small></span>${active ? '<span class="shrink-0 rounded-full bg-gold-400 px-2 py-1 text-[10px] font-extrabold text-navy-900">Đang tra cứu</span>' : ""}</div>`; }).join("")}</div></div></article>`;
+	}
+
+	function renderNameSuggestions() {
+		const input = document.getElementById("search-o-ghep"),
+			clearButton = document.getElementById("clear-search-oghep"),
+			suggestions = document.getElementById("name-suggestions-oghep"),
+			keyword = foldVietnamese(input.value.trim());
+		selectedOGhepPersonId = "";
+		clearButton.classList.toggle("hidden", !keyword);
+		if (!keyword) {
+			suggestions.classList.add("hidden");
+			renderSelectedRoom();
+			return;
+		}
+		const matches = rawOGhep.filter((person) => foldVietnamese(person.name).includes(keyword)).slice(0, 15);
+		suggestions.innerHTML = matches.length
+			? matches.map((person) => `<button type="button" data-select-oghep="${escapeOGhep(person.id)}" class="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-gold-50"><span><b class="block text-sm text-navy-900">${escapeOGhep(person.name)}</b><small class="font-bold ${person.className === "96Q1" ? "text-blue-600" : "text-purple-600"}">${escapeOGhep(person.className || "---")}</small></span><span class="text-xs text-gray-400">Phòng ${escapeOGhep(person.roomNumber)}</span></button>`).join("")
+			: '<p class="px-3 py-4 text-center text-xs text-gray-500">Không tìm thấy thành viên phù hợp</p>';
+		suggestions.classList.remove("hidden");
+		suggestions.querySelectorAll("[data-select-oghep]").forEach((button) => button.onclick = () => {
+			selectedOGhepPersonId = button.dataset.selectOghep;
+			const selected = rawOGhep.find((person) => person.id === selectedOGhepPersonId);
+			input.value = selected?.name || "";
+			suggestions.classList.add("hidden");
+			clearButton.classList.remove("hidden");
+			renderSelectedRoom();
+		});
+	}
+
+	window.filterOGhep = renderNameSuggestions;
+	window.clearSearch = function (inputId) {
+		document.getElementById(inputId).value = "";
+		selectedOGhepPersonId = "";
+		document.getElementById("name-suggestions-oghep").classList.add("hidden");
+		document.getElementById("clear-search-oghep").classList.add("hidden");
+		renderSelectedRoom();
+	};
+	document.addEventListener("click", (event) => {
+		if (!event.target.closest("#search-o-ghep") && !event.target.closest("#name-suggestions-oghep"))
+			document.getElementById("name-suggestions-oghep").classList.add("hidden");
+	});
 
 	document.addEventListener("DOMContentLoaded", () => {
 		db.collection("public_results")
@@ -330,7 +396,7 @@ import Footer from "../../components/Footer.astro";
 						.map((other) => `${other.name} (${other.className || "---"})`)
 						.join(", ");
 				});
-				renderOGhepCards();
+				renderSelectedRoom();
 			});
 	});
 </script>
