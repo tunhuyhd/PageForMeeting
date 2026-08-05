@@ -4,7 +4,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 <section class="py-12 -mt-16 relative z-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+    <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
       <a
         id="home-accommodation-result"
         href={`${base}/danh-sach/o-ghep/index.html`}
@@ -50,6 +50,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         </h4>
         <p class="text-xs text-gray-500">Chi tiết sự kiện</p>
       </a>
+      <!-- Team Building -->
+      <button
+        type="button"
+        data-open-team-building
+        class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group cursor-pointer"
+      >
+        <div
+          class="w-12 h-12 rounded-full bg-blue-50 text-navy-900 flex items-center justify-center mb-3 group-hover:bg-navy-900 group-hover:text-gold-400 transition-colors"
+        >
+          <i data-lucide="users-round" class="w-6 h-6"></i>
+        </div>
+        <h4 class="font-bold text-gray-800 text-sm mb-1 uppercase">
+          TEAM BUILDING
+        </h4>
+        <p class="text-xs text-gray-500">Kết nối & tạo ký ức mới</p>
+      </button>
       <!-- Card 3 -->
       <div
         onclick="document.getElementById('pickleball-modal').classList.remove('hidden'); document.getElementById('pickleball-modal').classList.add('flex')"
@@ -97,6 +113,78 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     </div>
   </div>
 </section>
+
+<!-- Team Building menu -->
+<div
+  id="team-building-modal"
+  class="fixed inset-0 z-[100] hidden items-center justify-center bg-navy-950/75 p-4 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="team-building-menu-title"
+>
+  <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
+    <header class="bg-navy-900 px-7 py-7 text-center text-white">
+      <button id="close-team-building" type="button" aria-label="Đóng" class="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white/80 hover:bg-white/20 hover:text-white">
+        <i data-lucide="x" class="h-5 w-5"></i>
+      </button>
+      <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold-400 text-navy-900">
+        <i data-lucide="users-round" class="h-7 w-7"></i>
+      </span>
+      <h2 id="team-building-menu-title" class="mt-4 font-serif text-2xl font-bold text-gold-400">TEAM BUILDING</h2>
+      <p class="mt-1 text-sm text-white/75">Kết nối để tạo nên những ký ức mới</p>
+    </header>
+    <div class="flex flex-col gap-3 p-6">
+      <button id="open-team-building-content" type="button" class="flex items-center justify-center gap-3 rounded-xl bg-navy-900 p-4 font-bold text-white transition hover:bg-gold-500 hover:text-navy-900">
+        <i data-lucide="file-text" class="h-5 w-5"></i>Nội dung
+      </button>
+      <a href="#team-building" id="go-team-building-map" class="flex items-center justify-center gap-3 rounded-xl bg-gray-100 p-4 font-bold text-navy-900 transition hover:bg-gray-200">
+        <i data-lucide="map-pin" class="h-5 w-5"></i>Địa điểm
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Team Building content -->
+<div
+  id="team-building-content-modal"
+  class="fixed inset-0 z-[120] hidden items-center justify-center bg-navy-950/80 p-3 backdrop-blur-sm sm:p-6"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="team-building-content-title"
+>
+  <article class="flex max-h-[94dvh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-ivory shadow-2xl">
+    <header class="relative shrink-0 bg-navy-900 px-12 py-6 text-center text-white">
+      <div class="absolute inset-x-0 top-0 h-1 bg-gold-400"></div>
+      <button id="close-team-building-content" type="button" aria-label="Đóng" class="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white/80 hover:bg-white/20 hover:text-white">
+        <i data-lucide="x" class="h-5 w-5"></i>
+      </button>
+      <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold-400 text-navy-900">
+        <i data-lucide="users-round" class="h-6 w-6"></i>
+      </span>
+      <h2 id="team-building-content-title" class="mt-3 font-serif text-2xl font-bold text-gold-400 sm:text-3xl">TEAM BUILDING</h2>
+      <p class="mt-1 text-sm font-medium text-white/80">Kết nối để tạo nên những ký ức mới</p>
+    </header>
+    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 sm:px-10 sm:py-8">
+      <div class="space-y-4 text-sm leading-7 text-gray-700 sm:text-base">
+        <p>Ba mươi năm trước, chúng ta cùng học tập, cùng vượt qua những đồ án, những đêm thức trắng và những kỷ niệm tuổi trẻ.</p>
+        <p>Ba mươi năm sau, hãy cùng nhau tạo thêm những ký ức mới bằng những trò chơi tập thể vui vẻ, gắn kết và đầy tiếng cười.</p>
+        <p>Không quan trọng bạn thắng hay thua. Điều quan trọng là chính bạn tạo nên bầu không khí, tiếng cười và những khoảnh khắc đáng nhớ cho ngày Hội ngộ 30 năm của lớp 96Q.</p>
+        <p>Mỗi sự tham gia của bạn sẽ làm cho chương trình trở nên ý nghĩa hơn.</p>
+        <p>Hãy cùng hòa mình vào Team Building và tạo nên một ngày hội mà nhiều năm sau chúng ta vẫn còn muốn nhắc lại.</p>
+      </div>
+      <div class="mt-6 rounded-xl border border-gold-300 bg-gold-50 p-4 text-sm font-semibold leading-6 text-navy-900">
+        Hãy đến đúng giờ để không bỏ lỡ những trò chơi thú vị và các phần quà của chương trình.
+      </div>
+      <blockquote class="mt-5 rounded-xl bg-navy-900 px-5 py-5 text-center font-serif text-lg font-semibold italic leading-7 text-gold-400">
+        “Không chỉ trở về để gặp lại nhau, mà còn cùng nhau tạo nên những ký ức mới.”
+      </blockquote>
+      <p class="mt-4 text-center text-sm italic text-gray-500">Tiếp nối tinh thần: “Kết nối – Ký ức – Tiếp nối hành trình.”</p>
+      <button id="accept-team-building-content" type="button" class="mx-auto mt-6 flex items-center gap-2 rounded-xl bg-gold-400 px-8 py-3 text-sm font-bold text-navy-900 transition hover:bg-gold-500">
+        <i data-lucide="check" class="h-4 w-4"></i>Đóng
+      </button>
+    </div>
+  </article>
+</div>
 
 <!-- Pickleball Modal -->
 <div
@@ -396,6 +484,50 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
       pickleballResult.style.display =
         doc.data()?.showResult === true ? "flex" : "none";
     });
+  const teamBuildingMenu = document.getElementById("team-building-modal"),
+    teamBuildingContent = document.getElementById("team-building-content-modal");
+  function showModal(modal) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.classList.add("overflow-hidden");
+  }
+  function hideModal(modal) {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    if (
+      teamBuildingMenu.classList.contains("hidden") &&
+      teamBuildingContent.classList.contains("hidden")
+    )
+      document.body.classList.remove("overflow-hidden");
+  }
+  document.querySelectorAll("[data-open-team-building]").forEach((trigger) => {
+    trigger.onclick = () => showModal(teamBuildingMenu);
+  });
+  document.getElementById("close-team-building").onclick = () =>
+    hideModal(teamBuildingMenu);
+  document.getElementById("open-team-building-content").onclick = () => {
+    hideModal(teamBuildingMenu);
+    showModal(teamBuildingContent);
+  };
+  document.getElementById("go-team-building-map").onclick = () =>
+    hideModal(teamBuildingMenu);
+  document.getElementById("close-team-building-content").onclick = () =>
+    hideModal(teamBuildingContent);
+  document.getElementById("accept-team-building-content").onclick = () =>
+    hideModal(teamBuildingContent);
+  teamBuildingMenu.onclick = (event) => {
+    if (event.target === teamBuildingMenu) hideModal(teamBuildingMenu);
+  };
+  teamBuildingContent.onclick = (event) => {
+    if (event.target === teamBuildingContent) hideModal(teamBuildingContent);
+  };
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (!teamBuildingContent.classList.contains("hidden"))
+      hideModal(teamBuildingContent);
+    else if (!teamBuildingMenu.classList.contains("hidden"))
+      hideModal(teamBuildingMenu);
+  });
   const pickleballMenu = document.getElementById("pickleball-modal"),
     rulesModal = document.getElementById("pickleball-rules-modal");
   function closePickleballRules() {
