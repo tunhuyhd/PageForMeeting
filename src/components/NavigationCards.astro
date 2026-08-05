@@ -501,8 +501,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
       document.body.classList.remove("overflow-hidden");
   }
   document.querySelectorAll("[data-open-team-building]").forEach((trigger) => {
-    trigger.onclick = () => showModal(teamBuildingMenu);
+    trigger.onclick = (event) => {
+      event.preventDefault();
+      showModal(teamBuildingMenu);
+    };
   });
+  if (new URLSearchParams(window.location.search).get("team-building") === "1") {
+    showModal(teamBuildingMenu);
+    history.replaceState({}, "", `${window.location.pathname}${window.location.hash}`);
+  }
   document.getElementById("close-team-building").onclick = () =>
     hideModal(teamBuildingMenu);
   document.getElementById("open-team-building-content").onclick = () => {

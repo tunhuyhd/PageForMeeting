@@ -1,23 +1,23 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
-<header class="fixed w-full z-50 transition-all duration-300 bg-navy-900/90 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
-            <!-- Logo Area -->
-            <div class="flex-shrink-0 flex items-center gap-3">
-                <a href={`${base}/`} class="flex items-center">
-                    <img src={`${base}/logo30.png`} alt="96Q Logo" class="h-14 w-auto object-contain drop-shadow-lg" />
-                </a>
-            </div>
 
-            <!-- Desktop Navigation -->
-            <nav class="hidden md:flex space-x-8">
-                <a href={`${base}/`} class="text-gold-400 font-medium text-sm tracking-wide border-b-2 border-gold-400 pb-1">TRANG CHỦ</a>
-                <a href={`${base}/#chuong-trinh`} class="text-gray-300 hover:text-gold-400 transition-colors text-sm tracking-wide font-medium">CHƯƠNG TRÌNH</a>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('pickleball-modal').classList.remove('hidden'); document.getElementById('pickleball-modal').classList.add('flex')" class="text-gray-300 hover:text-gold-400 transition-colors text-sm tracking-wide font-medium">GIẢI PICKLEBALL</a>
-                <a href="#" data-open-album-modal class="text-gray-300 hover:text-gold-400 transition-colors text-sm tracking-wide font-medium">ALBUM ẢNH</a>
-            </nav>
-        </div>
+<header class="fixed z-50 w-full border-b border-white/10 bg-navy-900/90 backdrop-blur-md transition-all duration-300">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-20 items-center justify-between">
+      <div class="flex shrink-0 items-center gap-3">
+        <a href={`${base}/`} class="flex items-center">
+          <img src={`${base}/logo30.png`} alt="96Q Logo" class="h-14 w-auto object-contain drop-shadow-lg" />
+        </a>
+      </div>
+
+      <nav class="hidden items-center space-x-7 md:flex">
+        <a href={`${base}/`} class="border-b-2 border-gold-400 pb-1 text-sm font-medium tracking-wide text-gold-400">TRANG CHỦ</a>
+        <a href={`${base}/#chuong-trinh`} class="text-sm font-medium tracking-wide text-gray-300 transition-colors hover:text-gold-400">CHƯƠNG TRÌNH</a>
+        <a href={`${base}/?team-building=1`} data-open-team-building class="text-sm font-medium tracking-wide text-gray-300 transition-colors hover:text-gold-400">TEAM BUILDING</a>
+        <a href="#" onclick="event.preventDefault(); const modal = document.getElementById('pickleball-modal'); if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } else { window.location.href = '/'; }" class="text-sm font-medium tracking-wide text-gray-300 transition-colors hover:text-gold-400">GIẢI PICKLEBALL</a>
+        <a href="#" data-open-album-modal class="text-sm font-medium tracking-wide text-gray-300 transition-colors hover:text-gold-400">ALBUM ẢNH</a>
+      </nav>
     </div>
+  </div>
 </header>
