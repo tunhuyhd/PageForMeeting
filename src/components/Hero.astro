@@ -10,7 +10,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 flex flex-col lg:flex-row items-center justify-between gap-12"
   >
     <!-- Left Column: Event Info -->
-    <div class="flex-1 text-center lg:text-left z-10">
+    <div class="relative z-20 flex-1 text-center lg:text-left">
       <div class="mb-8 flex justify-center lg:justify-start">
         <img
           src={`${base}/logo30.png`}
@@ -40,7 +40,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
       </p>
 
       <div
-        class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 text-gray-300 mb-10 font-medium"
+        class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 text-gray-300 mb-5 font-medium"
       >
         <div class="flex items-center gap-2">
           <i data-lucide="map-pin" class="text-gold-400 w-5 h-5"></i>
@@ -52,17 +52,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
           <span>15 - 16.08.2026</span>
         </div>
       </div>
+
     </div>
 
     <!-- Right Column: Countdown -->
-    <div class="flex-1 w-full max-w-lg z-10 lg:pl-10">
+    <div class="relative z-20 flex w-full max-w-lg flex-1 flex-col lg:pl-10">
       <div class="text-center mb-6">
         <h3 class="text-gold-400 font-serif text-2xl tracking-wide">
           ĐẾM NGƯỢC ĐẾN NGÀY HỘI NGỘ
         </h3>
       </div>
 
-      <div class="grid grid-cols-4 gap-3 mb-8">
+      <div class="mb-5 grid grid-cols-4 gap-3">
         <div
           class="countdown-box rounded-lg p-4 flex flex-col items-center justify-center"
         >
@@ -107,7 +108,38 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         </div>
       </div>
 
-      <div class="text-center relative">
+      <div
+        id="homepage-member-stats"
+        class="relative z-30 order-4 mx-auto mt-6 grid w-full grid-cols-3 gap-1.5 rounded-2xl border-2 border-gold-400 bg-navy-900 p-1.5 shadow-[0_12px_35px_rgba(0,0,0,0.45)]"
+        aria-label="Thống kê thành viên"
+      >
+        <div class="order-1 rounded-xl bg-white px-2 py-3 text-center sm:px-4">
+          <span class="flex min-h-8 items-center justify-center text-[10px] font-extrabold uppercase leading-tight tracking-wide text-navy-900 sm:text-xs"
+            >Tổng thành viên</span
+          >
+          <strong id="home-stat-total" class="mt-1 block text-2xl font-extrabold text-navy-900 sm:text-3xl"
+            >--</strong
+          >
+        </div>
+        <div class="order-3 rounded-xl bg-slate-200 px-2 py-3 text-center sm:px-4">
+          <span class="flex min-h-8 items-center justify-center text-[10px] font-extrabold uppercase leading-tight tracking-wide text-slate-800 sm:text-xs"
+            >Không tham gia</span
+          >
+          <strong id="home-stat-not-attending" class="mt-1 block text-2xl font-extrabold text-slate-700 sm:text-3xl"
+            >--</strong
+          >
+        </div>
+        <div class="order-2 rounded-xl bg-gold-400 px-2 py-3 text-center sm:px-4">
+          <span class="flex min-h-8 items-center justify-center text-[10px] font-extrabold uppercase leading-tight tracking-wide text-navy-900 sm:text-xs"
+            >Tham gia</span
+          >
+          <strong id="home-stat-attending" class="mt-1 block text-2xl font-extrabold text-navy-900 sm:text-3xl"
+            >--</strong
+          >
+        </div>
+      </div>
+
+      <div class="relative order-3 text-center">
         <i
           data-lucide="quote"
           class="absolute -top-3 left-4 text-gold-500/20 w-8 h-8 rotate-180"
@@ -167,4 +199,38 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   // Update every second
   setInterval(updateCountdown, 1000);
   updateCountdown();
+
+  const loadMemberStatistics = () => {
+    const firebaseClient = (window as any).firebase;
+    if (!firebaseClient?.apps?.length) return;
+
+    firebaseClient
+      .firestore()
+      .collection("dinner_candidates")
+      .onSnapshot(
+        (snapshot: any) => {
+          let total = 0;
+          let attending = 0;
+          snapshot.forEach((document: any) => {
+            total += 1;
+            if (document.data()?.isAttending !== false) attending += 1;
+          });
+
+          const totalElement = document.getElementById("home-stat-total");
+          const attendingElement = document.getElementById("home-stat-attending");
+          const notAttendingElement = document.getElementById("home-stat-not-attending");
+          if (totalElement) totalElement.textContent = String(total);
+          if (attendingElement) attendingElement.textContent = String(attending);
+          if (notAttendingElement)
+            notAttendingElement.textContent = String(total - attending);
+        },
+        () => {
+          document.querySelectorAll("#homepage-member-stats strong").forEach((element) => {
+            element.textContent = "--";
+          });
+        },
+      );
+  };
+
+  window.addEventListener("load", loadMemberStatistics, { once: true });
 </script>
